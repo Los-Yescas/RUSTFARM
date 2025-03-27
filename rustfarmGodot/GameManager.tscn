@@ -1,4 +1,0 @@
-[gd_scene format=3 uid="uid://bjr2ndw1efjmg"]
-
-[node name="GameManager" type="GameManager"]
-time_for_tick = 2

@@ -1,9 +1,11 @@
 use godot::{classes::Engine, prelude::*};
 //Singletons
-pub mod GameManager;
+mod game_manager; //Este es anadido aqui mismo
+mod time_system;
 
 //Otras entidades
 mod player;
+mod plant;
 struct MyExtension;
 
 
@@ -13,7 +15,7 @@ unsafe impl ExtensionLibrary for MyExtension {
     fn on_level_init(level: InitLevel) {
         if level == InitLevel::Scene {
             Engine::singleton()
-            .register_singleton("GameManager", &GameManager::GameManager::new_alloc());
+            .register_singleton("GameManager", &game_manager::GameManager::new_alloc());
         }
     }
     fn on_level_deinit(level: InitLevel) {
