@@ -1,0 +1,6 @@
+[gd_resource type="PlantResource" format=3 uid="uid://ruqckkdau211"]
+
+[resource]
+nombre = "asdsada"
+crecimiento_minimo = 15
+puntos_para_crecer = 500

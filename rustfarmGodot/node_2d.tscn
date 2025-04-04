@@ -33,8 +33,5 @@ texture = ExtResource("2_0e48y")
 [node name="Node" type="Node" parent="."]
 
 [node name="Planta" type="Planta" parent="."]
-points_for_growing = 500
+plant_data_path = "res://new_plant_resource.tres"
 position = Vector2(-563, 148)
-
-[node name="Planta2" type="Planta" parent="."]
-points_for_growing = 1000

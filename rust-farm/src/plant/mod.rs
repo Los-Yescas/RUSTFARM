@@ -1,23 +1,23 @@
 use godot::prelude::*;
+use plant_resource::PlantResource;
 
 use crate::game_manager::GameManager;
 
+pub mod plant_resource;
+
 #[derive(GodotClass)]
-#[class(base=Node2D)]
+#[class(init, base=Node2D)]
 struct Planta{
     base : Base<Node2D>,
-    #[export]
-    name : GString,
-    #[export]
-    points_for_growing : i32,
+    #[init(val = 0)]
     grow_points : i32,
+    #[export]
+    plant_data_path : GString,
+    plant_data : Gd<PlantResource>
 }
 
 #[godot_api]
 impl INode2D for Planta {
-    fn init(base: Base<Node2D>) -> Self {
-        Self { base, name: "".into(), points_for_growing: 0, grow_points: 0 }
-    }
 
     fn ready(&mut self,) {
         let grow_callable = self.base_mut().callable("grow_tick");
@@ -26,6 +26,8 @@ impl INode2D for Planta {
         .get_singleton("GameManager")
         .expect("Game Manager no existe")
         .cast::<GameManager>().bind_mut().base_mut().connect("tick", &grow_callable);
+
+        self.plant_data = load(&self.plant_data_path)
     }
 }
 
@@ -33,12 +35,13 @@ impl INode2D for Planta {
 impl Planta {
     #[func]
     pub fn grow_tick(&mut self){
+        let plant_data = self.plant_data.bind();
         self.grow_points += 100;
-        if self.grow_points > self.points_for_growing{
+        if self.grow_points > plant_data.get_puntos_para_crecer(){
             godot_print!("siguiente fase, invecil");
             self.grow_points = 0;
         }
-        let name = self.base().get_name();
+        let name = plant_data.get_nombre();
         godot_print!("Crezco, IMbecil {}", name);
     }
 }
