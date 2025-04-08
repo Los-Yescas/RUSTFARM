@@ -1,0 +1,46 @@
+[gd_resource type="SpriteFrames" load_steps=7 format=3 uid="uid://jtuqfscqpivv"]
+
+[ext_resource type="Texture2D" uid="uid://u6qiprrwawl3" path="res://Plantas/Graficas/PlantaFea.png" id="1_gp3y4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4n05h"]
+atlas = ExtResource("1_gp3y4")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yetsp"]
+atlas = ExtResource("1_gp3y4")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7b4ao"]
+atlas = ExtResource("1_gp3y4")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1i43o"]
+atlas = ExtResource("1_gp3y4")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wggg0"]
+atlas = ExtResource("1_gp3y4")
+region = Rect2(400, 0, 100, 100)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4n05h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yetsp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7b4ao")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1i43o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wggg0")
+}],
+"loop": false,
+"name": &"default",
+"speed": 0.0
+}]

@@ -7,15 +7,12 @@ pub struct PlantResource{
     #[export]
     nombre: GString,
     #[export]
-    crecimiento_minimo : i32,
+    crecimiento_minimo : u32,
     #[export]
-    puntos_para_crecer : i32,
+    crecimiento_maximo : u32,
+    #[export]
+    puntos_para_crecer : u32,
     #[export]
     #[init(val = None)]
     sprite : Option<Gd<SpriteFrames>>
-}
-
-#[godot_api]
-impl PlantResource {
-    
 }
