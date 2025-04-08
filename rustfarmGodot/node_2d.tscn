@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=4 uid="uid://cs863yaqiboou"]
+[gd_scene load_steps=6 format=4 uid="uid://cs863yaqiboou"]
 
 [ext_resource type="Texture2D" uid="uid://cqamrtop73i5r" path="res://Tiles.png" id="1_0e48y"]
 [ext_resource type="Texture2D" uid="uid://cxocldvx27mwi" path="res://icon.svg" id="2_0e48y"]
+[ext_resource type="SpriteFrames" uid="uid://jtuqfscqpivv" path="res://Plantas/Animaciones/plata_fea_animacion.tres" id="3_epypp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_epypp"]
 texture = ExtResource("1_0e48y")
@@ -29,3 +30,15 @@ position = Vector2(268, 192)
 texture = ExtResource("2_0e48y")
 
 [node name="Camera2D" type="Camera2D" parent="Player/Sprite2D"]
+
+[node name="Node" type="Node" parent="."]
+
+[node name="Planta" type="Planta" parent="."]
+plant_data_path = "res://Plantas/Recursos/planta_fea.tres"
+position = Vector2(-60, 254)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Planta"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("3_epypp")
+frame = 4

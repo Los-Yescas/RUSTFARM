@@ -1,4 +1,3 @@
-use godot::classes::InputEvent;
 use godot::classes::TileMapLayer;
 use godot::obj::WithBaseField;
 use godot::prelude::*;
@@ -31,7 +30,7 @@ impl INode2D for Player {
         }
     }
     
-    fn process(&mut self, delta: f64,) {
+    fn process(&mut self, _delta: f64,) {
         if self.is_moving{
             return;
         }
@@ -89,5 +88,6 @@ impl Player {
             self.is_moving = true;
             self.target_position = map.map_to_local(target_tile)
         }
+
     }
 }
