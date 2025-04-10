@@ -1,0 +1,6 @@
+[gd_resource type="SeedItemResource" format=3 uid="uid://cb2lvvjykey88"]
+
+[resource]
+nombre = "Semilla de PLanta Fea"
+descripcion = "Que haces con tu vida"
+ruta_de_planta_a_plantar = "res://Plantas/Recursos/planta_fea.tres"

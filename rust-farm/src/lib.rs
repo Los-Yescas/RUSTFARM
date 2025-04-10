@@ -5,7 +5,8 @@ mod time_system;
 
 //Otras entidades
 mod player;
-mod plant;
+pub mod plant;
+pub mod item;
 struct MyExtension;
 
 

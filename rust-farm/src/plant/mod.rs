@@ -16,7 +16,7 @@ enum FasesPlantas {
 
 #[derive(GodotClass)]
 #[class(init, base=Node2D)]
-struct Planta{
+pub struct Planta{
     base : Base<Node2D>,
     #[init(val = 0)]
     grow_points : u32,
@@ -42,7 +42,10 @@ impl INode2D for Planta {
 
         let sprite = self.plant_data.bind().get_sprite().expect("No hay animacion");
 
-        self.base_mut().get_node_as::<AnimatedSprite2D>("./AnimatedSprite2D").set_sprite_frames(&sprite);
+        let mut animated_sprite = AnimatedSprite2D::new_alloc();
+        animated_sprite.set_sprite_frames(&sprite);
+        animated_sprite.set_name("AnimatedSprite2D");
+        self.base_mut().add_child(&animated_sprite);
     }
 }
 
@@ -53,12 +56,12 @@ impl Planta {
         let plant_data = self.plant_data.bind();
         let min_cre = plant_data.get_crecimiento_minimo();
         let max_cre = plant_data.get_crecimiento_maximo();
-        let punt_pa_Cre = plant_data.get_puntos_para_crecer();
+        let punt_pa_cre = plant_data.get_puntos_para_crecer();
 
         self.grow_points += min_cre + random_number%(max_cre-min_cre);
         drop(plant_data);
 
-        if self.grow_points >= punt_pa_Cre {
+        if self.grow_points >= punt_pa_cre {
             let mut planta_sprite = self.base_mut().get_node_as::<AnimatedSprite2D>("./AnimatedSprite2D");
             self.fase_actual = match self.fase_actual {
                 FasesPlantas::Bebe => {
@@ -80,5 +83,17 @@ impl Planta {
             };
             self.grow_points = 0;
         }
+    }
+    #[func]
+    pub fn from_resource(plant_resource : Gd<PlantResource>) -> Gd<Self>{
+        Gd::from_init_fn(|base| {
+            Self {
+                base,
+                plant_data_path : plant_resource.get_path(),
+                plant_data : plant_resource,
+                fase_actual : FasesPlantas::Bebe,
+                grow_points : 0,
+            }
+        })
     }
 }

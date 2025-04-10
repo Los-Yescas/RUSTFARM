@@ -37,8 +37,6 @@ texture = ExtResource("2_0e48y")
 plant_data_path = "res://Plantas/Recursos/planta_fea.tres"
 position = Vector2(-60, 254)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Planta"]
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("3_epypp")
 frame = 4

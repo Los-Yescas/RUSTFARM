@@ -2,27 +2,26 @@ use godot::classes::TileMapLayer;
 use godot::obj::WithBaseField;
 use godot::prelude::*;
 use godot::classes::Node2D;
+use godot::classes::INode2D;
+
+use crate::item::item_resource::plant_items::seed_item::SeedItemResource;
+use crate::item::item_resource::IItem;
 
 #[derive(GodotClass)]
 #[class(base=Node2D)]
 struct Player {
     speed: f32,
-    angular_speed: f64,
     input : Gd<Input>,
     is_moving : bool,
     target_position : Vector2,
-
     base: Base<Node2D>
 }
-use godot::classes::INode2D;
-
 #[godot_api]
 impl INode2D for Player {
     fn init(base: Base<Node2D>) -> Self {
         
         Self {
             speed: 500.0,
-            angular_speed: std::f64::consts::PI,
             base,
             input : Input::singleton(),
             is_moving: false,
@@ -44,16 +43,12 @@ impl INode2D for Player {
         }else if self.input.is_action_pressed("left") {
             self.move_to(Vector2i::LEFT)
         }
+
+        if self.input.is_action_pressed("interact"){
+            self.interact();
+        }
     }
     fn physics_process(&mut self, delta: f64) {
-        // In GDScript, this would be: 
-        // rotation += angular_speed * delta
-        
-        let radians = (self.angular_speed * delta) as f32;
-        self.base_mut().rotate(radians);
-        // The 'rotate' method requires a f32, 
-        // therefore we convert 'self.angular_speed * delta' which is a f64 to a f32
-
         if self.is_moving {
             let global_position = self.base().get_global_position();
             if  global_position == self.target_position {
@@ -88,6 +83,10 @@ impl Player {
             self.is_moving = true;
             self.target_position = map.map_to_local(target_tile)
         }
+    }
 
+    fn interact(&self){
+        let semilla : Gd<SeedItemResource> = load("res://Plantas/Items Semillas/planta_fea_semilla.tres");
+        semilla.bind().interact(self.base().get_node_as::<Node2D>("../../Node2D"), self.base().get_position());
     }
 }
