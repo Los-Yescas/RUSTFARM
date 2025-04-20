@@ -30,6 +30,8 @@ impl INode2D for Player {
     }
     
     fn process(&mut self, _delta: f64,) {
+        
+
         if self.is_moving{
             return;
         }
@@ -44,7 +46,7 @@ impl INode2D for Player {
             self.move_to(Vector2i::LEFT)
         }
 
-        if self.input.is_action_pressed("interact"){
+        if self.input.is_action_just_pressed("interact"){
             self.interact();
         }
     }
@@ -81,7 +83,8 @@ impl Player {
 
         if walkable {
             self.is_moving = true;
-            self.target_position = map.map_to_local(target_tile)
+            self.target_position = map.map_to_local(target_tile);
+            self.base_mut().get_node_as::<Node2D>("./InteractZone").set_rotation(direction.cast_float().angle());
         }
     }
 

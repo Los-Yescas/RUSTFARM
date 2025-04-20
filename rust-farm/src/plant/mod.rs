@@ -1,4 +1,4 @@
-use godot::{classes::AnimatedSprite2D, prelude::*};
+use godot::{classes::{AnimatedSprite2D, Area2D, CollisionShape2D, RectangleShape2D}, prelude::*};
 use plant_resource::PlantResource;
 
 use crate::game_manager::GameManager;
@@ -46,6 +46,14 @@ impl INode2D for Planta {
         animated_sprite.set_sprite_frames(&sprite);
         animated_sprite.set_name("AnimatedSprite2D");
         self.base_mut().add_child(&animated_sprite);
+
+        let mut area_collision = Area2D::new_alloc();
+        let mut collider = CollisionShape2D::new_alloc();
+        let mut shape = RectangleShape2D::new_gd();
+        shape.set_size(Vector2 { x: 100.0, y: 100.0 });
+        collider.set_shape(&shape);
+        area_collision.add_child(&collider);
+        self.base_mut().add_child(&area_collision);
     }
 }
 
