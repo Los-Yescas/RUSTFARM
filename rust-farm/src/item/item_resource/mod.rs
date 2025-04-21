@@ -1,18 +1,11 @@
-use godot::prelude::*;
+use godot::{classes::Texture2D, prelude::*};
 
 pub trait IItem {
-    fn get_name(&self) -> GString {
-        "Item Name should go here".into()
-    }
-    fn get_description(&self) -> GString {
-        "Item Description should go here".into()
-    }
-    fn get_max_stack(&self) -> u32 {
-        16
-    }
-    fn interact(&self, _world : Gd<Node2D>, _postion : Vector2) {
-        godot_print!("Your interaction should go here")
-    }
+    fn get_name(&self) -> GString ;
+    fn get_description(&self) -> GString ;
+    fn get_max_stack(&self) -> u16;
+    fn get_sprite(&self) -> Gd<Texture2D>;
+    fn interact(&self, _world : Gd<Node2D>, _position : Vector2);
 }
 
 pub mod plant_items;

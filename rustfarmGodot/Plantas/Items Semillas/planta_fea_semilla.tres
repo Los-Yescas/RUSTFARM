@@ -1,6 +1,10 @@
-[gd_resource type="SeedItemResource" format=3 uid="uid://cb2lvvjykey88"]
+[gd_resource type="SeedItemResource" load_steps=2 format=3 uid="uid://cb2lvvjykey88"]
+
+[ext_resource type="Texture2D" uid="uid://cxocldvx27mwi" path="res://icon.svg" id="1_u7oxb"]
 
 [resource]
 nombre = "Semilla de PLanta Fea"
 descripcion = "Que haces con tu vida"
+max_stack = 2
 ruta_de_planta_a_plantar = "res://Plantas/Recursos/planta_fea.tres"
+textura = ExtResource("1_u7oxb")

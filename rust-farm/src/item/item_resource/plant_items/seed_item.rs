@@ -1,4 +1,4 @@
-use godot::prelude::*;
+use godot::{classes::Texture2D, obj::NewGd, prelude::*};
 
 use crate::{item::item_resource::IItem, plant::{plant_resource::PlantResource, Planta}};
 
@@ -11,16 +11,26 @@ pub struct SeedItemResource{
     #[export]
     descripcion : GString,
     #[export]
-    ruta_de_planta_a_plantar : GString
+    max_stack : u16,
+    #[export]
+    ruta_de_planta_a_plantar : GString,
+    #[export]
+    textura : Option<Gd<Texture2D>>
 }
 
-#[godot_api]
+#[godot_dyn]
 pub impl IItem for SeedItemResource {
     fn get_name(&self) -> GString {
         self.nombre.clone()
     }
     fn get_description(&self) -> GString{
         self.descripcion.clone()
+    }
+    fn get_sprite(&self) -> Gd<Texture2D>{
+        self.textura.clone().unwrap_or(Texture2D::new_gd())
+    }
+    fn get_max_stack(&self) -> u16 {
+        self.max_stack
     }
     fn interact(&self, mut world : Gd<Node2D>, postion : Vector2) {
         let recurso_planta : Gd<PlantResource> = load(&self.ruta_de_planta_a_plantar);
