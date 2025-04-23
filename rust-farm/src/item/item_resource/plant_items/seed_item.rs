@@ -15,7 +15,9 @@ pub struct SeedItemResource{
     #[export]
     ruta_de_planta_a_plantar : GString,
     #[export]
-    textura : Option<Gd<Texture2D>>
+    textura : Option<Gd<Texture2D>>,
+    #[export]
+    precio : u16
 }
 
 #[godot_dyn]
@@ -38,5 +40,8 @@ pub impl IItem for SeedItemResource {
         let mut new_planta = Planta::from_resource(recurso_planta);
         new_planta.set_position(postion);
         world.add_child(&new_planta);
+    }
+    fn get_price(&self) -> u16 {
+        self.precio
     }
 }
