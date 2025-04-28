@@ -8,13 +8,16 @@
 texture = ExtResource("1_0e48y")
 texture_region_size = Vector2i(100, 100)
 0:0/0 = 0
+0:0/0/custom_data_0 = true
 1:0/0 = 0
-1:0/0/custom_data_0 = true
+1:0/0/custom_data_1 = true
 
 [sub_resource type="TileSet" id="TileSet_0hol4"]
 tile_size = Vector2i(100, 100)
-custom_data_layer_0/name = "walkable"
+custom_data_layer_0/name = "plantable"
 custom_data_layer_0/type = 1
+custom_data_layer_1/name = "walkable"
+custom_data_layer_1/type = 1
 sources/0 = SubResource("TileSetAtlasSource_epypp")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_epypp"]
@@ -31,6 +34,7 @@ tile_map_data = PackedByteArray("AAD8//3/AAAAAAAAAAD8//7/AAABAAAAAAD8////AAABAAA
 tile_set = SubResource("TileSet_0hol4")
 
 [node name="Player" type="Player" parent="."]
+inventario_maximo = 64
 position = Vector2(268, 192)
 
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
