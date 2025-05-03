@@ -22,7 +22,7 @@ impl ICanvasLayer for PlayerInterface {
             None => "Sin objeto".into(),
             Some(tupla) => {
                 let (nodo, stack) = tupla;
-                format!("{:#?} {}", nodo.get_class(), stack).into()
+                format!("{:#?} {}", nodo.dyn_bind().get_name(), stack).into()
             }
         };
         etiqueta.set_text(&texto);

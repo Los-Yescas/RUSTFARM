@@ -19,7 +19,7 @@ pub struct Player {
     input : Gd<Input>,
     is_moving : bool,
     target_position : Vector2,
-    inventory : Vec<(Gd<RefCounted>, u16)>,
+    inventory : Vec<(DynGd<RefCounted, dyn IItem>, u16)>,
     item_actual : usize,
     #[export]
     inventario_maximo : u16,
@@ -41,57 +41,40 @@ impl INode2D for Player {
         }
     }
     
-    fn process(&mut self, _delta: f64,) {
-        
-        if self.input.is_action_just_pressed("inventory"){
-            godot_print!("{:#?}", self.inventory);
-        }
-
+    fn process(&mut self, _delta: f64,) {        
         if self.is_moving{
             return;
         }
         self.interaction_system();
 
-        if self.input.is_action_pressed("up"){
-            self.move_to(Vector2i::UP);
-        }else if self.input.is_action_pressed("down") {
-            self.move_to(Vector2i::DOWN)
-        }else if self.input.is_action_pressed("right") {
-            self.move_to(Vector2i::RIGHT)
-        }else if self.input.is_action_pressed("left") {
-            self.move_to(Vector2i::LEFT)
-        }
+        self.player_movement();
     }
     fn physics_process(&mut self, delta: f64) {
         if self.is_moving {
-            let global_position = self.base().get_global_position();
-            if  global_position == self.target_position {
-                self.is_moving = false;
-                return;
-            }
-            let new_position = global_position.move_toward(self.target_position, self.speed * delta as f32);
-            self.base_mut().set_global_position(new_position);
+            self.player_moving(delta);
         }
     }
     fn input(&mut self, event: Gd<InputEvent>,) {
-        if event.is_action_pressed("inventory+"){
-            let inventario_maximo : usize = self.inventario_maximo.into();
-            self.item_actual = (self.item_actual  + 1)%inventario_maximo;
-        }else if event.is_action_pressed("inventory-") {
-            let inventario_maximo : usize = self.inventario_maximo.into();
-            if self.item_actual == 0 {
-                self.item_actual = inventario_maximo;
-            }else {
-                self.item_actual = (self.item_actual  - 1)%inventario_maximo;
-            }
-        }
+        self.interaction_system_inputs(event);
     }
 }
 
 #[godot_api]
 impl Player {
     #[func]
-    fn move_to(&mut self, direction : Vector2i){
+    fn player_movement(&mut self){
+        if self.input.is_action_pressed("up"){
+            self.set_movement_target(Vector2i::UP);
+        }else if self.input.is_action_pressed("down") {
+            self.set_movement_target(Vector2i::DOWN)
+        }else if self.input.is_action_pressed("right") {
+            self.set_movement_target(Vector2i::RIGHT)
+        }else if self.input.is_action_pressed("left") {
+            self.set_movement_target(Vector2i::LEFT)
+        }
+    }
+    #[func]
+    fn set_movement_target(&mut self, direction : Vector2i){
         let map = self.base().get_node_as::<TileMapLayer>("../Suelo");
         let current_tile = map.local_to_map(self.base().get_global_position());
         let target_tile = Vector2i{
@@ -111,16 +94,46 @@ impl Player {
             self.base_mut().get_node_as::<Node2D>("./InteractZone").set_rotation(direction.cast_float().angle());
         }
     }
-
+    #[func]
+    fn player_moving(&mut self, delta : f64){
+        let global_position = self.base().get_global_position();
+        if  global_position == self.target_position {
+            self.is_moving = false;
+            return;
+        }
+        let new_position = global_position.move_toward(self.target_position, self.speed * delta as f32);
+        self.base_mut().set_global_position(new_position);
+    }
+    
     fn interaction_system(&mut self){
         if self.input.is_action_just_pressed("pick"){
             if let Some(object) = self.check_for_item() {
-                if let Ok(item) = object.try_cast::<Item>(){
-                    self.add_item_to_inventory(item);
+                if let Ok(mut item) = object.try_cast::<Item>(){
+                    let resource: DynGd<RefCounted, dyn IItem> = item.bind().get_item_resource().to_variant().to();
+                    let res = self.add_item_to_inventory(resource);
+                    match res {
+                        Err(error) => godot_print!("{error}"),
+                        Ok(_exito) => item.queue_free(),
+                    }
                 }
             }
         }else if self.input.is_action_just_pressed("interact") {
             self.interact();
+        }
+    }
+    fn interaction_system_inputs(&mut self, event: Gd<InputEvent>){
+        if event.is_action_pressed("inventory+"){
+            let inventario_maximo : usize = self.inventario_maximo.into();
+            self.item_actual = (self.item_actual  + 1)%inventario_maximo;
+        }else if event.is_action_pressed("inventory-") {
+            let inventario_maximo : usize = self.inventario_maximo.into();
+            if self.item_actual == 0 {
+                self.item_actual = inventario_maximo;
+            }else {
+                self.item_actual = (self.item_actual  - 1)%inventario_maximo;
+            }
+        }else if event.is_action_pressed("inventory"){
+            godot_print!("{:#?}", self.inventory);
         }
     }
     fn check_for_item(&self) -> Option<Gd<Node2D>>{
@@ -132,26 +145,24 @@ impl Player {
             Some(area2d) => Some(area2d.get_parent().expect("Sin padre").cast())
         }
     }
-    fn add_item_to_inventory(&mut self, mut item : Gd<Item>){
-        let item_resource = item.bind().get_item_resource().expect("Sin recurso");
-        let index = self.inventory.iter().position(|(nodo,_)| *nodo == item_resource);
+    fn add_item_to_inventory(&mut self, item : DynGd<RefCounted, dyn IItem>) -> Result<GString, GString>{
+        let index = self.inventory.iter().position(|(nodo,_)| *nodo == item);
         match index {
             None => {
                 if self.inventory.len() < self.inventario_maximo.into() {
-                    self.inventory.push((item_resource, 1));
-                    item.queue_free();
+                    self.inventory.push((item, 1));
+                    return Ok("Item añadido".into());
                 }  else {
-                    godot_print!("No puede cogerlo espacio maximo")
+                    return Err("Inventory size not enough".into());
                 }
             },
             Some(index) => {
                 let tupla = &mut self.inventory[index];
-                let resource : DynGd<RefCounted, dyn IItem> = item_resource.to_variant().to();
-                if tupla.1 < resource.dyn_bind().get_max_stack(){
+                if tupla.1 < item.dyn_bind().get_max_stack(){
                     tupla.1 += 1;
-                    item.queue_free();
+                    return Ok("Item añadido".into());
                 } else {
-                    godot_print!("No puede cogerlo espacio maximo")
+                    return Err("Max stack reached!!".into());
                 }
             } 
         }
@@ -178,7 +189,7 @@ impl Player {
         }
     }
 
-    pub fn get_equiped_item(&self) -> Option<&(Gd<RefCounted>, u16)>{
+    pub fn get_equiped_item(&self) -> Option<&(DynGd<RefCounted, dyn IItem>, u16)>{
         self.inventory.get(self.item_actual)
     }
 }
