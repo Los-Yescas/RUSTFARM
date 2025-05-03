@@ -7,6 +7,7 @@ mod time_system;
 pub mod player;
 pub mod plant;
 pub mod item;
+pub mod mercado;
 
 
 //Interfaces

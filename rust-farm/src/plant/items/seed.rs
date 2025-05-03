@@ -1,6 +1,6 @@
 use godot::{classes::Texture2D, obj::NewGd, prelude::*};
 
-use crate::{item::item_resource::IItem, plant::{plant_resource::PlantResource, Planta}};
+use crate::{item::item_resource::IItem, plant::{plant_resource::PlantResource, plant_node::Planta}};
 
 #[derive(GodotClass)]
 #[class(tool, init, base=Resource)]
@@ -15,7 +15,9 @@ pub struct SeedItemResource{
     #[export]
     ruta_de_planta_a_plantar : GString,
     #[export]
-    textura : Option<Gd<Texture2D>>
+    textura : Option<Gd<Texture2D>>,
+    #[export]
+    precio : u16
 }
 
 #[godot_dyn]
@@ -38,5 +40,9 @@ pub impl IItem for SeedItemResource {
         let mut new_planta = Planta::from_resource(recurso_planta);
         new_planta.set_position(postion);
         world.add_child(&new_planta);
+    }
+
+    fn get_precio(&self) -> u16 {
+        self.precio
     }
 }

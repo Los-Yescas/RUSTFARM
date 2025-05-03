@@ -14,5 +14,7 @@ pub struct PlantResource{
     puntos_para_crecer : u32,
     #[export]
     #[init(val = None)]
-    sprite : Option<Gd<SpriteFrames>>
+    sprite : Option<Gd<SpriteFrames>>,
+    #[export]
+    plant_fruit_data_path : GString,
 }

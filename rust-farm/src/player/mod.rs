@@ -8,8 +8,8 @@ use godot::classes::Node2D;
 use godot::classes::INode2D;
 
 use crate::item::item_node::Item;
-use crate::item::item_resource::plant_items::seed_item::SeedItemResource;
 use crate::item::item_resource::IItem;
+use crate::plant::plant_node::Planta;
 
 #[derive(GodotClass)]
 #[class(base=Node2D)]
@@ -108,12 +108,20 @@ impl Player {
     fn interaction_system(&mut self){
         if self.input.is_action_just_pressed("pick"){
             if let Some(object) = self.check_for_item() {
-                if let Ok(mut item) = object.try_cast::<Item>(){
+                if let Ok(mut item) = object.clone().try_cast::<Item>(){
                     let resource: DynGd<RefCounted, dyn IItem> = item.bind().get_item_resource().to_variant().to();
                     let res = self.add_item_to_inventory(resource);
                     match res {
                         Err(error) => godot_print!("{error}"),
                         Ok(_exito) => item.queue_free(),
+                    }
+                }else if let Ok(mut planta) = object.clone().try_cast::<Planta>(){
+                    if let Some(resource) = planta.clone().bind_mut().harvest(){
+                        let res = self.add_item_to_inventory(resource);
+                        match res {
+                            Err(error) => godot_print!("{error}"),
+                            Ok(_exito) => planta.queue_free(),
+                        }
                     }
                 }
             }
@@ -172,18 +180,15 @@ impl Player {
         if let  Some(mut tupla_inventario) = self.inventory.get(self.item_actual){
             let  (item, stack) = &mut tupla_inventario;
 
-            let item: DynGd<RefCounted, dyn IItem> = item.to_variant().try_to().expect("No es Item");
-            if let Ok(planta) = item.try_cast::<SeedItemResource>(){
-                if self.check_for_item() == None {
-                    let world = self.base().get_parent().unwrap().cast();
-                    let position = self.base().get_node_as::<Marker2D>("./InteractZone/SpawnerPos").get_global_position();
-                    planta.bind().interact(world, position);
+            if self.check_for_item() == None{
+                let world = self.base().get_parent().unwrap().cast();
+                let position = self.base().get_node_as::<Marker2D>("./InteractZone/SpawnerPos").get_global_position();
+                item.dyn_bind().interact(world, position);
 
-                    if *stack == 1{
-                        self.inventory.remove(self.item_actual);
-                    }else{
-                        self.inventory[self.item_actual].1 -= 1;
-                    }
+                if *stack == 1{
+                    self.inventory.remove(self.item_actual);
+                }else{
+                    self.inventory[self.item_actual].1 -= 1;
                 }
             }
         }
