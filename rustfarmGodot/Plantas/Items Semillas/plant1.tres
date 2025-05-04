@@ -1,0 +1,11 @@
+[gd_resource type="SeedItemResource" load_steps=2 format=3 uid="uid://dq35ldvfp7gk"]
+
+[ext_resource type="Texture2D" uid="uid://cxocldvx27mwi" path="res://icon.svg" id="1_bthki"]
+
+[resource]
+nombre = "planta1"
+descripcion = "planta1"
+max_stack = 20
+ruta_de_planta_a_plantar = "res://Plantas/Plantas/planta_prueba_1.tres"
+textura = ExtResource("1_bthki")
+precio = 10

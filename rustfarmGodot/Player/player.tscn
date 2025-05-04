@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://cge4d3lb6qkdk"]
+
+[ext_resource type="Texture2D" uid="uid://cxocldvx27mwi" path="res://icon.svg" id="1_l8h54"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_epypp"]
+size = Vector2(80, 80)
+
+[node name="Player" type="Player"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_l8h54")
+
+[node name="Camera2D" type="Camera2D" parent="Sprite2D"]
+
+[node name="InteractZone" type="Node2D" parent="."]
+
+[node name="Area2D" type="Area2D" parent="InteractZone"]
+position = Vector2(100, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractZone/Area2D"]
+shape = SubResource("RectangleShape2D_epypp")
+
+[node name="SpawnerPos" type="Marker2D" parent="InteractZone"]
+position = Vector2(100, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="InteractZone"]
+modulate = Color(0.402921, 0.421529, 0.948978, 0.0784314)
+position = Vector2(100, 0)
+texture = ExtResource("1_l8h54")

@@ -1,0 +1,11 @@
+[gd_resource type="PlantResource" load_steps=2 format=3 uid="uid://cm57hl0smd4ch"]
+
+[ext_resource type="SpriteFrames" uid="uid://jtuqfscqpivv" path="res://Plantas/Animaciones/plata_fea_animacion.tres" id="1_k65jq"]
+
+[resource]
+nombre = "plant2"
+crecimiento_minimo = 20
+crecimiento_maximo = 30
+puntos_para_crecer = 100
+sprite = ExtResource("1_k65jq")
+plant_fruit_data_path = "res://Plantas/Items Frutas/plant2.tres"

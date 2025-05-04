@@ -1,0 +1,10 @@
+[gd_resource type="FruitItemResource" load_steps=2 format=3 uid="uid://d3rnlhuyhxsth"]
+
+[ext_resource type="Texture2D" uid="uid://cxocldvx27mwi" path="res://icon.svg" id="1_3ky8u"]
+
+[resource]
+nombre = "plant2"
+descripcion = "plant2"
+max_stack = 20
+textura = ExtResource("1_3ky8u")
+precio = 300

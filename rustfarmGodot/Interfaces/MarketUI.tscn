@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://dfwyaaxd4q3cm"]
+
+[node name="MarketUi" type="MarketUI"]
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 200.0
+offset_right = 1000.0
+offset_bottom = 600.0
+columns = 8
