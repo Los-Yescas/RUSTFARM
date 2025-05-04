@@ -57,7 +57,7 @@ items_a_la_venta_rutas = Array[String](["res://Plantas/Items Semillas/plant1.tre
 layer = 2
 visible = false
 
-[node name="ColorRect" type="ColorRect" parent="Mercado/MarketUI"]
+[node name="Background" type="ColorRect" parent="Mercado/MarketUI"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -67,7 +67,7 @@ size_flags_horizontal = 0
 color = Color(0.783402, 0.7329, 0.352305, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="Mercado/MarketUI/ColorRect"]
+[node name="Label" type="Label" parent="Mercado/MarketUI/Background"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -81,7 +81,7 @@ text = "MARKET"
 label_settings = SubResource("LabelSettings_0hol4")
 horizontal_alignment = 1
 
-[node name="MarketUi" parent="Mercado/MarketUI/ColorRect" instance=ExtResource("4_0hol4")]
+[node name="MarketUI" parent="Mercado/MarketUI/Background" instance=ExtResource("4_0hol4")]
 layout_mode = 0
 
 [node name="ItemNode2" parent="." instance=ExtResource("3_epypp")]

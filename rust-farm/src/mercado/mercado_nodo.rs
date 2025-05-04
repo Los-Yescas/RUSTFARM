@@ -1,6 +1,8 @@
-use godot::{classes::{CanvasLayer, InputEvent}, prelude::*};
+use godot::{classes::{CanvasLayer, GridContainer, InputEvent}, prelude::*};
 
-use crate::item::item_resource::IItem;
+use crate::{interfaces::utils::slot_grid::GridSlot, item::item_resource::IItem};
+
+use super::mercado_interfaz::MarketUI;
 
 #[derive(GodotClass)]
 #[class(init, base=Node2D)]
@@ -18,6 +20,15 @@ impl INode2D for Mercado{
             let resource : Gd<Resource> = load(&ruta);
             let item : DynGd<RefCounted, dyn IItem> = resource.to_variant().to();
             self.items_a_la_venta.push(&item);
+        }
+        let mut ui = self.base().get_node_as::<GridContainer>("./MarketUI/Background/MarketUI/GridContainer");
+        for item in self.items_a_la_venta.iter_shared(){
+            let grid_slot: Gd<PackedScene> = load("res://Interfaces/Slot.tscn");
+            let new_node = grid_slot.instantiate().unwrap();
+            let mut new_slot = new_node.cast::<GridSlot>();
+            new_slot.bind_mut().from_item_resource(item);
+
+            ui.add_child(&new_slot);
         }
     }
     fn input(&mut self, event: Gd<InputEvent>,) {

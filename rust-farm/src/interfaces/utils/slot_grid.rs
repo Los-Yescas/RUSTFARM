@@ -41,13 +41,9 @@ impl IControl for GridSlot {
 
 #[godot_api]
 impl GridSlot {
-    fn from_item_resource(resource : DynGd<RefCounted, dyn IItem>) -> Gd<Self> {
-        Gd::from_init_fn(|base| {
-            Self{
-                base,
-                item : Some(resource)
-            }
-        })
+    #[func]
+    pub fn from_item_resource(&mut self, resource : DynGd<RefCounted, dyn IItem>)  {
+        self.item = Some(resource);
     }
 
     #[func]

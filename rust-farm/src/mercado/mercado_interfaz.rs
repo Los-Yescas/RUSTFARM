@@ -1,7 +1,7 @@
-use godot::{classes::Control, prelude:: *};
+use godot::{classes::{Control, IControl}, prelude:: *};
 
 #[derive(GodotClass)]
 #[class(init, base=Control)]
-struct MarketUI{
+pub struct MarketUI{
     base : Base<Control>
 }
