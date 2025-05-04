@@ -4,7 +4,8 @@
 
 [resource]
 nombre = "planta fea"
-crecimiento_minimo = 15
-crecimiento_maximo = 50
-puntos_para_crecer = 500
+crecimiento_minimo = 1
+crecimiento_maximo = 2
+puntos_para_crecer = 5
 sprite = ExtResource("1_57r61")
+stack_size = 4

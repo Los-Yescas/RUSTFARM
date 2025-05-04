@@ -7,8 +7,8 @@ use plant_resource::PlantResource;
 use crate::game_manager::GameManager;
 
 pub mod plant_resource;
-
-enum FasesPlantas {
+#[derive(Debug, PartialEq, Eq)]
+pub enum FasesPlantas {
     Bebe,
     Infancia,
     Adolescencia,
@@ -110,5 +110,23 @@ impl Planta {
             fase_actual: FasesPlantas::Bebe,
             grow_points: 0,
         })
+    }
+    #[func]
+    pub fn get_name(&self) -> GString {
+        self.plant_data.bind().get_nombre()
+    }
+
+    #[func]
+    pub fn is_mature(&self) -> bool {
+        self.fase_actual == FasesPlantas::Madura
+    }
+
+    #[func]
+    pub fn try_harvest(&mut self) -> Option<Gd<PlantResource>> {
+        if self.fase_actual == FasesPlantas::Madura {
+            Some(self.plant_data.clone())
+        } else {
+            None
+        }
     }
 }

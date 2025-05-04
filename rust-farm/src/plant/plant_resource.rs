@@ -20,35 +20,37 @@ pub struct PlantResource {
     #[export]
     #[init(val = None)]
     sprite: Option<Gd<SpriteFrames>>,
+    #[export]
+    #[init(default = 1)] // Plantas maduras usualmente no se apilan (1 por slot)
+    stack_size: u16,
     // #[export]
     // #[init(val = None)]
     // inventory_icon: Option<Gd<Texture2D>>,
 }
+#[godot_dyn]
+impl IItem for PlantResource {
+    fn get_name(&self) -> GString {
+        self.nombre.clone()
+    }
 
-// #[godot_api]
-// impl IItem for PlantResource {
-//     fn get_name(&self) -> GString {
-//         self.nombre.clone()
-//     }
+    fn get_description(&self) -> GString {
+        "Planta cosechada".into() // O usa un campo descripción si lo tienes
+    }
 
-//     fn get_description(&self) -> GString {
-//         GString::from("Una planta en crecimiento.")
-//     }
+    fn get_max_stack(&self) -> u16 {
+        self.stack_size
+    }
 
-//     fn get_max_stack(&self) -> u16 {
-//         1 // Aquí defines cuántos puedes apilar en el inventario
-//     }
+    fn get_sprite(&self) -> Gd<Texture2D> {
+        // Implementa según tus necesidades
+        Texture2D::new_gd()
+    }
 
-//     fn get_sprite(&self) -> Gd<Texture2D> {
-//         self.inventory_icon.clone().unwrap_or_default()
-//     }
+    fn get_price(&self) -> u16 {
+        0 // O el valor que corresponda
+    }
 
-//     fn get_price(&self) -> u16 {
-//         10 // Puedes ponerle cualquier precio que quieras
-//     }
-
-//     fn interact(&self, _world: Gd<Node2D>, _position: Vector2) {
-//         // Qué pasa cuando el jugador usa esta planta en el mundo
-//         godot_print!("¡Interacción con la planta en el mundo!");
-//     }
-// }
+    fn interact(&self, _world: Gd<Node2D>, _position: Vector2) {
+        // No necesaria para plantas cosechadas
+    }
+}
