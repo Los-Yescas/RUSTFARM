@@ -28,6 +28,8 @@ pub struct Player {
     #[export]
     inventario_maximo: u16,
     base: Base<Node2D>,
+    #[export]
+    dinero: u32,
 }
 
 #[godot_api]
@@ -43,8 +45,8 @@ impl INode2D for Player {
             item_actual: 0,
             inventario_maximo: 40,
             debug_inventory: Vec::new(),
-            // Para la versión con HashMap:
-            // debug_inventory: HashMap::new(),
+            dinero: 0,
+           
         }
     }
 
@@ -91,7 +93,11 @@ impl INode2D for Player {
             } else {
                 self.item_actual = (self.item_actual - 1) % inventario_maximo;
             }
+        } 
+        else if event.is_action_pressed("sell") {
+            self.sell_current_item();
         }
+        
     }
 }
 
@@ -368,4 +374,45 @@ impl Player {
             godot_print!("Slot {}: {}", i, item);
         }
     }
+    #[func]
+pub fn sell_current_item(&mut self) {
+    if self.inventory.is_empty() {
+        godot_print!("No hay ítems para vender.");
+        return;
+    }
+
+    if self.item_actual >= self.inventory.len() {
+        godot_print!("Ítem seleccionado inválido.");
+        return;
+    }
+
+    let (recurso, cantidad) = &mut self.inventory[self.item_actual];
+
+    let precio = if let Ok(semilla) = recurso.clone().try_cast::<SeedItemResource>() {
+        semilla.bind().get_price()
+    } else if let Ok(planta) = recurso.clone().try_cast::<PlantResource>() {
+        planta.bind().get_price()
+    } else {
+        godot_print!("Este objeto no se puede vender.");
+        return;
+    };
+
+    if precio == 0 {
+        godot_print!("Este ítem no tiene valor de venta.");
+        return;
+    }
+
+    self.dinero += precio as u32;
+    *cantidad -= 1;
+
+    if *cantidad == 0 {
+        self.inventory.remove(self.item_actual);
+        if self.item_actual >= self.inventory.len() && self.item_actual > 0 {
+            self.item_actual -= 1;
+        }
+    }
+
+    godot_print!("Vendiste un ítem por {} monedas. Ahora tienes {} monedas.", precio, self.dinero);
+}
+
 }

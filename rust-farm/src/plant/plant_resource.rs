@@ -23,7 +23,8 @@ pub struct PlantResource {
     #[export]
     #[init(default = 1)] // Plantas maduras usualmente no se apilan (1 por slot)
     stack_size: u16,
-    // #[export]
+     #[export]
+     precio: u16,
     // #[init(val = None)]
     // inventory_icon: Option<Gd<Texture2D>>,
 }
@@ -47,7 +48,7 @@ impl IItem for PlantResource {
     }
 
     fn get_price(&self) -> u16 {
-        0 // O el valor que corresponda
+        self.precio
     }
 
     fn interact(&self, _world: Gd<Node2D>, _position: Vector2) {
