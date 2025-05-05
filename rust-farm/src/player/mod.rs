@@ -93,8 +93,7 @@ impl INode2D for Player {
             } else {
                 self.item_actual = (self.item_actual - 1) % inventario_maximo;
             }
-        } 
-        else if event.is_action_pressed("sell") {
+        } else if event.is_action_pressed("sell") {
             self.sell_current_item();
         }
         
@@ -377,7 +376,7 @@ impl Player {
     #[func]
 pub fn sell_current_item(&mut self) {
     if self.inventory.is_empty() {
-        godot_print!("No hay ítems para vender.");
+        godot_print!("Inventario vacío. Nada que vender.");
         return;
     }
 
@@ -388,31 +387,29 @@ pub fn sell_current_item(&mut self) {
 
     let (recurso, cantidad) = &mut self.inventory[self.item_actual];
 
-    let precio = if let Ok(semilla) = recurso.clone().try_cast::<SeedItemResource>() {
-        semilla.bind().get_price()
-    } else if let Ok(planta) = recurso.clone().try_cast::<PlantResource>() {
-        planta.bind().get_price()
-    } else {
-        godot_print!("Este objeto no se puede vender.");
-        return;
-    };
+    // Solo permitir venta si es una planta
+    if let Ok(planta) = recurso.clone().try_cast::<PlantResource>() {
+        let precio = planta.bind().get_price();
 
-    if precio == 0 {
-        godot_print!("Este ítem no tiene valor de venta.");
-        return;
-    }
-
-    self.dinero += precio as u32;
-    *cantidad -= 1;
-
-    if *cantidad == 0 {
-        self.inventory.remove(self.item_actual);
-        if self.item_actual >= self.inventory.len() && self.item_actual > 0 {
-            self.item_actual -= 1;
+        if precio == 0 {
+            godot_print!("Esta planta no tiene precio de venta.");
+            return;
         }
-    }
 
-    godot_print!("Vendiste un ítem por {} monedas. Ahora tienes {} monedas.", precio, self.dinero);
+        self.dinero += precio as u32;
+        *cantidad -= 1;
+
+        godot_print!("Vendiste una planta por {} monedas. Dinero total: {}", precio, self.dinero);
+
+        if *cantidad == 0 {
+            self.inventory.remove(self.item_actual);
+            if self.item_actual >= self.inventory.len() && self.item_actual > 0 {
+                self.item_actual -= 1;
+            }
+        }
+    } else {
+        godot_print!("Solo se pueden vender plantas.");
+    }
 }
 
 }
