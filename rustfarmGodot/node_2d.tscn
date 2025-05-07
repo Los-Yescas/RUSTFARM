@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=4 uid="uid://cs863yaqiboou"]
+[gd_scene load_steps=8 format=4 uid="uid://cs863yaqiboou"]
 
 [ext_resource type="Texture2D" uid="uid://cqamrtop73i5r" path="res://Tiles.png" id="1_0e48y"]
 [ext_resource type="PackedScene" uid="uid://cge4d3lb6qkdk" path="res://Player/player.tscn" id="2_epypp"]
 [ext_resource type="PackedScene" uid="uid://daclrt2qn3so0" path="res://Items/ItemNode.tscn" id="3_epypp"]
-[ext_resource type="PackedScene" uid="uid://dfwyaaxd4q3cm" path="res://Interfaces/MarketUI.tscn" id="4_0hol4"]
+[ext_resource type="PackedScene" uid="uid://dfwyaaxd4q3cm" path="res://Interfaces/ItemGrid.tscn" id="4_0hol4"]
+[ext_resource type="LabelSettings" uid="uid://bipgdaqgmg3om" path="res://Interfaces/Fonts/Titulos.tres" id="4_q6r6c"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_epypp"]
 texture = ExtResource("1_0e48y")
@@ -18,12 +19,6 @@ custom_data_layer_0/name = "walkable"
 custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_epypp")
 
-[sub_resource type="LabelSettings" id="LabelSettings_epypp"]
-font_size = 64
-
-[sub_resource type="LabelSettings" id="LabelSettings_0hol4"]
-font_size = 40
-
 [node name="Node2D" type="Node2D"]
 
 [node name="Suelo" type="TileMapLayer" parent="."]
@@ -32,6 +27,7 @@ tile_map_data = PackedByteArray("AAD8//3/AAAAAAAAAAD8//7/AAABAAAAAAD8////AAABAAA
 tile_set = SubResource("TileSet_0hol4")
 
 [node name="Player" parent="." instance=ExtResource("2_epypp")]
+puntos = 1000
 position = Vector2(268, 192)
 
 [node name="Node" type="Node" parent="."]
@@ -40,16 +36,6 @@ position = Vector2(268, 192)
 item_path = "res://Plantas/Items Semillas/planta_fea_semilla.tres"
 position = Vector2(263, -7)
 
-[node name="CanvasLayer" type="PlayerInterface" parent="."]
-
-[node name="ActualObject" type="Label" parent="CanvasLayer"]
-offset_left = 39.0
-offset_top = 41.0
-offset_right = 292.0
-offset_bottom = 129.0
-text = "Pruebas"
-label_settings = SubResource("LabelSettings_epypp")
-
 [node name="Mercado" type="Mercado" parent="."]
 items_a_la_venta_rutas = Array[String](["res://Plantas/Items Semillas/plant1.tres", "res://Plantas/Items Semillas/plant2.tres", "res://Plantas/Items Semillas/planta_fea_semilla.tres"])
 
@@ -57,7 +43,7 @@ items_a_la_venta_rutas = Array[String](["res://Plantas/Items Semillas/plant1.tre
 layer = 2
 visible = false
 
-[node name="Background" type="ColorRect" parent="Mercado/MarketUI"]
+[node name="BuyMenu" type="ColorRect" parent="Mercado/MarketUI"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -67,7 +53,7 @@ size_flags_horizontal = 0
 color = Color(0.783402, 0.7329, 0.352305, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="Mercado/MarketUI/Background"]
+[node name="Title" type="Label" parent="Mercado/MarketUI/BuyMenu"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -78,11 +64,25 @@ offset_right = 112.5
 offset_bottom = 105.0
 grow_horizontal = 2
 text = "MARKET"
-label_settings = SubResource("LabelSettings_0hol4")
+label_settings = ExtResource("4_q6r6c")
 horizontal_alignment = 1
 
-[node name="MarketUI" parent="Mercado/MarketUI/Background" instance=ExtResource("4_0hol4")]
+[node name="MarketUI" parent="Mercado/MarketUI/BuyMenu" instance=ExtResource("4_0hol4")]
 layout_mode = 0
+
+[node name="Points" type="Label" parent="Mercado/MarketUI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -92.0
+offset_top = 30.0
+offset_right = -13.0
+offset_bottom = 85.0
+grow_horizontal = 0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "00 $"
+label_settings = ExtResource("4_q6r6c")
 
 [node name="ItemNode2" parent="." instance=ExtResource("3_epypp")]
 item_path = "res://Plantas/Items Semillas/planta_fea_semilla.tres"

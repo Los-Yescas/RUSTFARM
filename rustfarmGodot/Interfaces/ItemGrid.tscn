@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://dfwyaaxd4q3cm"]
 
-[node name="MarketUi" type="MarketUI"]
+[node name="ItemGrid" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 
 [node name="GridContainer" type="GridContainer" parent="."]
 layout_mode = 0

@@ -11,6 +11,9 @@ use crate::item::item_node::Item;
 use crate::item::item_resource::IItem;
 use crate::plant::plant_node::Planta;
 
+
+pub mod player_interface;
+
 #[derive(GodotClass)]
 #[class(base=Node2D)]
 pub struct Player {
@@ -23,6 +26,8 @@ pub struct Player {
     item_actual : usize,
     #[export]
     inventario_maximo : u16,
+    #[export]
+    puntos : u16,
     base: Base<Node2D>
 }
 #[godot_api]
@@ -37,7 +42,8 @@ impl INode2D for Player {
             target_position: Vector2::ZERO,
             inventory : Vec::new(),
             item_actual : 0,
-            inventario_maximo : 8
+            inventario_maximo : 8,
+            puntos : 0
         }
     }
     
@@ -153,7 +159,7 @@ impl Player {
             Some(area2d) => Some(area2d.get_parent().expect("Sin padre").cast())
         }
     }
-    fn add_item_to_inventory(&mut self, item : DynGd<RefCounted, dyn IItem>) -> Result<GString, GString>{
+    pub fn add_item_to_inventory(&mut self, item : DynGd<RefCounted, dyn IItem>) -> Result<GString, GString>{
         let index = self.inventory.iter().position(|(nodo,_)| *nodo == item);
         match index {
             None => {
@@ -174,6 +180,12 @@ impl Player {
                 }
             } 
         }
+    }
+    pub fn is_inventory_full(&self) -> bool {
+        self.inventory.len() >= self.inventario_maximo.into()
+    }
+    pub fn rest_points(&mut self, points : u16){
+        self.puntos -= points;
     }
 
     fn interact(&mut self){

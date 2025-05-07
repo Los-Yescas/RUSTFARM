@@ -1,9 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://cge4d3lb6qkdk"]
+[gd_scene load_steps=5 format=3 uid="uid://cge4d3lb6qkdk"]
 
 [ext_resource type="Texture2D" uid="uid://cxocldvx27mwi" path="res://icon.svg" id="1_l8h54"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_epypp"]
 size = Vector2(80, 80)
+
+[sub_resource type="LabelSettings" id="LabelSettings_l8h54"]
+font_size = 64
+
+[sub_resource type="LabelSettings" id="LabelSettings_4ntmi"]
+font_size = 40
 
 [node name="Player" type="Player"]
 
@@ -27,3 +33,25 @@ position = Vector2(100, 0)
 modulate = Color(0.402921, 0.421529, 0.948978, 0.0784314)
 position = Vector2(100, 0)
 texture = ExtResource("1_l8h54")
+
+[node name="PlayerInterface" type="PlayerInterface" parent="."]
+
+[node name="ActualObject" type="Label" parent="PlayerInterface"]
+offset_left = 39.0
+offset_top = 41.0
+offset_right = 292.0
+offset_bottom = 129.0
+text = "Pruebas"
+label_settings = SubResource("LabelSettings_l8h54")
+
+[node name="Puntos" type="Label" parent="PlayerInterface"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -92.0
+offset_top = 20.0
+offset_right = -13.0
+offset_bottom = 75.0
+grow_horizontal = 0
+text = "00 $"
+label_settings = SubResource("LabelSettings_4ntmi")

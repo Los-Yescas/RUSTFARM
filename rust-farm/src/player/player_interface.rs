@@ -12,10 +12,11 @@ struct PlayerInterface{
 #[godot_api]
 impl ICanvasLayer for PlayerInterface {
     fn ready(&mut self,) {
-        self.player = self.base().try_get_node_as::<Player>("../Player")
+        self.player = Some(self.base().get_parent().expect("Sin Jugador").cast::<Player>());
     }
     fn process(&mut self, _delta: f64,) {
-        let mut etiqueta = self.base().get_node_as::<Label>("./ActualObject");
+        let mut etiqueta_objeto = self.base().get_node_as::<Label>("./ActualObject");
+        let mut etiqueta_puntos = self.base().get_node_as::<Label>("./Puntos");
         let player = self.player.as_ref().expect("Jugador no encontrado").bind();
         let objeto = player.get_equiped_item();
         let texto : GString = match objeto {
@@ -25,6 +26,7 @@ impl ICanvasLayer for PlayerInterface {
                 format!("{:#?} {}", nodo.dyn_bind().get_name(), stack).into()
             }
         };
-        etiqueta.set_text(&texto);
+        etiqueta_objeto.set_text(&texto);
+        etiqueta_puntos.set_text(&format!("{}", player.get_puntos()));
     }
 }
