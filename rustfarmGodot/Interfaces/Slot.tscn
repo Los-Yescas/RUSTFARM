@@ -69,6 +69,15 @@ text = "00$"
 label_settings = SubResource("LabelSettings_vw7gd")
 horizontal_alignment = 2
 
+[node name="Stock" type="Label" parent="InnerBorder"]
+layout_mode = 1
+offset_left = 7.0
+offset_top = 3.0
+offset_right = 58.0
+offset_bottom = 45.0
+text = "0"
+label_settings = SubResource("LabelSettings_vw7gd")
+
 [node name="ItemButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = 15

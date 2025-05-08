@@ -116,14 +116,14 @@ impl Player {
             if let Some(object) = self.check_for_item() {
                 if let Ok(mut item) = object.clone().try_cast::<Item>(){
                     let resource: DynGd<RefCounted, dyn IItem> = item.bind().get_item_resource().to_variant().to();
-                    let res = self.add_item_to_inventory(resource);
+                    let res = self.add_item_to_inventory(&resource);
                     match res {
                         Err(error) => godot_print!("{error}"),
                         Ok(_exito) => item.queue_free(),
                     }
                 }else if let Ok(mut planta) = object.clone().try_cast::<Planta>(){
                     if let Some(resource) = planta.clone().bind_mut().harvest(){
-                        let res = self.add_item_to_inventory(resource);
+                        let res = self.add_item_to_inventory(&resource);
                         match res {
                             Err(error) => godot_print!("{error}"),
                             Ok(_exito) => planta.queue_free(),
@@ -159,7 +159,8 @@ impl Player {
             Some(area2d) => Some(area2d.get_parent().expect("Sin padre").cast())
         }
     }
-    pub fn add_item_to_inventory(&mut self, item : DynGd<RefCounted, dyn IItem>) -> Result<GString, GString>{
+    pub fn add_item_to_inventory(&mut self, item : &DynGd<RefCounted, dyn IItem>) -> Result<GString, GString>{
+        let item = item.clone();
         let index = self.inventory.iter().position(|(nodo,_)| *nodo == item);
         match index {
             None => {

@@ -6,7 +6,8 @@ use crate::item::item_resource::IItem;
 #[class(init, base=Control)]
 pub struct GridSlot{
     base : Base<Control>,
-    item : Option<DynGd<RefCounted, dyn IItem>>
+    item : Option<DynGd<RefCounted, dyn IItem>>,
+    stock : u16
 } 
 
 #[godot_api]
@@ -17,10 +18,12 @@ impl IControl for GridSlot {
         let inner_border = self.base().get_node_as::<ColorRect>("InnerBorder");
         let mut texture = inner_border.get_node_as::<TextureRect>("Texture");
         let mut price = inner_border.get_node_as::<Label>("Price");
+        let mut stock_label = inner_border.get_node_as::<Label>("Stock");
 
         
         texture.set_texture(&item.dyn_bind().get_sprite());
         price.set_text(&format!("{} $", item.dyn_bind().get_precio()));
+        stock_label.set_text(&format!("{}", self.stock));
 
         let details_panel = self.base().get_node_as::<ColorRect>("DetailsPanel");
         let mut name = details_panel.get_node_as::<Label>("Name"); 
@@ -42,8 +45,9 @@ impl IControl for GridSlot {
 #[godot_api]
 impl GridSlot {
     #[func]
-    pub fn from_item_resource(&mut self, resource : DynGd<RefCounted, dyn IItem>)  {
+    pub fn from_item_resource(&mut self, resource : DynGd<RefCounted, dyn IItem>, stock : u16)  {
         self.item = Some(resource);
+        self.stock = stock;
     }
 
     #[func]
