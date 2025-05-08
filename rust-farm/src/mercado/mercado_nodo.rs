@@ -1,4 +1,4 @@
-use godot::{classes::{CanvasLayer, GridContainer, InputEvent, Label}, prelude::*};
+use godot::{classes::{Button, CanvasLayer, ColorRect, GridContainer, InputEvent, Label}, prelude::*};
 
 use crate::{interfaces::utils::slot_grid::GridSlot, item::item_resource::IItem, player::Player};
 
@@ -32,6 +32,13 @@ impl INode2D for Mercado{
             godot_error!("Stock y items no son del mismo tamano");
             return;
         }
+
+        let show_buy_callable = self.base().callable("show_buy_menu");
+        let show_sell_callable = self.base().callable("show_sell_menu");
+        let mut buy_menu_button = self.base().get_node_as::<Button>("./MarketUI/Buy");
+        let mut sell_menu_button = self.base().get_node_as::<Button>("./MarketUI/Sell");
+        buy_menu_button.connect("pressed", &show_buy_callable);
+        sell_menu_button.connect("pressed", &show_sell_callable);
 
         self.update_information();
     }
@@ -87,6 +94,7 @@ impl Mercado {
         points_label.set_text(&format!("{points}$"));
 
     }
+
     fn update_buy_menu(&mut self) {
         let mut buy_grid_container = self.base().get_node_as::<GridContainer>("./MarketUI/BuyMenu/MarketUI/GridContainer");
 
@@ -106,5 +114,21 @@ impl Mercado {
             let buy_callable = self.base().callable("buy_something");
             new_slot.connect("selected_item", &buy_callable);
         }
+    }
+
+    #[func]
+    fn show_buy_menu(&mut self){
+        let mut buy_menu = self.base().get_node_as::<ColorRect>("./MarketUI/BuyMenu");
+        let mut sell_menu = self.base().get_node_as::<ColorRect>("./MarketUI/SellMenu");
+        buy_menu.set_visible(true);
+        sell_menu.set_visible(false);
+    }
+
+    #[func]
+    fn show_sell_menu(&mut self){
+        let mut buy_menu = self.base().get_node_as::<ColorRect>("./MarketUI/BuyMenu");
+        let mut sell_menu = self.base().get_node_as::<ColorRect>("./MarketUI/SellMenu");
+        buy_menu.set_visible(false);
+        sell_menu.set_visible(true);
     }
 }
