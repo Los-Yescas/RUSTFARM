@@ -182,8 +182,21 @@ impl Player {
             } 
         }
     }
+    pub fn rest_item_to_inventory(&mut self, item : &DynGd<RefCounted, dyn IItem>) {
+        let item = item.clone();
+        if let Some(index) = self.inventory.iter().position(|(nodo,_)| *nodo == item){
+            let tupla = &mut self.inventory[index];
+            tupla.1 -= 1;
+            if tupla.1 <= 0 {
+                self.inventory.remove(index);
+            }
+        }
+    }
     pub fn is_inventory_full(&self) -> bool {
         self.inventory.len() >= self.inventario_maximo.into()
+    }
+    pub fn sum_points(&mut self, points : u16){
+        self.puntos += points;
     }
     pub fn rest_points(&mut self, points : u16){
         self.puntos -= points;
@@ -209,6 +222,9 @@ impl Player {
 
     pub fn get_equiped_item(&self) -> Option<&(DynGd<RefCounted, dyn IItem>, u16)>{
         self.inventory.get(self.item_actual)
+    }
+    pub fn get_inventory(&self) -> Vec<(DynGd<RefCounted, dyn IItem>, u16)> {
+        self.inventory.clone()
     }
 }
 

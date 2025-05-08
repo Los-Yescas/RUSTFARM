@@ -16,8 +16,6 @@ font_size = 40
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_l8h54")
 
-[node name="Camera2D" type="Camera2D" parent="Sprite2D"]
-
 [node name="InteractZone" type="Node2D" parent="."]
 
 [node name="Area2D" type="Area2D" parent="InteractZone"]
