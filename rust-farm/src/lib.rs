@@ -4,8 +4,14 @@ mod game_manager; //Este es anadido aqui mismo
 mod time_system;
 
 //Otras entidades
-mod player;
-mod plant;
+pub mod player;
+pub mod plant;
+pub mod item;
+pub mod mercado;
+
+
+//Interfaces
+pub mod interfaces;
 struct MyExtension;
 
 

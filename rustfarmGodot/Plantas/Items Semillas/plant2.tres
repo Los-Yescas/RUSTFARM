@@ -1,0 +1,11 @@
+[gd_resource type="SeedItemResource" load_steps=2 format=3 uid="uid://d0jalhdubo7ps"]
+
+[ext_resource type="Texture2D" uid="uid://cqamrtop73i5r" path="res://Tiles.png" id="1_1mmas"]
+
+[resource]
+nombre = "planta2"
+descripcion = "planta2"
+max_stack = 20
+ruta_de_planta_a_plantar = "res://Plantas/Plantas/planta_prueba_2.tres"
+textura = ExtResource("1_1mmas")
+precio = 20

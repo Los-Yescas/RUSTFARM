@@ -1,0 +1,10 @@
+[gd_resource type="FruitItemResource" load_steps=2 format=3 uid="uid://b05p0ja4mdo68"]
+
+[ext_resource type="Texture2D" uid="uid://cxocldvx27mwi" path="res://icon.svg" id="1_ieh80"]
+
+[resource]
+nombre = "Manzano"
+descripcion = "Feo como el orto"
+max_stack = 34
+textura = ExtResource("1_ieh80")
+precio = 20

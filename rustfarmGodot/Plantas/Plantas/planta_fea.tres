@@ -6,5 +6,6 @@
 nombre = "planta fea"
 crecimiento_minimo = 15
 crecimiento_maximo = 50
-puntos_para_crecer = 500
+puntos_para_crecer = 100
 sprite = ExtResource("1_57r61")
+plant_fruit_data_path = "res://Plantas/Items Frutas/PlantaFea.tres"
