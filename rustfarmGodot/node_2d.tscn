@@ -42,6 +42,7 @@ position = Vector2(263, -7)
 [node name="Mercado" type="Mercado" parent="."]
 items_a_la_venta_rutas = Array[String](["res://Plantas/Items Semillas/plant1.tres", "res://Plantas/Items Semillas/plant2.tres", "res://Plantas/Items Semillas/planta_fea_semilla.tres"])
 stock_de_items_a_la_venta = Array[int]([15, 20, 30])
+factor_de_venta = 0.8
 
 [node name="MarketUI" type="CanvasLayer" parent="Mercado"]
 layer = 2

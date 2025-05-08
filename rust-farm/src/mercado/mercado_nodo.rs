@@ -14,12 +14,20 @@ struct Mercado {
     items_a_la_venta : Array<DynGd<RefCounted, dyn IItem>>,
     #[export]
     stock_de_items_a_la_venta : Array<u16>,
+    #[export]
+    factor_de_venta : f32,
     player : Option<Gd<Player>>
 }
 
 #[godot_api]
 impl INode2D for Mercado{
     fn ready(&mut self,) {
+
+        if !(self.factor_de_venta > 0.0 && self.factor_de_venta <= 1.0){
+            self.factor_de_venta = 1.0;
+            godot_error!("Factor de Precio no valido");
+        }
+
         for ruta in self.items_a_la_venta_rutas.iter_shared() {
             let resource : Gd<Resource> = load(&ruta);
             let item : DynGd<RefCounted, dyn IItem> = resource.to_variant().to();
@@ -76,7 +84,7 @@ impl Mercado {
     #[func]
     fn sell_item(&mut self, item : DynGd<RefCounted, dyn IItem>){
         let player = self.player.as_mut().expect("Sin jugador");
-        let precio = item.dyn_bind().get_precio();
+        let precio = (item.dyn_bind().get_precio() as f32 * self.factor_de_venta) as u16;
         player.bind_mut().rest_item_to_inventory(&item);
         player.bind_mut().sum_points(precio);
         self.update_information();
@@ -117,7 +125,7 @@ impl Mercado {
             let grid_slot: Gd<PackedScene> = load("res://Interfaces/Slot.tscn");
             let new_node = grid_slot.instantiate().unwrap();
             let mut new_slot = new_node.cast::<GridSlot>();
-            new_slot.bind_mut().from_item_resource(item, self.stock_de_items_a_la_venta.at(i));
+            new_slot.bind_mut().from_item_resource(item, self.stock_de_items_a_la_venta.at(i), 1.0);
 
             buy_grid_container.add_child(&new_slot);
 
@@ -141,7 +149,7 @@ impl Mercado {
             let grid_slot: Gd<PackedScene> = load("res://Interfaces/Slot.tscn");
             let new_node = grid_slot.instantiate().unwrap();
             let mut new_slot = new_node.cast::<GridSlot>();
-            new_slot.bind_mut().from_item_resource(item, stack);
+            new_slot.bind_mut().from_item_resource(item, stack, self.factor_de_venta);
             sell_grid_container.add_child(&new_slot);
 
             new_slot.add_user_signal("selected_item");
