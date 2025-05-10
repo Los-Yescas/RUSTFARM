@@ -1,0 +1,54 @@
+[gd_resource type="PlantResource" load_steps=8 format=3 uid="uid://dmpo043moaj77"]
+
+[ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_c0x25"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hsd7d"]
+atlas = ExtResource("1_c0x25")
+region = Rect2(0, 1080, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yydp2"]
+atlas = ExtResource("1_c0x25")
+region = Rect2(180, 1080, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_guq1w"]
+atlas = ExtResource("1_c0x25")
+region = Rect2(360, 1080, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x48ky"]
+atlas = ExtResource("1_c0x25")
+region = Rect2(540, 1080, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g4k7t"]
+atlas = ExtResource("1_c0x25")
+region = Rect2(720, 1080, 180, 360)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g6oue"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hsd7d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yydp2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_guq1w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x48ky")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g4k7t")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[resource]
+nombre = "Piña"
+crecimiento_minimo = 10
+crecimiento_maximo = 20
+puntos_para_crecer = 80
+sprite = SubResource("SpriteFrames_g6oue")
+plant_fruit_data_path = "C:/Users/pc/Documents/RUSTFARM/rustfarmGodot/Plantas/Items Frutas/Pina.tres"

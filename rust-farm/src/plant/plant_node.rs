@@ -1,4 +1,4 @@
-use godot::{classes::{AnimatedSprite2D, Area2D, CollisionShape2D, RectangleShape2D}, prelude::*};
+use godot::{classes::AnimatedSprite2D, prelude::*};
 use super::{items::fruit::FruitItemResource, plant_resource::PlantResource};
 
 use crate::{game_manager::GameManager, item::item_resource::IItem};
@@ -42,18 +42,8 @@ impl INode2D for Planta {
 
         let sprite = self.plant_data.bind().get_sprite().expect("No hay animacion");
 
-        let mut animated_sprite = AnimatedSprite2D::new_alloc();
+        let mut animated_sprite = self.base().get_node_as::<AnimatedSprite2D>("Sprite");
         animated_sprite.set_sprite_frames(&sprite);
-        animated_sprite.set_name("AnimatedSprite2D");
-        self.base_mut().add_child(&animated_sprite);
-
-        let mut area_collision = Area2D::new_alloc();
-        let mut collider = CollisionShape2D::new_alloc();
-        let mut shape = RectangleShape2D::new_gd();
-        shape.set_size(Vector2 { x: 100.0, y: 100.0 });
-        collider.set_shape(&shape);
-        area_collision.add_child(&collider);
-        self.base_mut().add_child(&area_collision);
     }
 }
 
@@ -70,7 +60,7 @@ impl Planta {
         drop(plant_data);
 
         if self.grow_points >= punt_pa_cre {
-            let mut planta_sprite = self.base_mut().get_node_as::<AnimatedSprite2D>("./AnimatedSprite2D");
+            let mut planta_sprite = self.base_mut().get_node_as::<AnimatedSprite2D>("./Sprite");
             self.fase_actual = match self.fase_actual {
                 FasesPlantas::Bebe => {
                     planta_sprite.set_frame(1);
@@ -94,18 +84,11 @@ impl Planta {
     }
     #[func]
     pub fn from_resource(plant_resource : Gd<PlantResource>) -> Gd<Self>{
-        Gd::from_init_fn(|base| {
-            let fruit_data = load(&plant_resource.bind().get_plant_fruit_data_path());
-            Self {
-                base,
-                plant_data_path : plant_resource.get_path(),
-                fruit_data,
-                plant_data : plant_resource,
-                fase_actual : FasesPlantas::Bebe,
-                grow_points : 0,
-                
-            }
-        })
+        let plant_scene = load::<PackedScene>("res://Plantas/PlantNode.tscn");
+
+        let mut plant = plant_scene.instantiate_as::<Planta>();
+        plant.bind_mut().set_plant_data_path(plant_resource.get_path());
+        plant
     }
     #[func]
     pub fn harvest(&mut self) -> Option<DynGd<RefCounted, dyn IItem>>{

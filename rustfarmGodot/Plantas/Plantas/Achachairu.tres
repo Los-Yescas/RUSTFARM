@@ -1,0 +1,50 @@
+[gd_resource type="PlantResource" load_steps=7 format=3 uid="uid://bd61sj8rmmoxu"]
+
+[ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_5f1i7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6mrlj"]
+atlas = ExtResource("1_5f1i7")
+region = Rect2(0, 2700, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nbkuc"]
+atlas = ExtResource("1_5f1i7")
+region = Rect2(180, 2700, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0e8qs"]
+atlas = ExtResource("1_5f1i7")
+region = Rect2(360, 2700, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w43c2"]
+atlas = ExtResource("1_5f1i7")
+region = Rect2(540, 2700, 180, 360)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ay187"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6mrlj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nbkuc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0e8qs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0e8qs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w43c2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[resource]
+nombre = "Achachairu"
+crecimiento_minimo = 20
+crecimiento_maximo = 30
+puntos_para_crecer = 250
+sprite = SubResource("SpriteFrames_ay187")
+plant_fruit_data_path = "res://Plantas/Items Frutas/Achachairu.tres"

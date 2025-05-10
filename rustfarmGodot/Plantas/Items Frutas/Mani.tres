@@ -1,0 +1,14 @@
+[gd_resource type="FruitItemResource" load_steps=3 format=3 uid="uid://clq2pdxniyidg"]
+
+[ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_bvros"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6eufw"]
+atlas = ExtResource("1_bvros")
+region = Rect2(0, 369, 180, 180)
+
+[resource]
+nombre = "Mani"
+descripcion = "Semillas de Mani"
+max_stack = 64
+textura = SubResource("AtlasTexture_6eufw")
+precio = 100

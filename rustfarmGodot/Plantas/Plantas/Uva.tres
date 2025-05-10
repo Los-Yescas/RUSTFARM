@@ -1,0 +1,50 @@
+[gd_resource type="PlantResource" load_steps=7 format=3 uid="uid://18s452rby42m"]
+
+[ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_8b8gx"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7x7vj"]
+atlas = ExtResource("1_8b8gx")
+region = Rect2(0, 2160, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d7oby"]
+atlas = ExtResource("1_8b8gx")
+region = Rect2(180, 2160, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_66ljq"]
+atlas = ExtResource("1_8b8gx")
+region = Rect2(360, 2160, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ss4kw"]
+atlas = ExtResource("1_8b8gx")
+region = Rect2(540, 2160, 180, 360)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_q01fw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7x7vj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d7oby")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_66ljq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_66ljq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ss4kw")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[resource]
+nombre = "Uva"
+crecimiento_minimo = 1
+crecimiento_maximo = 5
+puntos_para_crecer = 200
+sprite = SubResource("SpriteFrames_q01fw")
+plant_fruit_data_path = "res://Plantas/Items Frutas/Uva.tres"

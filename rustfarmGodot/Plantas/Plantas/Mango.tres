@@ -1,0 +1,50 @@
+[gd_resource type="PlantResource" load_steps=7 format=3 uid="uid://d4kjtjq8clu04"]
+
+[ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_u6ij2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ir1sh"]
+atlas = ExtResource("1_u6ij2")
+region = Rect2(0, 1620, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d5du2"]
+atlas = ExtResource("1_u6ij2")
+region = Rect2(180, 1620, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_blsbf"]
+atlas = ExtResource("1_u6ij2")
+region = Rect2(360, 1620, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yqdus"]
+atlas = ExtResource("1_u6ij2")
+region = Rect2(540, 1620, 180, 360)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0ocge"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ir1sh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d5du2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_blsbf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_blsbf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yqdus")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[resource]
+nombre = "Mango"
+crecimiento_minimo = 15
+crecimiento_maximo = 30
+puntos_para_crecer = 100
+sprite = SubResource("SpriteFrames_0ocge")
+plant_fruit_data_path = "C:/Users/pc/Documents/RUSTFARM/rustfarmGodot/Plantas/Items Frutas/Mango.tres"
