@@ -20,6 +20,7 @@ pub struct Player {
     #[export]
     speed: f32,
     input : Gd<Input>,
+    can_move : bool,
     is_moving : bool,
     target_position : Vector2,
     inventory : Vec<(DynGd<RefCounted, dyn IItem>, u16)>,
@@ -28,6 +29,7 @@ pub struct Player {
     inventario_maximo : u16,
     #[export]
     puntos : u16,
+    direction : Vector2i,
     base: Base<Node2D>
 }
 #[godot_api]
@@ -39,11 +41,13 @@ impl INode2D for Player {
             base,
             input : Input::singleton(),
             is_moving: false,
+            can_move : true,
             target_position: Vector2::ZERO,
             inventory : Vec::new(),
             item_actual : 0,
             inventario_maximo : 8,
-            puntos : 0
+            direction : Vector2i::RIGHT,
+            puntos : 0,
         }
     }
     
@@ -52,35 +56,55 @@ impl INode2D for Player {
             return;
         }
         self.interaction_system();
-
-        self.player_movement();
     }
     fn physics_process(&mut self, delta: f64) {
-        if self.is_moving {
+        if self.is_moving && self.can_move{
             self.player_moving(delta);
         }
     }
     fn input(&mut self, event: Gd<InputEvent>,) {
-        self.interaction_system_inputs(event);
+        self.interaction_system_inputs(&event);
+        self.player_movement_input();
     }
 }
 
 #[godot_api]
 impl Player {
     #[func]
-    fn player_movement(&mut self){
-        if self.input.is_action_pressed("up"){
-            self.set_movement_target(Vector2i::UP);
-        }else if self.input.is_action_pressed("down") {
-            self.set_movement_target(Vector2i::DOWN)
-        }else if self.input.is_action_pressed("right") {
-            self.set_movement_target(Vector2i::RIGHT)
-        }else if self.input.is_action_pressed("left") {
-            self.set_movement_target(Vector2i::LEFT)
+    fn player_movement_input(&mut self){
+        let mut direction = Vector2i::ZERO;
+        direction.x = self.input.get_axis("left", "right").round() as i32;
+        direction.y = self.input.get_axis("up", "down").round() as i32;
+
+        if direction == Vector2i::ZERO || self.is_moving || !self.can_move{
+            return;
+        }
+        if direction.x != 0 {
+            direction.y = 0;
+        }
+        if direction == self.direction {
+            self.move_to(direction);
+        }else{
+            self.face_to(direction);
+            let mut timer = self.base().get_tree().unwrap().create_timer(0.15).unwrap();
+            timer.connect("timeout", &self.base().callable("end_facing"));
         }
     }
+
+    fn face_to(&mut self, direction : Vector2i ){
+        self.can_move = false;
+        self.base_mut()
+            .get_node_as::<Node2D>("./InteractZone")
+            .set_rotation(direction.cast_float().angle());
+        self.direction = direction;
+    }
     #[func]
-    fn set_movement_target(&mut self, direction : Vector2i){
+    fn end_facing(&mut self){
+        self.can_move = true;
+        self.player_movement_input();
+    }
+    #[func]
+    fn move_to(&mut self, direction : Vector2i){
         let map = self.base().get_node_as::<TileMapLayer>("../Suelo");
         let current_tile = map.local_to_map(self.base().get_global_position());
         let target_tile = Vector2i{
@@ -97,7 +121,6 @@ impl Player {
         if walkable {
             self.is_moving = true;
             self.target_position = map.map_to_local(target_tile);
-            self.base_mut().get_node_as::<Node2D>("./InteractZone").set_rotation(direction.cast_float().angle());
         }
     }
     #[func]
@@ -105,6 +128,7 @@ impl Player {
         let global_position = self.base().get_global_position();
         if  global_position == self.target_position {
             self.is_moving = false;
+            self.player_movement_input();
             return;
         }
         let new_position = global_position.move_toward(self.target_position, self.speed * delta as f32);
@@ -135,7 +159,7 @@ impl Player {
             self.interact();
         }
     }
-    fn interaction_system_inputs(&mut self, event: Gd<InputEvent>){
+    fn interaction_system_inputs(&mut self, event: &Gd<InputEvent>){
         if event.is_action_pressed("inventory+"){
             let inventario_maximo : usize = self.inventario_maximo.into();
             self.item_actual = (self.item_actual  + 1)%inventario_maximo;
