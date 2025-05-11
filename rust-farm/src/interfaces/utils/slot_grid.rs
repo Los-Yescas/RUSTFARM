@@ -66,6 +66,9 @@ impl GridSlot {
     #[func]
     pub fn buy_button_pressed(&mut self){
         let item = self.item.as_ref().expect("Slot sin Item").to_variant();
+
+        self.base().get_viewport().unwrap().set_input_as_handled();
+
         self.base_mut().emit_signal("selected_item", &[item]);
     }
 }

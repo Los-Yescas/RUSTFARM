@@ -43,6 +43,7 @@ pub struct Player {
 }
 #[godot_api]
 impl INode2D for Player {
+
     fn physics_process(&mut self, delta: f64) {
         if !self.active{
             return;
@@ -51,7 +52,7 @@ impl INode2D for Player {
             self.player_moving(delta);
         }
     }
-    fn input(&mut self, event: Gd<InputEvent>,) {
+    fn unhandled_input(&mut self, event: Gd<InputEvent>,) {
         if !self.active{
             return;
         }
@@ -66,22 +67,21 @@ impl Player {
     fn interaction_system_inputs(&mut self, event: &Gd<InputEvent>){
 
         if event.is_action_pressed("inventory+"){
-            let inventario_maximo : usize = self.inventario_maximo.into();
-            self.item_actual = (self.item_actual  + 1)%inventario_maximo;
+            self.select_item(self.item_actual + 1);
+            self.base_mut().emit_signal("inventory_updated", &[]);
         }else if event.is_action_pressed("inventory-") {
-            let inventario_maximo : usize = self.inventario_maximo.into();
-            if self.item_actual == 0 {
-                self.item_actual = inventario_maximo;
-            }else {
-                self.item_actual = (self.item_actual  - 1)%inventario_maximo;
-            }
+            self.select_item((self.item_actual + self.inventario_maximo as usize) - 1);
+            self.base_mut().emit_signal("inventory_updated", &[]);
         }else if event.is_action_pressed("inventory"){
             godot_print!("{:#?}", self.inventory);
         }else if event.is_action_pressed("pick"){
             self.pick_item();
         }else if event.is_action_pressed("interact") {
-            self.interact();
+            self.interact();   
         }
+    }
+    pub fn select_item(&mut self, index : usize){
+        self.item_actual = (index as u16 % self.inventario_maximo) as usize;
     }
     fn pick_item(&mut self){
         //Se puede mejorar con Traits
@@ -186,10 +186,12 @@ impl Player {
 
         if let Some(index) = indexes.get(0) {
             self.add_one_item_to_slot(*index);
+            self.base_mut().emit_signal("inventory_updated", &[]);
             return Ok("Item añadido".into());
         }else {
             if self.inventory.len() < self.inventario_maximo.into() {
                 self.inventory.push((item, 1));
+                self.base_mut().emit_signal("inventory_updated", &[]);
                 return Ok("Item añadido".into());
             } 
         }
@@ -208,6 +210,7 @@ impl Player {
             .collect()
     }
     fn add_one_item_to_slot(&mut self, index : usize){
+        self.base_mut().emit_signal("inventory_updated", &[]);
         self.inventory[index].1 += 1;
     }
     pub fn rest_item_to_inventory(&mut self, item : &DynGd<RefCounted, dyn IItem>) {
@@ -218,6 +221,7 @@ impl Player {
             if tupla.1 <= 0 {
                 self.inventory.remove(index);
             }
+            self.base_mut().emit_signal("inventory_updated", &[]);
         }
     }
     pub fn is_inventory_full(&self) -> bool {
@@ -250,6 +254,9 @@ impl Player {
 
     pub fn get_equiped_item(&self) -> Option<&(DynGd<RefCounted, dyn IItem>, u16)>{
         self.inventory.get(self.item_actual)
+    }
+    pub fn get_index_current_item(&self) -> usize{
+        self.item_actual
     }
     pub fn get_inventory(&self) -> Vec<(DynGd<RefCounted, dyn IItem>, u16)> {
         self.inventory.clone()
