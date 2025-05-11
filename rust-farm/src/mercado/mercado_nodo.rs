@@ -52,17 +52,21 @@ impl INode2D for Mercado{
     }
     fn input(&mut self, event: Gd<InputEvent>,) {
         if event.is_action_pressed("market") {
-            let mut interfaz = self.base().get_node_as::<CanvasLayer>("MarketUI");
-            let is_visible = interfaz.is_visible();
-            interfaz.set_visible(!is_visible);
-            self.show_buy_menu();
-            self.update_information();
+            self.show_market();
         }
     }
 }
 
 #[godot_api]
 impl Mercado {
+    fn show_market(&mut self){
+        let mut interfaz = self.base().get_node_as::<CanvasLayer>("MarketUI");
+        let is_visible = interfaz.is_visible();
+        self.player.as_mut().unwrap().bind_mut().set_active(is_visible);
+        interfaz.set_visible(!is_visible);
+        self.show_buy_menu();
+        self.update_information();
+    }
     #[func]
     fn buy_something(&mut self, item : DynGd<RefCounted, dyn IItem>){
         let player = self.player.as_mut().expect("Sin jugador");

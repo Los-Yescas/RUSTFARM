@@ -15,46 +15,46 @@ use crate::plant::plant_node::Planta;
 pub mod player_interface;
 
 #[derive(GodotClass)]
-#[class(base=Node2D)]
+#[class(base=Node2D, init)]
 pub struct Player {
     #[export]
+    #[init(val = 500.0)]
     speed: f32,
+    #[init(val = true)]
     can_move : bool,
+    #[init(val = false)]
     is_moving : bool,
+    #[init(val = true)]
+    #[var]
+    active : bool,
+    #[init(val = Vector2::ZERO)]
     target_position : Vector2,
     inventory : Vec<(DynGd<RefCounted, dyn IItem>, u16)>,
     item_actual : usize,
     #[export]
+    #[init(val = 8)]
     inventario_maximo : u16,
     #[export]
+    #[init(val = 0)]
     puntos : u16,
+    #[init(val = Vector2i::RIGHT)]
     direction : Vector2i,
     base: Base<Node2D>
 }
 #[godot_api]
 impl INode2D for Player {
-    fn init(base: Base<Node2D>) -> Self {
-        
-        Self {
-            speed: 500.0,
-            base,
-            is_moving: false,
-            can_move : true,
-            target_position: Vector2::ZERO,
-            inventory : Vec::new(),
-            item_actual : 0,
-            inventario_maximo : 8,
-            direction : Vector2i::RIGHT,
-            puntos : 0,
-        }
-    }
-    
     fn physics_process(&mut self, delta: f64) {
+        if !self.active{
+            return;
+        }
         if self.is_moving && self.can_move{
             self.player_moving(delta);
         }
     }
     fn input(&mut self, event: Gd<InputEvent>,) {
+        if !self.active{
+            return;
+        }
         self.interaction_system_inputs(&event);
         self.player_movement_input();
     }
@@ -64,6 +64,7 @@ impl INode2D for Player {
 #[godot_api]
 impl Player {
     fn interaction_system_inputs(&mut self, event: &Gd<InputEvent>){
+
         if event.is_action_pressed("inventory+"){
             let inventario_maximo : usize = self.inventario_maximo.into();
             self.item_actual = (self.item_actual  + 1)%inventario_maximo;
