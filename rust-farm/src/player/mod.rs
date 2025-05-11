@@ -19,7 +19,6 @@ pub mod player_interface;
 pub struct Player {
     #[export]
     speed: f32,
-    input : Gd<Input>,
     can_move : bool,
     is_moving : bool,
     target_position : Vector2,
@@ -39,7 +38,6 @@ impl INode2D for Player {
         Self {
             speed: 500.0,
             base,
-            input : Input::singleton(),
             is_moving: false,
             can_move : true,
             target_position: Vector2::ZERO,
@@ -51,12 +49,6 @@ impl INode2D for Player {
         }
     }
     
-    fn process(&mut self, _delta: f64,) {        
-        if self.is_moving{
-            return;
-        }
-        self.interaction_system();
-    }
     fn physics_process(&mut self, delta: f64) {
         if self.is_moving && self.can_move{
             self.player_moving(delta);
@@ -68,13 +60,55 @@ impl INode2D for Player {
     }
 }
 
+
 #[godot_api]
 impl Player {
+    fn interaction_system_inputs(&mut self, event: &Gd<InputEvent>){
+        if event.is_action_pressed("inventory+"){
+            let inventario_maximo : usize = self.inventario_maximo.into();
+            self.item_actual = (self.item_actual  + 1)%inventario_maximo;
+        }else if event.is_action_pressed("inventory-") {
+            let inventario_maximo : usize = self.inventario_maximo.into();
+            if self.item_actual == 0 {
+                self.item_actual = inventario_maximo;
+            }else {
+                self.item_actual = (self.item_actual  - 1)%inventario_maximo;
+            }
+        }else if event.is_action_pressed("inventory"){
+            godot_print!("{:#?}", self.inventory);
+        }else if event.is_action_pressed("pick"){
+            self.pick_item();
+        }else if event.is_action_pressed("interact") {
+            self.interact();
+        }
+    }
+    fn pick_item(&mut self){
+        //Se puede mejorar con Traits
+        if let Some(object) = self.check_for_item() {
+            if let Ok(mut item) = object.clone().try_cast::<Item>(){
+                let resource: DynGd<RefCounted, dyn IItem> = item.bind().get_item_resource().to_variant().to();
+                let res = self.add_item_to_inventory(&resource);
+                match res {
+                    Err(error) => godot_print!("{error}"),
+                    Ok(_exito) => item.queue_free(),
+                }
+            }else if let Ok(mut planta) = object.clone().try_cast::<Planta>(){
+                if let Some(resource) = planta.clone().bind_mut().harvest(){
+                    let res = self.add_item_to_inventory(&resource);
+                    match res {
+                        Err(error) => godot_print!("{error}"),
+                        Ok(_exito) => planta.queue_free(),
+                    }
+                }
+            }
+        }
+    }
     #[func]
     fn player_movement_input(&mut self){
         let mut direction = Vector2i::ZERO;
-        direction.x = self.input.get_axis("left", "right").round() as i32;
-        direction.y = self.input.get_axis("up", "down").round() as i32;
+        let input = Input::singleton();
+        direction.x = input.get_axis("left", "right").round() as i32;
+        direction.y = input.get_axis("up", "down").round() as i32;
 
         if direction == Vector2i::ZERO || self.is_moving || !self.can_move{
             return;
@@ -135,45 +169,6 @@ impl Player {
         self.base_mut().set_global_position(new_position);
     }
     
-    fn interaction_system(&mut self){
-        if self.input.is_action_just_pressed("pick"){
-            if let Some(object) = self.check_for_item() {
-                if let Ok(mut item) = object.clone().try_cast::<Item>(){
-                    let resource: DynGd<RefCounted, dyn IItem> = item.bind().get_item_resource().to_variant().to();
-                    let res = self.add_item_to_inventory(&resource);
-                    match res {
-                        Err(error) => godot_print!("{error}"),
-                        Ok(_exito) => item.queue_free(),
-                    }
-                }else if let Ok(mut planta) = object.clone().try_cast::<Planta>(){
-                    if let Some(resource) = planta.clone().bind_mut().harvest(){
-                        let res = self.add_item_to_inventory(&resource);
-                        match res {
-                            Err(error) => godot_print!("{error}"),
-                            Ok(_exito) => planta.queue_free(),
-                        }
-                    }
-                }
-            }
-        }else if self.input.is_action_just_pressed("interact") {
-            self.interact();
-        }
-    }
-    fn interaction_system_inputs(&mut self, event: &Gd<InputEvent>){
-        if event.is_action_pressed("inventory+"){
-            let inventario_maximo : usize = self.inventario_maximo.into();
-            self.item_actual = (self.item_actual  + 1)%inventario_maximo;
-        }else if event.is_action_pressed("inventory-") {
-            let inventario_maximo : usize = self.inventario_maximo.into();
-            if self.item_actual == 0 {
-                self.item_actual = inventario_maximo;
-            }else {
-                self.item_actual = (self.item_actual  - 1)%inventario_maximo;
-            }
-        }else if event.is_action_pressed("inventory"){
-            godot_print!("{:#?}", self.inventory);
-        }
-    }
     fn check_for_item(&self) -> Option<Gd<Node2D>>{
         let collider: Gd<Area2D> = self.base().get_node_as("./InteractZone/Area2D");
         let objects_in_area = collider.get_overlapping_areas();
