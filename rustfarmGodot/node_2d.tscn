@@ -38,7 +38,7 @@ zoom = Vector2(0.5, 0.5)
 
 [node name="ItemNode" parent="." instance=ExtResource("3_epypp")]
 item_path = "res://Plantas/Items Semillas/planta_fea_semilla.tres"
-position = Vector2(263, -7)
+position = Vector2(-652, 94)
 
 [node name="Mercado" type="Mercado" parent="."]
 items_a_la_venta_rutas = Array[String](["res://Plantas/Items Semillas/plant1.tres", "res://Plantas/Items Semillas/plant2.tres", "res://Plantas/Items Semillas/planta_fea_semilla.tres"])
@@ -133,8 +133,8 @@ text = "SELL"
 
 [node name="ItemNode2" parent="." instance=ExtResource("3_epypp")]
 item_path = "res://Plantas/Items Semillas/planta_fea_semilla.tres"
-position = Vector2(588, -47)
+position = Vector2(-435, 74)
 
 [node name="ItemNode3" parent="." instance=ExtResource("3_epypp")]
 item_path = "res://Plantas/Items Semillas/planta_fea_semilla.tres"
-position = Vector2(851, 115)
+position = Vector2(-663, 377)

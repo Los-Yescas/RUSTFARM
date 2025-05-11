@@ -181,26 +181,34 @@ impl Player {
     }
     pub fn add_item_to_inventory(&mut self, item : &DynGd<RefCounted, dyn IItem>) -> Result<GString, GString>{
         let item = item.clone();
-        let index = self.inventory.iter().position(|(nodo,_)| *nodo == item);
-        match index {
-            None => {
-                if self.inventory.len() < self.inventario_maximo.into() {
-                    self.inventory.push((item, 1));
-                    return Ok("Item añadido".into());
-                }  else {
-                    return Err("Inventory size not enough".into());
-                }
-            },
-            Some(index) => {
-                let tupla = &mut self.inventory[index];
-                if tupla.1 < item.dyn_bind().get_max_stack(){
-                    tupla.1 += 1;
-                    return Ok("Item añadido".into());
-                } else {
-                    return Err("Max stack reached!!".into());
-                }
+
+        let indexes = self.available_slots_with_item(&item);
+
+        if let Some(index) = indexes.get(0) {
+            self.add_one_item_to_slot(*index);
+            return Ok("Item añadido".into());
+        }else {
+            if self.inventory.len() < self.inventario_maximo.into() {
+                self.inventory.push((item, 1));
+                return Ok("Item añadido".into());
             } 
         }
+        Err("Can't add to inventory".into())
+    }
+    fn available_slots_with_item(&mut self, item : &DynGd<RefCounted, dyn IItem>) ->  Vec<usize>{
+        self.inventory.iter().enumerate()
+            .filter(|&(_, slot)| {
+                if slot.0 == *item {
+                    if slot.1 < item.dyn_bind().get_max_stack() {
+                        return true;
+                    }
+                }
+                return false;
+            }).map(|(index, _)| index)
+            .collect()
+    }
+    fn add_one_item_to_slot(&mut self, index : usize){
+        self.inventory[index].1 += 1;
     }
     pub fn rest_item_to_inventory(&mut self, item : &DynGd<RefCounted, dyn IItem>) {
         let item = item.clone();
