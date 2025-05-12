@@ -76,8 +76,10 @@ impl Player {
             godot_print!("{:#?}", self.inventory);
         }else if event.is_action_pressed("pick"){
             self.pick_item();
+            self.base_mut().emit_signal("inventory_updated", &[]);
         }else if event.is_action_pressed("interact") {
             self.interact();   
+            self.base_mut().emit_signal("inventory_updated", &[]);
         }
     }
     pub fn select_item(&mut self, index : usize){
