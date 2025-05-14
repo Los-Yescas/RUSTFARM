@@ -74,6 +74,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_rn0hh")
 
 [node name="DetailsPanel" type="ColorRect" parent="."]
 visible = false
+layout_mode = 0
 offset_top = -53.0
 offset_right = 250.0
 offset_bottom = -3.0

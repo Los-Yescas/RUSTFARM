@@ -138,3 +138,12 @@ position = Vector2(-435, 74)
 [node name="ItemNode3" parent="." instance=ExtResource("3_epypp")]
 item_path = "res://Plantas/Items Semillas/planta_fea_semilla.tres"
 position = Vector2(-663, 377)
+
+[node name="LevelManager" type="LevelManager" parent="."]
+items_a_pedir = Array[String](["res://Plantas/Items Frutas/plant1.tres", "res://Plantas/Items Frutas/plant2.tres", "res://Plantas/Items Frutas/PlantaFea.tres"])
+tiempo_minimo = 2.0
+tiempo_maximo = 5.0
+maximo_a_pedir = 10
+
+[node name="Timer" type="Timer" parent="LevelManager"]
+one_shot = true

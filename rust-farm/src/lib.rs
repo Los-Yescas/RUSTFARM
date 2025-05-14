@@ -8,6 +8,7 @@ pub mod player;
 pub mod plant;
 pub mod item;
 pub mod mercado;
+pub mod level_manager;
 
 
 //Interfaces
