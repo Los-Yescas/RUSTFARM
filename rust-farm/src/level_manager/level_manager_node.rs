@@ -1,10 +1,10 @@
 use godot::{classes::{RandomNumberGenerator, Timer}, prelude::*};
 
-use crate::item::item_resource::IItem;
+use crate::{interfaces::level_manager::level_manager_interface::LevelManagerInterface, item::item_resource::IItem};
 
 #[derive(GodotClass)]
 #[class(init, base=Node2D)]
-struct LevelManager{
+pub struct LevelManager{
     base : Base<Node2D>,
     pedidos : Vec<Vec<(DynGd<RefCounted, dyn IItem>, u16)>>,
     #[export]
@@ -54,7 +54,7 @@ impl INode2D for LevelManager {
 }
 
 #[godot_api]
-impl LevelManager {
+pub impl LevelManager {
     fn reset_timer(&mut self){
         let mut timer = self.base().get_node_as::<Timer>("Timer");
         let tiempo_pedido = self.rng.randf_range(self.tiempo_minimo, self.tiempo_maximo) as f64;
@@ -78,6 +78,16 @@ impl LevelManager {
         }
         self.pedidos.push(pedido);
         self.reset_timer();
-        godot_print!("{:#?}", self.pedidos);
+        
+        self.update_interface();
+    }
+
+    fn update_interface(&mut self){
+        let mut interface = self.base().get_node_as::<LevelManagerInterface>("UI");
+        interface.bind_mut().update_info(&self.pedidos);
+    }
+
+    pub fn get_orders(&self) -> &Vec<Vec<(DynGd<RefCounted, dyn IItem>, u16)>>{
+        &self.pedidos
     }
 }

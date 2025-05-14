@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bl6sj2kmbbbo1"]
+
+[node name="Orden" type="Order"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Fondo" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 130.0
+offset_bottom = 45.0
+color = Color(0.445119, 0.0880974, 0.781186, 1)
+
+[node name="GridContainer" type="GridContainer" parent="Fondo"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 3

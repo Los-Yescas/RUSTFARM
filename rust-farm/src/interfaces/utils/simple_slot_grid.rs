@@ -59,6 +59,17 @@ impl SimpleGridSlot {
 
         slot
     }
+    pub fn from_item_resource_mini(resource : &DynGd<RefCounted, dyn IItem>, stock : u16, index : usize) -> Gd<SimpleGridSlot> {
+        let slot = load::<PackedScene>("res://Interfaces/SimpleMiniSlot.tscn");
+        let resource = resource.clone();
+        let mut slot = slot.instantiate_as::<SimpleGridSlot>();
+
+        slot.bind_mut().set_index(index);
+        slot.bind_mut().set_item(Some(resource.into_gd()));
+        slot.bind_mut().set_stock(stock);
+
+        slot
+    }
 
     fn set_index(&mut self, index : usize){
         self.index = index;
