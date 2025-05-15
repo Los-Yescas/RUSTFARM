@@ -6,16 +6,17 @@ use crate::{interfaces::utils::simple_slot_grid::SimpleGridSlot, item::item_reso
 #[class(init, base=Control)]
 pub struct Order{
     base : Base<Control>,
-    order : Vec<(DynGd<RefCounted, dyn IItem>, u16)>
+    order : Vec<(DynGd<RefCounted, dyn IItem>, u16)>,
+    index : usize
 }
 
 #[godot_api]
 impl IControl for Order {
    fn ready(&mut self,) {
-       for (index, order) in self.order.iter().enumerate() {
-            let mut grid = self.base().get_node_as::<GridContainer>("Fondo/GridContainer");
+       for order in &self.order {
+            let mut grid = self.base().get_node_as::<GridContainer>("GridContainer");
             let (item, asked_for) = &order;
-            let slot = SimpleGridSlot::from_item_resource_mini(item, *asked_for, index);
+            let slot = SimpleGridSlot::from_item_resource_mini(item, *asked_for, self.index);
 
             grid.add_child(&slot);
        }
@@ -27,12 +28,16 @@ impl Order {
     fn set_order(&mut self, order : Vec<(DynGd<RefCounted, dyn IItem>, u16)>){
         self.order = order;
     }
+    fn set_index(&mut self, index : usize) {
+        self.index = index;
+    }
 
-    pub fn from_order(order : &Vec<(DynGd<RefCounted, dyn IItem>, u16)>) -> Gd<Order> {
+    pub fn from_order(order : &Vec<(DynGd<RefCounted, dyn IItem>, u16)>, index : usize) -> Gd<Order> {
         let order_scene = load::<PackedScene>("res://Interfaces/Ordenes/Orden.tscn");
         
         let mut new_order = order_scene.instantiate_as::<Order>();
         new_order.bind_mut().set_order(order.clone());
+        new_order.bind_mut().set_index(index);
         new_order
     }
 }

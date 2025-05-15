@@ -16,9 +16,8 @@ pub struct SimpleGridSlot{
 #[godot_api]
 impl IControl for SimpleGridSlot {
     fn ready(&mut self,) {
+
         let mut button = self.base().get_node_as::<Button>("ItemButton");
-        let item_selected = self.base_mut().callable("item_selected");
-        button.connect("pressed", &item_selected);
 
         if self.item == None{
             return;
@@ -48,14 +47,25 @@ impl IControl for SimpleGridSlot {
 
 #[godot_api]
 impl SimpleGridSlot {
+
+    fn set_properties_init(&mut self, index : usize, item : Option<DynGd<RefCounted, dyn IItem>>, stock : u16){
+        self.index = index;
+        self.item = item;
+        self.stock = stock;
+
+        self.base_mut().add_user_signal("item_selected");
+
+        let mut button = self.base().get_node_as::<Button>("ItemButton");
+        let item_selected = self.base().callable("item_selected");
+        button.connect("pressed", &item_selected);
+    }
+
     pub fn from_item_resource(resource : &DynGd<RefCounted, dyn IItem>, stock : u16, index : usize) -> Gd<SimpleGridSlot> {
         let slot = load::<PackedScene>("res://Interfaces/SimpleSlot.tscn");
         let resource = resource.clone();
         let mut slot = slot.instantiate_as::<SimpleGridSlot>();
 
-        slot.bind_mut().set_index(index);
-        slot.bind_mut().set_item(Some(resource.into_gd()));
-        slot.bind_mut().set_stock(stock);
+        slot.bind_mut().set_properties_init(index, Some(resource), stock);
 
         slot
     }
@@ -64,22 +74,16 @@ impl SimpleGridSlot {
         let resource = resource.clone();
         let mut slot = slot.instantiate_as::<SimpleGridSlot>();
 
-        slot.bind_mut().set_index(index);
-        slot.bind_mut().set_item(Some(resource.into_gd()));
-        slot.bind_mut().set_stock(stock);
+        slot.bind_mut().set_properties_init(index, Some(resource), stock);
 
         slot
-    }
-
-    fn set_index(&mut self, index : usize){
-        self.index = index;
     }
 
     pub fn new(index : usize) -> Gd<Self>{
         let slot = load::<PackedScene>("res://Interfaces/SimpleSlot.tscn");
         let mut slot = slot.instantiate_as::<SimpleGridSlot>();
 
-        slot.bind_mut().set_index(index);
+        slot.bind_mut().set_properties_init(index, None, 0);
 
         slot
     }
@@ -98,7 +102,7 @@ impl SimpleGridSlot {
         self.base().get_viewport().unwrap().set_input_as_handled();
 
         let index = self.index as u16;
-        self.base_mut().emit_signal("selected_item", &[index.to_variant()]);
+        self.base_mut().emit_signal("item_selected", &[index.to_variant()]);
     }
 
     pub fn disable(&self){

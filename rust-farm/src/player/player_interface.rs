@@ -48,8 +48,8 @@ impl PlayerInterface{
 
         for index in 0..max_size as usize {
             let mut slot : Gd<SimpleGridSlot>;
-            if let Some((item, stack)) = inventory.get(index) {
-                slot = SimpleGridSlot::from_item_resource(item, *stack , index);
+            if let Some(Some((item, stack))) = &inventory.get(index) {
+                slot = SimpleGridSlot::from_item_resource(&item, *stack , index);
                 slot.add_user_signal("selected_item");
                 grid.add_child(&slot);
             }else {

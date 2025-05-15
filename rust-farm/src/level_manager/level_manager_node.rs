@@ -1,6 +1,9 @@
 use godot::{classes::{RandomNumberGenerator, Timer}, prelude::*};
 
-use crate::{interfaces::level_manager::level_manager_interface::LevelManagerInterface, item::item_resource::IItem};
+use crate::{item::item_resource::IItem, player::Player};
+
+use super::level_manager_interface::LevelManagerInterface;
+
 
 #[derive(GodotClass)]
 #[class(init, base=Node2D)]
@@ -89,5 +92,20 @@ pub impl LevelManager {
 
     pub fn get_orders(&self) -> &Vec<Vec<(DynGd<RefCounted, dyn IItem>, u16)>>{
         &self.pedidos
+    }
+
+    #[func]
+    fn check_order(&mut self, index : u16){
+        //Hacer chequeo del Inventario
+        let mut player = self.base().get_node_as::<Player>("../Player");
+        if player.bind_mut().fullfill_order(self.pedidos[index as usize].clone()){
+            self.recieve_order(index as usize);
+        }
+    }
+
+
+    pub fn recieve_order(&mut self, index : usize){
+        self.pedidos.remove(index);
+        self.update_interface();
     }
 }

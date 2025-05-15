@@ -1,6 +1,6 @@
 use godot::{classes::{CanvasLayer, GridContainer, ICanvasLayer}, prelude::*};
 
-use crate::{item::item_resource::IItem, level_manager::level_manager_node::LevelManager};
+use crate::{ item::item_resource::IItem, level_manager::level_manager_node::LevelManager};
 
 use super::order::Order;
 
@@ -18,6 +18,7 @@ impl ICanvasLayer for LevelManagerInterface {
     }
 }
 
+#[godot_api]
 impl LevelManagerInterface {
     pub fn update_info(&mut self , orders : &Vec<Vec<(DynGd<RefCounted, dyn IItem>, u16)>>){
         let mut orders_grid = self.base().get_node_as::<GridContainer>("Orders/GridContainer");
@@ -25,9 +26,16 @@ impl LevelManagerInterface {
             child.queue_free();
         }
         
-        for order in orders{
-            let order = Order::from_order(order);
+        for (index, order) in orders.iter().enumerate(){
+            let order = Order::from_order(order, index);
+
             orders_grid.add_child(&order);
+
+            let items = order.get_node_as::<GridContainer>("GridContainer").get_children();
+            let check_order_callable = &self.base().get_parent().unwrap().callable("check_order");
+            for mut child in items.iter_shared(){
+                child.connect("item_selected", check_order_callable);
+            }
         }
     }
 }

@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bii3iogidvtnn"]
+[gd_scene load_steps=5 format=3 uid="uid://080m2sceao64"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_dv67t"]
-font_size = 30
-font_color = Color(0.287295, 0.287295, 0.287295, 1)
+font_size = 15
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dv67t"]
 bg_color = Color(0.18, 0.18, 0.18, 0.682353)
@@ -56,12 +55,14 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -52.0
-offset_top = -42.0
-offset_right = -1.0
+offset_left = -30.0
+offset_top = -22.0
 grow_horizontal = 0
 grow_vertical = 0
+text = "45"
 label_settings = SubResource("LabelSettings_dv67t")
+horizontal_alignment = 2
+vertical_alignment = 2
 
 [node name="ItemButton" type="Button" parent="."]
 layout_mode = 1
@@ -75,10 +76,14 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_rn0hh")
 
 [node name="DetailsPanel" type="ColorRect" parent="."]
 visible = false
-layout_mode = 0
-offset_top = -28.0
+z_index = 1
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_right = 200.0
-offset_bottom = -3.0
+offset_bottom = 25.0
+grow_vertical = 0
 color = Color(0.121569, 0.501961, 0.886275, 1)
 
 [node name="Name" type="Label" parent="DetailsPanel"]

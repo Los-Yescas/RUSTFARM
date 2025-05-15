@@ -68,9 +68,10 @@ impl Mercado {
         self.update_information();
     }
     #[func]
-    fn buy_something(&mut self, item : DynGd<RefCounted, dyn IItem>){
+    fn buy_something(&mut self, index : u16){
         let player = self.player.as_mut().expect("Sin jugador");
         let full_inventory = player.bind().is_inventory_full();
+        let item = self.items_a_la_venta.at(index as usize);
         let precio = item.dyn_bind().get_precio();
 
         if !full_inventory && player.bind().get_puntos() >= precio{
@@ -86,11 +87,15 @@ impl Mercado {
         }
     }   
     #[func]
-    fn sell_item(&mut self, item : DynGd<RefCounted, dyn IItem>){
-        let player = self.player.as_mut().expect("Sin jugador");
+    fn sell_item(&mut self, index : u16){
+        let mut player = self.player.as_mut().expect("Sin jugador").bind_mut();
+        let index = index as usize;
+        let (item, _) = player.get_inventory_item(index).unwrap();
         let precio = (item.dyn_bind().get_precio() as f32 * self.factor_de_venta) as u16;
-        player.bind_mut().rest_item_to_inventory(&item);
-        player.bind_mut().sum_points(precio);
+
+        player.rest_item_to_inventory(index, 1);
+        player.sum_points(precio);
+        drop(player);
         self.update_information();
     }
     fn rest_item(&mut self, item : DynGd<RefCounted, dyn IItem>){
@@ -126,16 +131,13 @@ impl Mercado {
         }
 
         for (i, item) in self.items_a_la_venta.iter_shared().enumerate(){
-            let grid_slot: Gd<PackedScene> = load("res://Interfaces/Slot.tscn");
-            let new_node = grid_slot.instantiate().unwrap();
-            let mut new_slot = new_node.cast::<GridSlot>();
-            new_slot.bind_mut().from_item_resource(item, self.stock_de_items_a_la_venta.at(i), 1.0);
+            
+            let mut new_slot=GridSlot::from_item_resource(item, self.stock_de_items_a_la_venta.at(i), 1.0, i as u16);
 
             buy_grid_container.add_child(&new_slot);
 
-            new_slot.add_user_signal("selected_item");
             let buy_callable = self.base().callable("buy_something");
-            new_slot.connect("selected_item", &buy_callable);
+            new_slot.connect("item_selected", &buy_callable);
         }
     }
 
@@ -149,16 +151,13 @@ impl Mercado {
 
         
 
-        for (item, stack) in player.bind().get_inventory(){
-            let grid_slot: Gd<PackedScene> = load("res://Interfaces/Slot.tscn");
-            let new_node = grid_slot.instantiate().unwrap();
-            let mut new_slot = new_node.cast::<GridSlot>();
-            new_slot.bind_mut().from_item_resource(item, stack, self.factor_de_venta);
-            sell_grid_container.add_child(&new_slot);
-
-            new_slot.add_user_signal("selected_item");
-            let sell_callable = self.base().callable("sell_item");
-            new_slot.connect("selected_item", &sell_callable);
+        for (i, inventory_slot) in player.bind().get_inventory().iter().enumerate(){
+            if let Some((item, stack)) = inventory_slot {
+                let mut new_slot=GridSlot::from_item_resource(item.clone(), *stack, self.factor_de_venta, i as u16);
+                sell_grid_container.add_child(&new_slot);
+                let sell_callable = self.base().callable("sell_item");
+                new_slot.connect("item_selected", &sell_callable);
+            }   
         }
     }
 

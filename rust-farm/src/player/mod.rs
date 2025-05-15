@@ -29,7 +29,7 @@ pub struct Player {
     active : bool,
     #[init(val = Vector2::ZERO)]
     target_position : Vector2,
-    inventory : Vec<(DynGd<RefCounted, dyn IItem>, u16)>,
+    inventory : Vec<Option<(DynGd<RefCounted, dyn IItem>, u16)>>,
     item_actual : usize,
     #[export]
     #[init(val = 8)]
@@ -44,6 +44,9 @@ pub struct Player {
 #[godot_api]
 impl INode2D for Player {
 
+    fn ready(&mut self,) {
+        self.inventory = vec![None; self.inventario_maximo as usize];
+    }
     fn physics_process(&mut self, delta: f64) {
         if !self.active{
             return;
@@ -191,17 +194,22 @@ impl Player {
             self.base_mut().emit_signal("inventory_updated", &[]);
             return Ok("Item añadido".into());
         }else {
-            if self.inventory.len() < self.inventario_maximo.into() {
-                self.inventory.push((item, 1));
+            if let Some(empty_slot_index) = self.empty_slot_index() {
+                self.inventory[empty_slot_index] = Some((item, 1));
                 self.base_mut().emit_signal("inventory_updated", &[]);
                 return Ok("Item añadido".into());
-            } 
+            }
         }
         Err("Can't add to inventory".into())
     }
     fn available_slots_with_item(&mut self, item : &DynGd<RefCounted, dyn IItem>) ->  Vec<usize>{
         self.inventory.iter().enumerate()
             .filter(|&(_, slot)| {
+                if *slot == None{
+                    return false;
+                }
+
+                let slot = slot.as_ref().unwrap();
                 if slot.0 == *item {
                     if slot.1 < item.dyn_bind().get_max_stack() {
                         return true;
@@ -211,23 +219,31 @@ impl Player {
             }).map(|(index, _)| index)
             .collect()
     }
+    fn empty_slot_index(&self) -> Option<usize>{
+        self.inventory.iter().position(|slot| *slot==None)
+    }
     fn add_one_item_to_slot(&mut self, index : usize){
         self.base_mut().emit_signal("inventory_updated", &[]);
-        self.inventory[index].1 += 1;
+        self.inventory[index].as_mut().unwrap().1 += 1;
     }
-    pub fn rest_item_to_inventory(&mut self, item : &DynGd<RefCounted, dyn IItem>) {
-        let item = item.clone();
-        if let Some(index) = self.inventory.iter().position(|(nodo,_)| *nodo == item){
-            let tupla = &mut self.inventory[index];
-            tupla.1 -= 1;
-            if tupla.1 <= 0 {
-                self.inventory.remove(index);
+    pub fn rest_item_to_inventory(&mut self, index : usize, number : u16) {
+        if let Some(slot) = &mut self.inventory[index]{
+            if number > slot.1 {
+                godot_error!("No puede restar mas de lo que se tiene");
+                return;
+            }
+            slot.1 -= number;
+            if slot.1 <= 0 {
+                self.inventory[index] = None;
             }
             self.base_mut().emit_signal("inventory_updated", &[]);
+        }else{
+            godot_error!("Tratando de restar a un slot vacio");
         }
     }
+
     pub fn is_inventory_full(&self) -> bool {
-        self.inventory.len() >= self.inventario_maximo.into()
+        self.inventory.iter().position(|slot| slot.is_none()).is_none()
     }
     pub fn sum_points(&mut self, points : u16){
         self.puntos += points;
@@ -237,30 +253,92 @@ impl Player {
     }
 
     fn interact(&mut self){
-        if let  Some(mut tupla_inventario) = self.inventory.get(self.item_actual){
-            let  (item, stack) = &mut tupla_inventario;
 
-            if self.check_for_item() == None{
-                let world = self.base().get_parent().unwrap().cast();
-                let position = self.base().get_node_as::<Marker2D>("./InteractZone/SpawnerPos").get_global_position();
-                item.dyn_bind().interact(world, position);
+        let item_in_front = self.check_for_item();
+        let world = self.base().get_parent().unwrap().cast();
+        let position = self.base().get_node_as::<Marker2D>("./InteractZone/SpawnerPos").get_global_position();
 
-                if *stack == 1{
-                    self.inventory.remove(self.item_actual);
-                }else{
-                    self.inventory[self.item_actual].1 -= 1;
+        if let  Some(tupla_inventario) = &mut self.inventory[self.item_actual]{
+            let  (item, _) = tupla_inventario;
+
+            if item_in_front == None{
+                
+                let consume = item.dyn_bind().interact(world, position);
+
+                if consume {
+                    self.rest_item_to_inventory(self.item_actual, 1);
                 }
             }
         }
     }
 
+    pub fn fullfill_order(&mut self, mut asked_items : Vec<(DynGd<RefCounted, dyn IItem>, u16)>) -> bool{
+        let mut usos_inventario : Vec<(usize, u16)> = Vec::new();
+        let mut items_satisfechos : Vec<(usize, u16)> = asked_items.iter().enumerate().map(
+            |(index, (_, _))| (index, 0)
+        ).collect();
+        for (inventory_index, inventory_slot) in self.inventory.iter().enumerate() {
+
+            if inventory_slot.is_none(){
+                continue;
+            }
+            let inventory_slot = inventory_slot.as_ref().unwrap();
+
+            let indexes_for_asked : Vec<usize> = asked_items.iter().enumerate().filter(
+                |(index, (item, neccesity))| {
+                    inventory_slot.0.dyn_bind().get_name() == item.dyn_bind().get_name()
+                    &&
+                    items_satisfechos[*index].1 < *neccesity
+                }
+                ).map(|(index, _)|{
+                    index
+                }).collect();
+
+            
+
+            
+            if indexes_for_asked.is_empty() {
+                continue;
+            }
+            usos_inventario.push((inventory_index, 0));
+            for index_asked in indexes_for_asked {
+                let asked_item = &mut asked_items[index_asked];
+
+                let available_items = inventory_slot.1-usos_inventario[inventory_index].1;
+                let needed_items = asked_item.1 - items_satisfechos[index_asked].1;
+                if needed_items <= available_items {
+                    usos_inventario[inventory_index].1 += needed_items;
+                    items_satisfechos[index_asked].1 += needed_items;
+                }else{
+                    usos_inventario[inventory_index].1 += available_items;
+                    items_satisfechos[index_asked].1 += available_items;
+                    break;
+                }
+            }
+        }
+
+        let satisfied_needs = items_satisfechos.iter().position(
+            |(index_asked, fullfilled)| asked_items[*index_asked].1>*fullfilled
+        ).is_none();
+        if satisfied_needs {
+            for (index, using) in usos_inventario {
+                self.rest_item_to_inventory(index, using);
+            }
+            return true;
+        }
+        false
+    }
+
     pub fn get_equiped_item(&self) -> Option<&(DynGd<RefCounted, dyn IItem>, u16)>{
-        self.inventory.get(self.item_actual)
+        self.inventory[self.item_actual].as_ref()
+    }
+    pub fn get_inventory_item(&self, index : usize) -> Option<&(DynGd<RefCounted, dyn IItem>, u16)>{
+        self.inventory[index].as_ref()
     }
     pub fn get_index_current_item(&self) -> usize{
         self.item_actual
     }
-    pub fn get_inventory(&self) -> Vec<(DynGd<RefCounted, dyn IItem>, u16)> {
+    pub fn get_inventory(&self) -> Vec<Option<(DynGd<RefCounted, dyn IItem>, u16)>> {
         self.inventory.clone()
     }
 }
