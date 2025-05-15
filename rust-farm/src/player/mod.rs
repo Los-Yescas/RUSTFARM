@@ -46,7 +46,6 @@ impl INode2D for Player {
             inventario_maximo: 40,
             debug_inventory: Vec::new(),
             dinero: 0,
-           
         }
     }
 
@@ -82,22 +81,9 @@ impl INode2D for Player {
             self.base_mut().set_global_position(new_position);
         }
     }
-    fn input(&mut self, event: Gd<InputEvent>) {
-        if event.is_action_pressed("inventory+") {
-            let inventario_maximo: usize = self.inventario_maximo.into();
-            self.item_actual = (self.item_actual + 1) % inventario_maximo;
-        } else if event.is_action_pressed("inventory-") {
-            let inventario_maximo: usize = self.inventario_maximo.into();
-            if self.item_actual == 0 {
-                self.item_actual = inventario_maximo;
-            } else {
-                self.item_actual = (self.item_actual - 1) % inventario_maximo;
-            }
-        } else if event.is_action_pressed("sell") {
-            self.sell_current_item();
-        }
-        
-    }
+    // fn input(&mut self, event: Gd<InputEvent>) {
+    //     self.interaction_system_inputs(event);
+    // }
 }
 
 #[godot_api]
@@ -374,42 +360,45 @@ impl Player {
         }
     }
     #[func]
-pub fn sell_current_item(&mut self) {
-    if self.inventory.is_empty() {
-        godot_print!("Inventario vacío. Nada que vender.");
-        return;
-    }
-
-    if self.item_actual >= self.inventory.len() {
-        godot_print!("Ítem seleccionado inválido.");
-        return;
-    }
-
-    let (recurso, cantidad) = &mut self.inventory[self.item_actual];
-
-    // Solo permitir venta si es una planta
-    if let Ok(planta) = recurso.clone().try_cast::<PlantResource>() {
-        let precio = planta.bind().get_price();
-
-        if precio == 0 {
-            godot_print!("Esta planta no tiene precio de venta.");
+    pub fn sell_current_item(&mut self) {
+        if self.inventory.is_empty() {
+            godot_print!("Inventario vacío. Nada que vender.");
             return;
         }
 
-        self.dinero += precio as u32;
-        *cantidad -= 1;
-
-        godot_print!("Vendiste una planta por {} monedas. Dinero total: {}", precio, self.dinero);
-
-        if *cantidad == 0 {
-            self.inventory.remove(self.item_actual);
-            if self.item_actual >= self.inventory.len() && self.item_actual > 0 {
-                self.item_actual -= 1;
-            }
+        if self.item_actual >= self.inventory.len() {
+            godot_print!("Ítem seleccionado inválido.");
+            return;
         }
-    } else {
-        godot_print!("Solo se pueden vender plantas.");
-    }
-}
 
+        let (recurso, cantidad) = &mut self.inventory[self.item_actual];
+
+        // Solo permitir venta si es una planta
+        if let Ok(planta) = recurso.clone().try_cast::<PlantResource>() {
+            let precio = planta.bind().get_price();
+
+            if precio == 0 {
+                godot_print!("Esta planta no tiene precio de venta.");
+                return;
+            }
+
+            self.dinero += precio as u32;
+            *cantidad -= 1;
+
+            godot_print!(
+                "Vendiste una planta por {} monedas. Dinero total: {}",
+                precio,
+                self.dinero
+            );
+
+            if *cantidad == 0 {
+                self.inventory.remove(self.item_actual);
+                if self.item_actual >= self.inventory.len() && self.item_actual > 0 {
+                    self.item_actual -= 1;
+                }
+            }
+        } else {
+            godot_print!("Solo se pueden vender plantas.");
+        }
+    }
 }
