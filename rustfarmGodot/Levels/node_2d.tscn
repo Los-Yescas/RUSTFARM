@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://daclrt2qn3so0" path="res://Items/ItemNode.tscn" id="3_tdxe6"]
 [ext_resource type="LabelSettings" uid="uid://bipgdaqgmg3om" path="res://Interfaces/Fonts/Titulos.tres" id="4_hesg5"]
 [ext_resource type="PackedScene" uid="uid://dfwyaaxd4q3cm" path="res://Interfaces/ItemGrid.tscn" id="5_0hhiv"]
-[ext_resource type="PackedScene" uid="uid://tatr5vxci5ma" path="res://Levels/OtroNivel.tscn" id="6_roogt"]
+[ext_resource type="PackedScene" uid="uid://b1xu8edmoxsvb" path="res://Plantas/TimeSystem.tscn" id="6_ko66c"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_epypp"]
 resource_name = "asd"
@@ -34,6 +34,8 @@ position = Vector2(50, 50)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(0.5, 0.5)
+
+[node name="Node" type="Node" parent="."]
 
 [node name="ItemNode" parent="." instance=ExtResource("3_tdxe6")]
 item_path = "res://Plantas/Items Semillas/planta_fea_semilla.tres"
@@ -142,17 +144,18 @@ position = Vector2(-663, 377)
 items_a_pedir = Array[String](["res://Plantas/Items Semillas/plant1.tres", "res://Plantas/Items Semillas/plant2.tres", "res://Plantas/Items Semillas/planta_fea_semilla.tres"])
 tiempo_minimo = 2.0
 tiempo_maximo = 5.0
-maximo_a_pedir = 5
-next_level = ExtResource("6_roogt")
-ordenes_para_pasar = 3
-puntos_por_orden = 250
+maximo_a_pedir = 10
+next_level = ExtResource("6_ko66c")
+tiempo_de_nivel = 500
+puntos_min_por_orden = 100
+puntos_max_por_orden = 500
 
 [node name="Timer" type="Timer" parent="LevelManager"]
 one_shot = true
 
-[node name="UI" type="LevelManagerInterface" parent="LevelManager"]
+[node name="OrdersUI" type="LevelManagerInterface" parent="LevelManager"]
 
-[node name="Orders" type="Control" parent="LevelManager/UI"]
+[node name="Orders" type="Control" parent="LevelManager/OrdersUI"]
 custom_minimum_size = Vector2(400, 400)
 layout_mode = 3
 anchors_preset = 6
@@ -160,21 +163,45 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -200.0
+offset_bottom = 250.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="GridContainer" type="GridContainer" parent="LevelManager/UI/Orders"]
-clip_contents = true
-custom_minimum_size = Vector2(1, 500)
+[node name="ScrollContainer" type="ScrollContainer" parent="LevelManager/OrdersUI/Orders"]
 layout_mode = 1
-anchors_preset = 3
+anchors_preset = 11
 anchor_left = 1.0
-anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -10.0
-offset_top = -400.0
-offset_right = -9.0
-offset_bottom = 100.0
+offset_left = -301.0
+offset_right = -20.0
+offset_bottom = 62.0
 grow_horizontal = 0
-grow_vertical = 0
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="GridContainer" type="GridContainer" parent="LevelManager/OrdersUI/Orders/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LevelTimer" type="Timer" parent="LevelManager"]
+one_shot = true
+
+[node name="TimeInterface" type="CanvasLayer" parent="LevelManager"]
+
+[node name="TimeLeft" type="Label" parent="LevelManager/TimeInterface"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -23.0
+offset_top = 13.0
+offset_right = 23.0
+offset_bottom = 68.0
+grow_horizontal = 2
+size_flags_horizontal = 6
+size_flags_vertical = 2
+text = "45"
+label_settings = ExtResource("4_hesg5")
