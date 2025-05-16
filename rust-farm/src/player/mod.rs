@@ -273,7 +273,7 @@ impl Player {
     }
 
     pub fn fullfill_order(&mut self, mut asked_items : Vec<(DynGd<RefCounted, dyn IItem>, u16)>) -> bool{
-        let mut usos_inventario : Vec<(usize, u16)> = Vec::new();
+        let mut usos_inventario : Vec<u16> = vec![0; self.inventario_maximo as usize];
         let mut items_satisfechos : Vec<(usize, u16)> = asked_items.iter().enumerate().map(
             |(index, (_, _))| (index, 0)
         ).collect();
@@ -296,21 +296,19 @@ impl Player {
 
             
 
-            
             if indexes_for_asked.is_empty() {
                 continue;
             }
-            usos_inventario.push((inventory_index, 0));
             for index_asked in indexes_for_asked {
                 let asked_item = &mut asked_items[index_asked];
 
-                let available_items = inventory_slot.1-usos_inventario[inventory_index].1;
+                let available_items = inventory_slot.1-usos_inventario[inventory_index];
                 let needed_items = asked_item.1 - items_satisfechos[index_asked].1;
                 if needed_items <= available_items {
-                    usos_inventario[inventory_index].1 += needed_items;
+                    usos_inventario[inventory_index] += needed_items;
                     items_satisfechos[index_asked].1 += needed_items;
                 }else{
-                    usos_inventario[inventory_index].1 += available_items;
+                    usos_inventario[inventory_index] += available_items;
                     items_satisfechos[index_asked].1 += available_items;
                     break;
                 }
@@ -321,8 +319,11 @@ impl Player {
             |(index_asked, fullfilled)| asked_items[*index_asked].1>*fullfilled
         ).is_none();
         if satisfied_needs {
-            for (index, using) in usos_inventario {
-                self.rest_item_to_inventory(index, using);
+            for (index, using) in usos_inventario.iter().enumerate() {
+                if *using == 0 {
+                    continue;
+                }
+                self.rest_item_to_inventory(index, *using);
             }
             return true;
         }

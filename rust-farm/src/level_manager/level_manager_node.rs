@@ -28,7 +28,12 @@ pub struct LevelManager{
     #[export]
     #[init(val=64)]
     maximo_a_pedir : u8,
-    rng : Gd<RandomNumberGenerator>
+    rng : Gd<RandomNumberGenerator>,
+    #[export]
+    next_level : Option<Gd<PackedScene>>,
+    #[export]
+    #[init(val = 20)]
+    ordenes_para_pasar : u16
 }
 
 #[godot_api]
