@@ -9,6 +9,7 @@ use godot::classes::INode2D;
 
 use crate::item::item_node::Item;
 use crate::item::item_resource::IItem;
+use crate::level_manager::level_manager_node::Pedido;
 use crate::plant::plant_node::Planta;
 
 
@@ -272,10 +273,10 @@ impl Player {
         }
     }
 
-    pub fn fullfill_order(&mut self, mut asked_items : Vec<(DynGd<RefCounted, dyn IItem>, u16)>) -> bool{
+    pub fn fullfill_order(&mut self, pedido : &Pedido) -> bool{
         let mut usos_inventario : Vec<u16> = vec![0; self.inventario_maximo as usize];
-        let mut items_satisfechos : Vec<(usize, u16)> = asked_items.iter().enumerate().map(
-            |(index, (_, _))| (index, 0)
+        let mut items_satisfechos : Vec<(usize, u16)> = pedido.requerimientos.iter().enumerate().map(
+            |(index, _)| (index, 0)
         ).collect();
         for (inventory_index, inventory_slot) in self.inventory.iter().enumerate() {
 
@@ -284,11 +285,14 @@ impl Player {
             }
             let inventory_slot = inventory_slot.as_ref().unwrap();
 
-            let indexes_for_asked : Vec<usize> = asked_items.iter().enumerate().filter(
-                |(index, (item, neccesity))| {
+            let indexes_for_asked : Vec<usize> = pedido.requerimientos.iter().enumerate().filter(
+                |(index, requerimeinto)| {
+                    let item = &requerimeinto.item;
+                    let neccesity = requerimeinto.necesidad;
+
                     inventory_slot.0.dyn_bind().get_name() == item.dyn_bind().get_name()
                     &&
-                    items_satisfechos[*index].1 < *neccesity
+                    items_satisfechos[*index].1 < neccesity
                 }
                 ).map(|(index, _)|{
                     index
@@ -300,10 +304,10 @@ impl Player {
                 continue;
             }
             for index_asked in indexes_for_asked {
-                let asked_item = &mut asked_items[index_asked];
+                let neccesity = pedido.requerimientos[index_asked].necesidad;
 
                 let available_items = inventory_slot.1-usos_inventario[inventory_index];
-                let needed_items = asked_item.1 - items_satisfechos[index_asked].1;
+                let needed_items = neccesity - items_satisfechos[index_asked].1;
                 if needed_items <= available_items {
                     usos_inventario[inventory_index] += needed_items;
                     items_satisfechos[index_asked].1 += needed_items;
@@ -316,7 +320,7 @@ impl Player {
         }
 
         let satisfied_needs = items_satisfechos.iter().position(
-            |(index_asked, fullfilled)| asked_items[*index_asked].1>*fullfilled
+            |(index_asked, fullfilled)| pedido.requerimientos[*index_asked].necesidad>*fullfilled
         ).is_none();
         if satisfied_needs {
             for (index, using) in usos_inventario.iter().enumerate() {
