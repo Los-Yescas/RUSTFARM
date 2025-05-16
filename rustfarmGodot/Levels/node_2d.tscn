@@ -35,8 +35,6 @@ position = Vector2(50, 50)
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(0.5, 0.5)
 
-[node name="Node" type="Node" parent="."]
-
 [node name="ItemNode" parent="." instance=ExtResource("3_tdxe6")]
 item_path = "res://Plantas/Items Semillas/planta_fea_semilla.tres"
 position = Vector2(-652, 94)
@@ -146,6 +144,8 @@ tiempo_minimo = 2.0
 tiempo_maximo = 5.0
 maximo_a_pedir = 5
 next_level = ExtResource("6_roogt")
+ordenes_para_pasar = 3
+puntos_por_orden = 250
 
 [node name="Timer" type="Timer" parent="LevelManager"]
 one_shot = true

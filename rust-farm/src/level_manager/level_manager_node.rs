@@ -5,6 +5,7 @@ use crate::{item::item_resource::IItem, player::Player};
 use super::level_manager_interface::LevelManagerInterface;
 
 
+
 #[derive(GodotClass)]
 #[class(init, base=Node2D)]
 pub struct LevelManager{
@@ -33,7 +34,9 @@ pub struct LevelManager{
     next_level : Option<Gd<PackedScene>>,
     #[export]
     #[init(val = 20)]
-    ordenes_para_pasar : u16
+    ordenes_para_pasar : u16,
+    #[export]
+    puntos_por_orden : u16
 }
 
 #[godot_api]
@@ -101,9 +104,9 @@ pub impl LevelManager {
 
     #[func]
     fn check_order(&mut self, index : u16){
-        //Hacer chequeo del Inventario
         let mut player = self.base().get_node_as::<Player>("../Player");
         if player.bind_mut().fullfill_order(self.pedidos[index as usize].clone()){
+            player.bind_mut().sum_points(self.puntos_por_orden);
             self.recieve_order(index as usize);
         }
     }
@@ -111,6 +114,16 @@ pub impl LevelManager {
 
     pub fn recieve_order(&mut self, index : usize){
         self.pedidos.remove(index);
+
+        self.ordenes_para_pasar -= 1;
+        if self.ordenes_para_pasar <= 0 {
+            self.win();
+        }
+
         self.update_interface();
+    }
+
+    pub fn win(&mut self){
+        self.base().get_tree().unwrap().change_scene_to_file(&self.next_level.as_ref().expect("Sin siguiente nivel").get_path());
     }
 }

@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://b1xu8edmoxsvb"]
+[gd_scene load_steps=0 format=3 uid="uid://b1xu8edmoxsvb"]
 
 [node name="TimeSystem" type="TimeSystem"]
 time_for_tick = 1.0
