@@ -15,7 +15,19 @@ pub struct FruitItemResource{
     #[export]
     textura : Option<Gd<Texture2D>>,
     #[export]
-    precio : u16
+    precio : u16,
+    #[export]
+    ruta_de_semilla_a_dar : GString,
+    #[export]
+    semillas_a_dar : u16
+}
+
+
+impl FruitItemResource {
+    pub fn give_seeds(&self) -> DynGd<RefCounted, dyn IItem>{
+        let semilla = load::<Resource>(&self.ruta_de_semilla_a_dar);
+        semilla.to_variant().to()
+    }
 }
 
 #[godot_dyn]

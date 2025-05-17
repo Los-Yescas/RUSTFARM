@@ -91,7 +91,6 @@ impl Player {
     fn pick_item(&mut self){
         if let Some(object) = self.check_for_item() {
             let variant = object.to_variant();
-            godot_print!("{variant}");
             if let Ok(mut pickable) = variant.try_to::<DynGd<Node2D, dyn IWorldPickable>>(){
                 let mut pickable = pickable.dyn_bind_mut();
                 if let Some(item) = pickable.pick(){

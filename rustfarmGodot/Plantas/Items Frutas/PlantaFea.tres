@@ -8,3 +8,5 @@ descripcion = "Feo como el orto"
 max_stack = 34
 textura = ExtResource("1_ieh80")
 precio = 20
+ruta_de_semilla_a_dar = "res://Plantas/Items Semillas/planta_fea_semilla.tres"
+semillas_a_dar = 5

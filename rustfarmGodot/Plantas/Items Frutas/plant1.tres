@@ -8,3 +8,5 @@ descripcion = "plant1"
 max_stack = 10
 textura = ExtResource("1_i6lf6")
 precio = 100
+ruta_de_semilla_a_dar = "res://Plantas/Items Semillas/plant1.tres"
+semillas_a_dar = 3
