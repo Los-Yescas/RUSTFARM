@@ -18,6 +18,7 @@ pub mod player_interface;
 #[derive(GodotClass)]
 #[class(base=Node2D, init)]
 pub struct Player {
+    base: Base<Node2D>,
     #[export]
     #[init(val = 500.0)]
     speed: f32,
@@ -40,7 +41,10 @@ pub struct Player {
     puntos : u16,
     #[init(val = Vector2i::RIGHT)]
     direction : Vector2i,
-    base: Base<Node2D>
+    #[var]
+    points_made : u16,
+    #[var]
+    orders_made : u16
 }
 #[godot_api]
 impl INode2D for Player {
@@ -244,6 +248,7 @@ impl Player {
         self.inventory.iter().position(|slot| slot.is_none()).is_none()
     }
     pub fn sum_points(&mut self, points : u16){
+        self.points_made += points;
         self.puntos += points;
     }
     pub fn rest_points(&mut self, points : u16){
@@ -328,6 +333,7 @@ impl Player {
                 }
                 self.rest_item_to_inventory(index, *using);
             }
+            self.orders_made += 1;
             return true;
         }
         false
