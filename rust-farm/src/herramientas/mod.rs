@@ -113,11 +113,9 @@ impl IItem for Herramienta {
                 }
             }
         };
-        godot_print!("{}", self.usos);
         if used {
             self.usos -= 1;
         }
-        godot_print!("{}", self.usos);
         self.usos <= 0
     }
 }
