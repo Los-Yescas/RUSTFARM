@@ -1,4 +1,4 @@
-[gd_resource type="SeedItemResource" load_steps=3 format=3 uid="uid://bc1idu3be57fn"]
+[gd_resource type="SeedItemResource" load_steps=3 format=3 uid="uid://1kqivcty62mp"]
 
 [ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_gc5u0"]
 
@@ -10,6 +10,6 @@ region = Rect2(0, 1449, 180, 180)
 nombre = "Semilla de Piña"
 descripcion = "MIAU"
 max_stack = 10
-ruta_de_planta_a_plantar = "C:/Users/pc/Documents/RUSTFARM/rustfarmGodot/Plantas/Plantas/Pina.tres"
+ruta_de_planta_a_plantar = "res://Plantas/Plantas/Pina.tres"
 textura = SubResource("AtlasTexture_k3t4h")
 precio = 10

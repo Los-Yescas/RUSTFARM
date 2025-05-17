@@ -1,4 +1,4 @@
-[gd_resource type="PlantResource" load_steps=8 format=3 uid="uid://dmpo043moaj77"]
+[gd_resource type="PlantResource" load_steps=8 format=3 uid="uid://bcgc3uf5vktvp"]
 
 [ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_c0x25"]
 
@@ -51,4 +51,4 @@ crecimiento_minimo = 10
 crecimiento_maximo = 20
 puntos_para_crecer = 80
 sprite = SubResource("SpriteFrames_g6oue")
-plant_fruit_data_path = "C:/Users/pc/Documents/RUSTFARM/rustfarmGodot/Plantas/Items Frutas/Pina.tres"
+plant_fruit_data_path = "res://Plantas/Items Frutas/Pina.tres"

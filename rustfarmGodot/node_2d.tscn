@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=4 uid="uid://cs863yaqiboou"]
+[gd_scene load_steps=6 format=4 uid="uid://dmoin4th8d1ol"]
 
 [ext_resource type="TileSet" uid="uid://co8o6sa3p2ldc" path="res://TileMaps/Suelos.tres" id="1_q6r6c"]
 [ext_resource type="PackedScene" uid="uid://cge4d3lb6qkdk" path="res://Player/player.tscn" id="2_epypp"]
