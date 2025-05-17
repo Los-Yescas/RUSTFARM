@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://4gyqdc8m3pyi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ic0ij"]
+size = Vector2(180, 180)
+
+[node name="PlantNode" type="Planta"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_ic0ij")

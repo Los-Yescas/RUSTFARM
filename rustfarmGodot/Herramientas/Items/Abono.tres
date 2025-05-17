@@ -1,0 +1,16 @@
+[gd_resource type="Herramienta" load_steps=3 format=3 uid="uid://de8g8wvv8sryr"]
+
+[ext_resource type="Texture2D" uid="uid://ds7f2r0u4es8v" path="res://Herramientas/Graficas/HerramientasPlaceHolder.png" id="1_ntlk2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jaxkf"]
+atlas = ExtResource("1_ntlk2")
+region = Rect2(180, 9, 180, 180)
+
+[resource]
+efecto = "AumentarFertilidad"
+nombre = "Feril"
+descripcion = "asdasd"
+max_stack = 1
+precio = 250
+textura = SubResource("AtlasTexture_jaxkf")
+usos = 5

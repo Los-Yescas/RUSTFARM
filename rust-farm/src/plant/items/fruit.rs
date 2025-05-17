@@ -32,6 +32,10 @@ impl FruitItemResource {
 
 #[godot_dyn]
 pub impl IItem for FruitItemResource {
+    fn pick(&self) -> DynGd<RefCounted, dyn IItem>{
+        self.to_gd().to_variant().to()
+    }
+
     fn get_name(&self) -> GString {
         self.nombre.clone()
     }
@@ -44,7 +48,7 @@ pub impl IItem for FruitItemResource {
     fn get_max_stack(&self) -> u16 {
         self.max_stack
     }
-    fn interact(&self, mut _world : Gd<Node2D>, _postion : Vector2) -> bool {
+    fn interact(&mut self, mut _world : Gd<Node2D>, _postion : Vector2, _objeto : Option<Gd<Node2D>>) -> bool {
         false
     }
     fn get_precio(&self) -> u16{

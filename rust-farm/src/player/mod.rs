@@ -7,6 +7,7 @@ use godot::prelude::*;
 use godot::classes::Node2D;
 use godot::classes::INode2D;
 
+use crate::item::item_node::Item;
 use crate::item::item_resource::IItem;
 use crate::level_manager::level_manager_node::Pedido;
 use crate::world_interactables::IWorldInteractable;
@@ -84,8 +85,13 @@ impl Player {
             self.pick_item();
         }
 
-        if event.is_action_pressed("interact") && !self.is_moving{
+        if self.is_moving{
+            return;
+        }
+        if event.is_action_pressed("interact") {
             self.interact();   
+        }else if event.is_action_pressed("drop") {
+            self.drop_current_item();
         }
     }
     pub fn select_item(&mut self, index : usize){
@@ -98,7 +104,8 @@ impl Player {
             if let Ok(mut pickable) = variant.try_to::<DynGd<Node2D, dyn IWorldPickable>>(){
                 let mut pickable = pickable.dyn_bind_mut();
                 if let Some(item) = pickable.pick(){
-                    match self.add_item_to_inventory(item) {
+                    let item = item.dyn_bind().pick();
+                    match self.add_item_to_inventory(&item) {
                         Err(error) => godot_print!("{error}"),
                         Ok(_exito) => {
                             self.base_mut().emit_signal("inventory_updated", &[]);
@@ -263,16 +270,12 @@ impl Player {
 
         if let  Some(tupla_inventario) = &mut self.inventory[self.item_actual]{
             let  (item, _) = tupla_inventario;
-            
+   
+            let consume = item.dyn_bind_mut().interact(world, position, item_in_front);
 
-            if item_in_front == None{
-                
-                let consume = item.dyn_bind().interact(world, position);
-
-                if consume {
-                    self.rest_item_to_inventory(self.item_actual, 1);
-                    self.base_mut().emit_signal("inventory_updated", &[]);
-                }
+            if consume {
+                self.rest_item_to_inventory(self.item_actual, 1);
+                self.base_mut().emit_signal("inventory_updated", &[]);
             }
         }
     }
@@ -337,6 +340,21 @@ impl Player {
             return true;
         }
         false
+    }
+
+    fn drop_current_item(&mut self){
+        if let Some(actual_item) = self.get_equiped_item(){
+            if self.check_for_item().is_none(){
+                let mut nodo_item = Item::from_resource(actual_item.0.clone());
+                let mut nivel = self.base().get_parent().unwrap();
+                let position = self.base().get_node_as::<Marker2D>("InteractZone/SpawnerPos").get_global_position();
+                nodo_item.set_global_position(position);
+                self.rest_item_to_inventory(self.item_actual, 1);
+
+
+                nivel.add_child(&nodo_item);
+            }
+        }
     }
 
     pub fn get_equiped_item(&self) -> Option<&(DynGd<RefCounted, dyn IItem>, u16)>{

@@ -1,0 +1,16 @@
+[gd_resource type="Herramienta" load_steps=3 format=3 uid="uid://cw0nfw00pgq34"]
+
+[ext_resource type="Texture2D" uid="uid://ds7f2r0u4es8v" path="res://Herramientas/Graficas/HerramientasPlaceHolder.png" id="1_m60uj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jaxkf"]
+atlas = ExtResource("1_m60uj")
+region = Rect2(540, 9, 180, 180)
+
+[resource]
+efecto = "ConstruirPuente"
+nombre = "pUENTES"
+descripcion = "asdasd"
+max_stack = 1
+precio = 100
+textura = SubResource("AtlasTexture_jaxkf")
+usos = 5

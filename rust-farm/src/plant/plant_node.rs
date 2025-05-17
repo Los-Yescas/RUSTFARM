@@ -1,4 +1,4 @@
-use godot::{classes::{AnimatedSprite2D, Area2D, CollisionShape2D, RectangleShape2D}, prelude::*};
+use godot::{classes::{AnimatedSprite2D, TileMapLayer}, prelude::*};
 use super::plant_resource::PlantResource;
 
 use crate::{game_manager::GameManager, item::item_resource::IItem, world_interactables::IWorldPickable};
@@ -23,7 +23,8 @@ pub struct Planta{
     plant_data : Gd<PlantResource>,
     fruit_data : Option<DynGd<RefCounted, dyn IItem>>,
     #[init(val = FasesPlantas::Bebe)]
-    fase_actual : FasesPlantas
+    fase_actual : FasesPlantas,
+    fertilidad : f32
 }
 
 #[godot_api]
@@ -42,18 +43,14 @@ impl INode2D for Planta {
 
         let sprite = self.plant_data.bind().get_sprite().expect("No hay animacion");
 
-        let mut animated_sprite = AnimatedSprite2D::new_alloc();
+        let mut animated_sprite = self.base().get_node_as::<AnimatedSprite2D>("AnimatedSprite2D");
         animated_sprite.set_sprite_frames(&sprite);
-        animated_sprite.set_name("AnimatedSprite2D");
-        self.base_mut().add_child(&animated_sprite);
 
-        let mut area_collision = Area2D::new_alloc();
-        let mut collider = CollisionShape2D::new_alloc();
-        let mut shape = RectangleShape2D::new_gd();
-        shape.set_size(Vector2 { x: 100.0, y: 100.0 });
-        collider.set_shape(&shape);
-        area_collision.add_child(&collider);
-        self.base_mut().add_child(&area_collision);
+        let tiles = self.base().get_node_as::<TileMapLayer>("../Suelo");
+        let tile_position = tiles.local_to_map(self.base().get_global_position());
+        let tile_data = tiles.get_cell_tile_data(tile_position);
+
+        self.fertilidad = tile_data.unwrap().get_custom_data("fertility").to();
     }
 }
 
@@ -66,7 +63,7 @@ impl Planta {
         let max_cre = plant_data.get_crecimiento_maximo();
         let punt_pa_cre = plant_data.get_puntos_para_crecer();
 
-        self.grow_points += min_cre + random_number%(max_cre-min_cre);
+        self.grow_points += ((min_cre + random_number%(max_cre-min_cre)) as f32 * self.fertilidad).ceil() as u32;
         drop(plant_data);
 
         if self.grow_points >= punt_pa_cre {
@@ -93,19 +90,14 @@ impl Planta {
         }
     }
     #[func]
-    pub fn from_resource(plant_resource : Gd<PlantResource>) -> Gd<Self>{
-        Gd::from_init_fn(|base| {
-            let fruit_data = load::<Resource>(&plant_resource.bind().get_plant_fruit_data_path()).to_variant().to();
-            Self {
-                base,
-                plant_data_path : plant_resource.get_path(),
-                fruit_data,
-                plant_data : plant_resource,
-                fase_actual : FasesPlantas::Bebe,
-                grow_points : 0,
-                
-            }
-        })
+    pub fn from_resource(plant_resource : Gd<PlantResource>) -> Gd<Planta>{
+        let plant_scene = load::<PackedScene>("res://Plantas/PlantNode.tscn");
+        let mut new_plant = plant_scene.instantiate_as::<Planta>();
+        let mut plant = new_plant.bind_mut();
+        plant.set_plant_data_path(plant_resource.get_path());
+        drop(plant);
+
+        new_plant
     }
     #[func]
     pub fn harvest(&mut self) -> Option<DynGd<RefCounted, dyn IItem>>{

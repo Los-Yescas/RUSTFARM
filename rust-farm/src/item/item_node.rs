@@ -26,13 +26,27 @@ pub impl IWorldPickable for Item{
 #[godot_api]
 impl INode2D for Item{
     fn ready(&mut self,) {
-        let resource: Gd<Resource> = load(&self.item_path);
+        if !self.item_path.is_empty(){
+            let resource: Gd<Resource> = load(&self.item_path);
+            self.item_resource = resource.to_variant().to();
+        }
+        
 
-        self.item_resource = resource.to_variant().to();
+        
 
         let mut sprite = self.base_mut().get_node_as::<Sprite2D>("./Sprite2D");
         let textura = &self.item_resource.as_ref().expect("No hay recurso").dyn_bind().get_sprite();
         sprite.set_texture(textura);
+    }
+}
+
+impl Item {
+    pub fn from_resource(item : DynGd<RefCounted, dyn IItem>) -> Gd<Item>{
+        let escene = load::<PackedScene>("res://Items/ItemNode.tscn");
+        let mut item_node = escene.instantiate_as::<Item>();
+        item_node.bind_mut().set_item_resource(Some(item.to_variant().to()));
+
+        item_node
     }
 }
 
