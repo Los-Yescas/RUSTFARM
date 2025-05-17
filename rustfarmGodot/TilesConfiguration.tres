@@ -1,0 +1,58 @@
+[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://cj433lp8bu8mi"]
+
+[ext_resource type="Texture2D" uid="uid://cqamrtop73i5r" path="res://Tiles.png" id="1_n7ie3"]
+[ext_resource type="Texture2D" uid="uid://1838651o78t1" path="res://Graphics/TileSets/Tiles.png" id="2_qb66l"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_epypp"]
+resource_name = "asd"
+texture = ExtResource("1_n7ie3")
+texture_region_size = Vector2i(100, 100)
+0:0/0 = 0
+0:0/0/custom_data_0 = true
+1:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4d7sh"]
+resource_name = "Tiles"
+texture = ExtResource("2_qb66l")
+texture_region_size = Vector2i(180, 180)
+0:0/0 = 0
+0:0/0/custom_data_0 = true
+0:0/0/custom_data_1 = true
+0:0/0/custom_data_2 = true
+0:0/0/custom_data_3 = 0.25
+1:0/0 = 0
+1:0/0/custom_data_0 = true
+1:0/0/custom_data_1 = true
+1:0/0/custom_data_2 = true
+1:0/0/custom_data_3 = 0.5
+2:0/0 = 0
+2:0/0/custom_data_0 = true
+2:0/0/custom_data_1 = true
+2:0/0/custom_data_2 = true
+2:0/0/custom_data_3 = 1.0
+3:0/0 = 0
+3:0/0/custom_data_0 = true
+3:0/0/custom_data_1 = true
+3:0/0/custom_data_3 = 1.5
+4:0/0 = 0
+4:0/0/custom_data_0 = true
+5:0/0 = 0
+5:0/0/custom_data_0 = true
+6:0/0 = 0
+6:0/0/custom_data_2 = true
+7:0/0 = 0
+8:0/0 = 0
+8:0/0/custom_data_0 = true
+
+[resource]
+tile_size = Vector2i(180, 180)
+custom_data_layer_0/name = "walkable"
+custom_data_layer_0/type = 1
+custom_data_layer_1/name = "plantable"
+custom_data_layer_1/type = 1
+custom_data_layer_2/name = "modificable"
+custom_data_layer_2/type = 1
+custom_data_layer_3/name = "fertility"
+custom_data_layer_3/type = 3
+sources/0 = SubResource("TileSetAtlasSource_epypp")
+sources/1 = SubResource("TileSetAtlasSource_4d7sh")
