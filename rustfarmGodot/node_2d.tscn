@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://ct4syei6vsx3f"]
+[gd_scene load_steps=13 format=4 uid="uid://ct4syei6vsx3f"]
 
 [ext_resource type="Texture2D" uid="uid://cqamrtop73i5r" path="res://Tiles.png" id="1_0e48y"]
 [ext_resource type="PackedScene" uid="uid://cge4d3lb6qkdk" path="res://Player/player.tscn" id="2_epypp"]
@@ -25,6 +25,9 @@ sources/0 = SubResource("TileSetAtlasSource_epypp")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d21ai"]
 size = Vector2(180, 180)
 
+[sub_resource type="LabelSettings" id="LabelSettings_d21ai"]
+font_size = 50
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rj586"]
 size = Vector2(180, 180)
 
@@ -41,8 +44,6 @@ position = Vector2(50, 50)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(0.5, 0.5)
-
-[node name="Node" type="Node" parent="."]
 
 [node name="Mercado" type="Mercado" parent="."]
 items_a_la_venta_rutas = Array[String](["res://Plantas/Items Semillas/plant1.tres", "res://Plantas/Items Semillas/plant2.tres", "res://Plantas/Items Semillas/planta_fea_semilla.tres"])
@@ -155,9 +156,9 @@ shape = SubResource("RectangleShape2D_d21ai")
 items_a_pedir = Array[String](["res://Plantas/Items Semillas/plant1.tres", "res://Plantas/Items Semillas/plant2.tres", "res://Plantas/Items Semillas/planta_fea_semilla.tres"])
 tiempo_minimo_entre_nuevas_ordenes = 1.0
 tiempo_maximo_entre_nuevas_ordenes = 2.0
-maximo_a_pedir = 10
+maximo_a_pedir = 5
 next_level = ExtResource("6_kdubu")
-tiempo_de_nivel = 999
+tiempo_de_nivel = 30
 puntos_min_por_orden = 100
 puntos_max_por_orden = 500
 tiempo_minimo_de_orden = 100
@@ -204,6 +205,7 @@ size_flags_vertical = 3
 one_shot = true
 
 [node name="TimeInterface" type="CanvasLayer" parent="LevelManager"]
+layer = 3
 
 [node name="TimeLeft" type="Label" parent="LevelManager/TimeInterface"]
 anchors_preset = 5
@@ -217,6 +219,78 @@ grow_horizontal = 2
 size_flags_horizontal = 6
 size_flags_vertical = 2
 text = "45"
+label_settings = ExtResource("4_q6r6c")
+
+[node name="WinScreen" type="CanvasLayer" parent="LevelManager"]
+layer = 6
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="LevelManager/WinScreen"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Ganaste" type="Label" parent="LevelManager/WinScreen"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -499.5
+offset_top = -171.5
+offset_right = 499.5
+offset_bottom = -102.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Hora del Siguiente Nivel. Tus estadisticas:"
+label_settings = SubResource("LabelSettings_d21ai")
+
+[node name="NextLevel" type="Button" parent="LevelManager/WinScreen"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -62.0
+offset_top = -113.0
+offset_right = 62.0
+offset_bottom = -82.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 25
+text = "Siguiente Nivel"
+
+[node name="Ordenes" type="Label" parent="LevelManager/WinScreen"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -110.5
+offset_top = 20.5
+offset_right = 110.5
+offset_bottom = 75.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "00 Ordenes"
+label_settings = ExtResource("4_q6r6c")
+
+[node name="Ganancias" type="Label" parent="LevelManager/WinScreen"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -129.5
+offset_top = -65.5
+offset_right = 129.5
+offset_bottom = -10.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "00$ Ganancia"
 label_settings = ExtResource("4_q6r6c")
 
 [node name="ItemNode" parent="." instance=ExtResource("3_epypp")]

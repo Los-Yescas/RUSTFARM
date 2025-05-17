@@ -1,4 +1,4 @@
-use godot::{classes::{Label, RandomNumberGenerator, Timer}, prelude::*};
+use godot::{classes::{Button, CanvasLayer, Label, RandomNumberGenerator, Timer}, prelude::*};
 
 use crate::{item::item_resource::IItem, player::Player};
 
@@ -82,9 +82,12 @@ impl INode2D for LevelManager {
         self.reset_timer();
 
         let mut level_timer = self.base().get_node_as::<Timer>("LevelTimer");
-        level_timer.connect("timeout", &self.base().callable("finish_level"));
+        level_timer.connect("timeout", &self.base().callable("show_end_screen"));
         level_timer.set_wait_time(self.tiempo_de_nivel as f64);
         level_timer.start();
+
+        let mut button = self.base().get_node_as::<Button>("WinScreen/NextLevel");
+        button.connect("pressed", &self.base().callable("finish_level"));
     }
 
     fn process(&mut self, delta : f64){
@@ -156,6 +159,23 @@ pub impl LevelManager {
         self.pedidos.remove(index);
 
         self.update_orders_interface();
+    }
+
+    #[func]
+    fn show_end_screen(&mut self){
+        let mut screen = self.base().get_node_as::<CanvasLayer>("WinScreen");
+        screen.set_visible(true);
+
+        let mut player = self.base().get_node_as::<Player>("../Player");
+        let profits = player.bind().get_points_made();
+        let orders = player.bind().get_orders_made();
+        player.bind_mut().set_active(false);
+
+        let mut orders_label = self.base().get_node_as::<Label>("WinScreen/Ordenes");
+        let mut profits_label = self.base().get_node_as::<Label>("WinScreen/Ganancias");
+
+        orders_label.set_text(&format!("{orders} ordenes"));
+        profits_label.set_text(&format!("{profits} $ en ganancia"));
     }
 
     #[func]
