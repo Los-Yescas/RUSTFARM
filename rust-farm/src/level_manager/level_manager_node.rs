@@ -8,7 +8,9 @@ use super::level_manager_interface::LevelManagerInterface;
 #[derive(Clone)]
 pub struct Pedido {
     pub requerimientos : Vec<Requerimiento>,
-    pub recompensa : u16
+    pub recompensa : u16,
+    pub time_for_order : f32,
+    pub time_passed : f32
 }   
 #[derive(Clone)]
 pub struct Requerimiento {
@@ -30,10 +32,10 @@ pub struct LevelManager{
     pedidos_maximos_actuales : u8,
     #[export]
     #[init(val=10.0)]
-    tiempo_minimo : f32,
+    tiempo_minimo_entre_nuevas_ordenes : f32,
     #[export]
     #[init(val=20.0)]
-    tiempo_maximo : f32,
+    tiempo_maximo_entre_nuevas_ordenes : f32,
     #[export]
     #[init(val=1)]
     minimo_a_pedir : u8,
@@ -49,7 +51,11 @@ pub struct LevelManager{
     #[export]
     puntos_min_por_orden : u16,
     #[export]
-    puntos_max_por_orden : u16
+    puntos_max_por_orden : u16,
+    #[export]
+    tiempo_minimo_de_orden : u16,
+    #[export]
+    tiempo_maximo_de_orden : u16
 }
 
 #[godot_api]
@@ -81,8 +87,10 @@ impl INode2D for LevelManager {
         level_timer.start();
     }
 
-    fn process(&mut self, _delta : f64){
+    fn process(&mut self, delta : f64){
         self.update_time_interface();
+
+        self.update_time_of_orders(delta);
     }
 }
 
@@ -90,7 +98,7 @@ impl INode2D for LevelManager {
 pub impl LevelManager {
     fn reset_timer(&mut self){
         let mut timer = self.base().get_node_as::<Timer>("Timer");
-        let tiempo_pedido = self.rng.randf_range(self.tiempo_minimo, self.tiempo_maximo) as f64;
+        let tiempo_pedido = self.rng.randf_range(self.tiempo_minimo_entre_nuevas_ordenes, self.tiempo_maximo_entre_nuevas_ordenes) as f64;
         timer.set_wait_time(tiempo_pedido);
         timer.start();
     }
@@ -103,7 +111,8 @@ pub impl LevelManager {
         }
         let num_a_pedir = self.rng.randi_range(1, 3);
         let recompensa = self.rng.randi_range(self.puntos_min_por_orden as i32, self.puntos_max_por_orden as i32) as u16;
-        let mut pedido = Pedido { requerimientos: Vec::new(), recompensa };
+        let tiempo = self.rng.randi_range(self.tiempo_minimo_de_orden as i32, self.tiempo_maximo_de_orden as i32) as f32;
+        let mut pedido = Pedido { requerimientos: Vec::new(), recompensa, time_for_order : tiempo, time_passed : 0.0 };
         for _num in 0..num_a_pedir {
             let index_of_item = self.rng.randi_range(0, (self.items_list.len()-1) as i32) as usize;
             let item = &self.items_list[index_of_item];
@@ -138,12 +147,12 @@ pub impl LevelManager {
         let pedido = &self.pedidos[index as usize];
         if player.bind_mut().fullfill_order(pedido){
             player.bind_mut().sum_points(pedido.recompensa);
-            self.recieve_order(index as usize);
+            self.remove_order(index as usize);
         }
     }
 
 
-    pub fn recieve_order(&mut self, index : usize){
+    pub fn remove_order(&mut self, index : usize){
         self.pedidos.remove(index);
 
         self.update_orders_interface();
@@ -152,5 +161,19 @@ pub impl LevelManager {
     #[func]
     pub fn finish_level(&mut self){
         self.base().get_tree().unwrap().change_scene_to_file(&self.next_level.as_ref().expect("Sin siguiente nivel").get_path());
+    }
+
+    fn update_time_of_orders(&mut self, delta:f64){
+        let mut index_for_removal : Vec<usize> = Vec::new();
+        for (index, orden) in self.pedidos.iter_mut().enumerate(){
+            orden.time_passed += delta as f32;
+            if orden.time_passed >= orden.time_for_order {
+                index_for_removal.push(index);
+            }
+        }
+        for index in index_for_removal {
+            self.remove_order(index);
+            self.update_time_interface();
+        }
     }
 }

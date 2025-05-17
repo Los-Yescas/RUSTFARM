@@ -1,6 +1,6 @@
-use godot::{classes::{Button, CanvasLayer, ColorRect, GridContainer, InputEvent, Label}, prelude::*};
+use godot::{classes::{Button, CanvasLayer, ColorRect, GridContainer, Label}, prelude::*};
 
-use crate::{interfaces::utils::slot_grid::GridSlot, item::item_resource::IItem, player::Player};
+use crate::{interfaces::utils::slot_grid::GridSlot, item::item_resource::IItem, player::Player, world_interactables::IWorldInteractable};
 
 
 #[derive(GodotClass)]
@@ -17,6 +17,20 @@ struct Mercado {
     #[export]
     factor_de_venta : f32,
     player : Option<Gd<Player>>
+}
+
+#[godot_dyn]
+impl IWorldInteractable for Mercado {
+    fn show_menu(&mut self, inventory : Vec<Option<(DynGd<RefCounted, dyn IItem>, u16)>>, points : u16) {
+        let mut points_label = self.base().get_node_as::<Label>("./MarketUI/Points");
+        points_label.set_text(&format!("{points}$"));
+        self.update_sell_menu(inventory);
+        self.update_buy_menu();
+        self.show_buy_menu();
+        let mut interfaz = self.base().get_node_as::<CanvasLayer>("MarketUI");
+        
+        interfaz.set_visible(true);
+    }
 }
 
 #[godot_api]
@@ -48,24 +62,33 @@ impl INode2D for Mercado{
         buy_menu_button.connect("pressed", &show_buy_callable);
         sell_menu_button.connect("pressed", &show_sell_callable);
 
+        let mut close_button = self.base().get_node_as::<Button>("MarketUI/Close");
+        let show_menu_callable = self.base().callable("close_market");
+        close_button.connect("pressed", &show_menu_callable);
+
         self.update_information();
-    }
-    fn input(&mut self, event: Gd<InputEvent>,) {
-        if event.is_action_pressed("market") {
-            self.show_market();
-        }
     }
 }
 
 #[godot_api]
 impl Mercado {
+    #[func]
     fn show_market(&mut self){
-        let mut interfaz = self.base().get_node_as::<CanvasLayer>("MarketUI");
-        let is_visible = interfaz.is_visible();
-        self.player.as_mut().unwrap().bind_mut().set_active(is_visible);
-        interfaz.set_visible(!is_visible);
         self.show_buy_menu();
         self.update_information();
+        
+        let mut interfaz = self.base().get_node_as::<CanvasLayer>("MarketUI");
+        
+        interfaz.set_visible(true);
+        
+    }
+    #[func]
+    fn close_market(&mut self){
+        let mut interfaz = self.base().get_node_as::<CanvasLayer>("MarketUI");
+        
+        interfaz.set_visible(false);
+
+        self.player.as_mut().unwrap().bind_mut().set_active(true);
     }
     #[func]
     fn buy_something(&mut self, index : u16){
@@ -113,14 +136,13 @@ impl Mercado {
         }
     }
     fn update_information(&mut self){
-        self.update_buy_menu();
-        self.update_sell_menu();
-
         let player = self.player.as_ref().expect("Sin jugador");
         let mut points_label = self.base().get_node_as::<Label>("./MarketUI/Points");
         let points = player.bind().get_puntos();
         points_label.set_text(&format!("{points}$"));
-
+        let inventory = player.bind().get_inventory();
+        self.update_sell_menu(inventory);
+        self.update_buy_menu();
     }
 
     fn update_buy_menu(&mut self) {
@@ -141,8 +163,7 @@ impl Mercado {
         }
     }
 
-    fn update_sell_menu(&mut self){
-        let player = self.player.as_ref().expect("Sin jugador");
+    fn update_sell_menu(&mut self, inventario : Vec<Option<(DynGd<RefCounted, dyn IItem>, u16)>>){
         let mut sell_grid_container = self.base().get_node_as::<GridContainer>("./MarketUI/SellMenu/MarketUI/GridContainer");
 
         for mut nodo in sell_grid_container.get_children().iter_shared() {
@@ -150,8 +171,7 @@ impl Mercado {
         }
 
         
-
-        for (i, inventory_slot) in player.bind().get_inventory().iter().enumerate(){
+        for (i, inventory_slot) in inventario.iter().enumerate(){
             if let Some((item, stack)) = inventory_slot {
                 let mut new_slot=GridSlot::from_item_resource(item.clone(), *stack, self.factor_de_venta, i as u16);
                 sell_grid_container.add_child(&new_slot);

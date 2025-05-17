@@ -43,3 +43,16 @@ offset_bottom = 11.5
 grow_horizontal = 0
 grow_vertical = 2
 label_settings = SubResource("LabelSettings_8t0a5")
+
+[node name="TimeLeft" type="ProgressBar" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -27.0
+grow_horizontal = 2
+grow_vertical = 0
+step = 1.0
+fill_mode = 1
+show_percentage = false

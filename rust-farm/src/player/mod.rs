@@ -7,10 +7,10 @@ use godot::prelude::*;
 use godot::classes::Node2D;
 use godot::classes::INode2D;
 
-use crate::item::item_node::Item;
 use crate::item::item_resource::IItem;
 use crate::level_manager::level_manager_node::Pedido;
-use crate::plant::plant_node::Planta;
+use crate::world_interactables::IWorldInteractable;
+use crate::world_interactables::IWorldPickable;
 
 
 pub mod player_interface;
@@ -60,8 +60,8 @@ impl INode2D for Player {
         if !self.active{
             return;
         }
-        self.interaction_system_inputs(&event);
         self.player_movement_input();
+        self.interaction_system_inputs(&event);
     }
 }
 
@@ -72,41 +72,39 @@ impl Player {
 
         if event.is_action_pressed("inventory+"){
             self.select_item(self.item_actual + 1);
-            self.base_mut().emit_signal("inventory_updated", &[]);
         }else if event.is_action_pressed("inventory-") {
             self.select_item((self.item_actual + self.inventario_maximo as usize) - 1);
-            self.base_mut().emit_signal("inventory_updated", &[]);
         }else if event.is_action_pressed("inventory"){
             godot_print!("{:#?}", self.inventory);
         }else if event.is_action_pressed("pick"){
             self.pick_item();
-            self.base_mut().emit_signal("inventory_updated", &[]);
-        }else if event.is_action_pressed("interact") {
+        }
+
+        if event.is_action_pressed("interact") && !self.is_moving{
             self.interact();   
-            self.base_mut().emit_signal("inventory_updated", &[]);
         }
     }
     pub fn select_item(&mut self, index : usize){
         self.item_actual = (index as u16 % self.inventario_maximo) as usize;
+        self.base_mut().emit_signal("inventory_updated", &[]);
     }
     fn pick_item(&mut self){
-        //Se puede mejorar con Traits
         if let Some(object) = self.check_for_item() {
-            if let Ok(mut item) = object.clone().try_cast::<Item>(){
-                let resource: DynGd<RefCounted, dyn IItem> = item.bind().get_item_resource().to_variant().to();
-                let res = self.add_item_to_inventory(&resource);
-                match res {
-                    Err(error) => godot_print!("{error}"),
-                    Ok(_exito) => item.queue_free(),
-                }
-            }else if let Ok(mut planta) = object.clone().try_cast::<Planta>(){
-                if let Some(resource) = planta.clone().bind_mut().harvest(){
-                    let res = self.add_item_to_inventory(&resource);
-                    match res {
+            let variant = object.to_variant();
+            godot_print!("{variant}");
+            if let Ok(mut pickable) = variant.try_to::<DynGd<Node2D, dyn IWorldPickable>>(){
+                let mut pickable = pickable.dyn_bind_mut();
+                if let Some(item) = pickable.pick(){
+                    match self.add_item_to_inventory(item) {
                         Err(error) => godot_print!("{error}"),
-                        Ok(_exito) => planta.queue_free(),
+                        Ok(_exito) => {
+                            self.base_mut().emit_signal("inventory_updated", &[]);
+                            pickable.has_been_picked()
+                        }
                     }
                 }
+            } else if let Ok(mut interactable) = variant.try_to::<DynGd<Node2D, dyn IWorldInteractable>>(){
+                interactable.dyn_bind_mut().show_menu(self.inventory.clone(), self.puntos);
             }
         }
     }
@@ -261,6 +259,7 @@ impl Player {
 
         if let  Some(tupla_inventario) = &mut self.inventory[self.item_actual]{
             let  (item, _) = tupla_inventario;
+            
 
             if item_in_front == None{
                 
@@ -268,6 +267,7 @@ impl Player {
 
                 if consume {
                     self.rest_item_to_inventory(self.item_actual, 1);
+                    self.base_mut().emit_signal("inventory_updated", &[]);
                 }
             }
         }
@@ -347,4 +347,3 @@ impl Player {
         self.inventory.clone()
     }
 }
-

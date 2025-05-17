@@ -10,6 +10,8 @@ pub mod item;
 pub mod mercado;
 pub mod level_manager;
 
+pub mod world_interactables;
+
 
 //Interfaces
 pub mod interfaces;
