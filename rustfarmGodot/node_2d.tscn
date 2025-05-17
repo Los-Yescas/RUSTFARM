@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://ct4syei6vsx3f"]
+[gd_scene load_steps=12 format=4 uid="uid://ct4syei6vsx3f"]
 
 [ext_resource type="Texture2D" uid="uid://cqamrtop73i5r" path="res://Tiles.png" id="1_0e48y"]
 [ext_resource type="PackedScene" uid="uid://cge4d3lb6qkdk" path="res://Player/player.tscn" id="2_epypp"]
@@ -23,6 +23,9 @@ custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_epypp")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d21ai"]
+size = Vector2(180, 180)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rj586"]
 size = Vector2(180, 180)
 
 [node name="Node2D" type="Node2D"]
@@ -218,3 +221,66 @@ label_settings = ExtResource("4_q6r6c")
 
 [node name="ItemNode" parent="." instance=ExtResource("3_epypp")]
 item_path = "res://Plantas/Items Frutas/plant1.tres"
+position = Vector2(-400, 89)
+
+[node name="SeedProcessor" type="SeedProcessor" parent="."]
+position = Vector2(309, 505)
+
+[node name="Sprite2D" type="Sprite2D" parent="SeedProcessor"]
+modulate = Color(0.45521, 0.207673, 0, 1)
+texture = ExtResource("6_d21ai")
+
+[node name="Area2D" type="Area2D" parent="SeedProcessor"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SeedProcessor/Area2D"]
+shape = SubResource("RectangleShape2D_rj586")
+
+[node name="UI" type="CanvasLayer" parent="SeedProcessor"]
+layer = 2
+visible = false
+
+[node name="Background" type="ColorRect" parent="SeedProcessor/UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.808402, 0.45123, 0.204688, 1)
+
+[node name="Title" type="Label" parent="SeedProcessor/UI/Background"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 20.0
+offset_right = 20.0
+offset_bottom = 43.0
+grow_horizontal = 2
+text = "Seed Processor"
+label_settings = ExtResource("4_q6r6c")
+
+[node name="ItemGrid" parent="SeedProcessor/UI/Background" instance=ExtResource("4_0hol4")]
+
+[node name="Close" type="Button" parent="SeedProcessor/UI"]
+offset_left = 22.0
+offset_top = 23.0
+offset_right = 80.0
+offset_bottom = 54.0
+text = "CLOSE"
+
+[node name="ItemNode2" parent="." instance=ExtResource("3_epypp")]
+item_path = "res://Plantas/Items Frutas/plant1.tres"
+position = Vector2(-178, 384)
+
+[node name="ItemNode3" parent="." instance=ExtResource("3_epypp")]
+item_path = "res://Plantas/Items Frutas/plant2.tres"
+position = Vector2(-400, 500)
+
+[node name="ItemNode4" parent="." instance=ExtResource("3_epypp")]
+item_path = "res://Plantas/Items Frutas/PlantaFea.tres"
+position = Vector2(-178, 523)
+
+[node name="ItemNode5" parent="." instance=ExtResource("3_epypp")]
+item_path = "res://Plantas/Items Frutas/PlantaFea.tres"
+position = Vector2(-350, 284)
