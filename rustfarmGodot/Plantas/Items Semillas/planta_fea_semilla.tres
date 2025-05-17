@@ -5,7 +5,7 @@
 [resource]
 nombre = "Semilla de PLanta Fea"
 descripcion = "Que haces con tu vida"
-max_stack = 2
+max_stack = 1
 ruta_de_planta_a_plantar = "res://Plantas/Plantas/planta_fea.tres"
 textura = ExtResource("1_u7oxb")
 precio = 20

@@ -34,12 +34,13 @@ pub impl IItem for SeedItemResource {
     fn get_max_stack(&self) -> u16 {
         self.max_stack
     }
-    fn interact(&self, mut world : Gd<Node2D>, postion : Vector2) {
+    fn interact(&self, mut world : Gd<Node2D>, postion : Vector2) -> bool {
         let recurso_planta : Gd<PlantResource> = load(&self.ruta_de_planta_a_plantar);
 
         let mut new_planta = Planta::from_resource(recurso_planta);
         new_planta.set_position(postion);
         world.add_child(&new_planta);
+        true
     }
 
     fn get_precio(&self) -> u16 {

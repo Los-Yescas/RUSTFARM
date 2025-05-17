@@ -1,7 +1,7 @@
 use godot::{classes::{AnimatedSprite2D, Area2D, CollisionShape2D, RectangleShape2D}, prelude::*};
-use super::{items::fruit::FruitItemResource, plant_resource::PlantResource};
+use super::plant_resource::PlantResource;
 
-use crate::{game_manager::GameManager, item::item_resource::IItem};
+use crate::{game_manager::GameManager, item::item_resource::IItem, world_interactables::IWorldPickable};
 
 #[derive(PartialEq)]
 pub enum FasesPlantas {
@@ -21,7 +21,7 @@ pub struct Planta{
     #[export]
     plant_data_path : GString,
     plant_data : Gd<PlantResource>,
-    fruit_data : Gd<FruitItemResource>,
+    fruit_data : Option<DynGd<RefCounted, dyn IItem>>,
     #[init(val = FasesPlantas::Bebe)]
     fase_actual : FasesPlantas
 }
@@ -38,7 +38,7 @@ impl INode2D for Planta {
         .cast::<GameManager>().bind_mut().base_mut().connect("tick", &grow_callable);
 
         self.plant_data = load(&self.plant_data_path);
-        self.fruit_data = load(&self.plant_data.bind().get_plant_fruit_data_path());
+        self.fruit_data = Some(load::<Resource>(&self.plant_data.bind().get_plant_fruit_data_path()).to_variant().to());
 
         let sprite = self.plant_data.bind().get_sprite().expect("No hay animacion");
 
@@ -95,7 +95,7 @@ impl Planta {
     #[func]
     pub fn from_resource(plant_resource : Gd<PlantResource>) -> Gd<Self>{
         Gd::from_init_fn(|base| {
-            let fruit_data = load(&plant_resource.bind().get_plant_fruit_data_path());
+            let fruit_data = load::<Resource>(&plant_resource.bind().get_plant_fruit_data_path()).to_variant().to();
             Self {
                 base,
                 plant_data_path : plant_resource.get_path(),
@@ -113,5 +113,18 @@ impl Planta {
             return Some(self.fruit_data.to_variant().to());
         }
         None
+    }
+}
+
+#[godot_dyn]
+impl IWorldPickable for Planta {
+    fn pick(&self) -> Option<&DynGd<RefCounted, dyn IItem>> {
+        if self.fase_actual == FasesPlantas::Madura {
+            return self.fruit_data.as_ref();
+        }
+        return None;
+    }
+    fn has_been_picked(&mut self) {
+        self.base_mut().queue_free();
     }
 }

@@ -32,7 +32,8 @@ pub impl IItem for FruitItemResource {
     fn get_max_stack(&self) -> u16 {
         self.max_stack
     }
-    fn interact(&self, mut _world : Gd<Node2D>, _postion : Vector2) {
+    fn interact(&self, mut _world : Gd<Node2D>, _postion : Vector2) -> bool {
+        false
     }
     fn get_precio(&self) -> u16{
         self.precio

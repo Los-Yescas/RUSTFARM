@@ -1,0 +1,93 @@
+[gd_scene load_steps=5 format=3 uid="uid://cv04a3sntvhuc"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_dv67t"]
+font_size = 30
+font_color = Color(0.287295, 0.287295, 0.287295, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dv67t"]
+bg_color = Color(0.18, 0.18, 0.18, 0.682353)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rn0hh"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_22gf3"]
+font_color = Color(0.0745098, 0.0745098, 0.0745098, 0.784314)
+
+[node name="SimpleSlot" type="SimpleGridSlot"]
+custom_minimum_size = Vector2(75, 75)
+
+[node name="OuterBorder" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.121866, 0.502569, 0.887404, 1)
+
+[node name="InnerBorder" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.5
+offset_top = -32.5
+offset_right = 32.5
+offset_bottom = 32.5
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.534709, 0.699462, 0.999192, 1)
+
+[node name="Texture" type="TextureRect" parent="InnerBorder"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 2
+
+[node name="Stock" type="Label" parent="InnerBorder"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -52.0
+offset_top = -42.0
+offset_right = -1.0
+grow_horizontal = 0
+grow_vertical = 0
+label_settings = SubResource("LabelSettings_dv67t")
+
+[node name="ItemButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/disabled = SubResource("StyleBoxFlat_dv67t")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rn0hh")
+
+[node name="DetailsPanel" type="ColorRect" parent="."]
+visible = false
+layout_mode = 0
+offset_top = -53.0
+offset_right = 250.0
+offset_bottom = -3.0
+color = Color(0.121569, 0.501961, 0.886275, 1)
+
+[node name="Name" type="Label" parent="DetailsPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 5.0
+offset_top = -17.0
+offset_right = 75.0
+offset_bottom = 17.0
+grow_vertical = 2
+label_settings = SubResource("LabelSettings_22gf3")

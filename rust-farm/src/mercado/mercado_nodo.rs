@@ -1,6 +1,6 @@
-use godot::{classes::{Button, CanvasLayer, ColorRect, GridContainer, InputEvent, Label}, prelude::*};
+use godot::{classes::{Button, CanvasLayer, ColorRect, GridContainer, Label}, prelude::*};
 
-use crate::{interfaces::utils::slot_grid::GridSlot, item::item_resource::IItem, player::Player};
+use crate::{interfaces::utils::slot_grid::GridSlot, item::item_resource::IItem, player::Player, world_interactables::IWorldInteractable};
 
 
 #[derive(GodotClass)]
@@ -17,6 +17,20 @@ struct Mercado {
     #[export]
     factor_de_venta : f32,
     player : Option<Gd<Player>>
+}
+
+#[godot_dyn]
+impl IWorldInteractable for Mercado {
+    fn show_menu(&mut self, inventory : Vec<Option<(DynGd<RefCounted, dyn IItem>, u16)>>, points : u16) {
+        let mut points_label = self.base().get_node_as::<Label>("./MarketUI/Points");
+        points_label.set_text(&format!("{points}$"));
+        self.update_sell_menu(inventory);
+        self.update_buy_menu();
+        self.show_buy_menu();
+        let mut interfaz = self.base().get_node_as::<CanvasLayer>("MarketUI");
+        
+        interfaz.set_visible(true);
+    }
 }
 
 #[godot_api]
@@ -48,25 +62,39 @@ impl INode2D for Mercado{
         buy_menu_button.connect("pressed", &show_buy_callable);
         sell_menu_button.connect("pressed", &show_sell_callable);
 
+        let mut close_button = self.base().get_node_as::<Button>("MarketUI/Close");
+        let show_menu_callable = self.base().callable("close_market");
+        close_button.connect("pressed", &show_menu_callable);
+
         self.update_information();
-    }
-    fn input(&mut self, event: Gd<InputEvent>,) {
-        if event.is_action_pressed("market") {
-            let mut interfaz = self.base().get_node_as::<CanvasLayer>("MarketUI");
-            let is_visible = interfaz.is_visible();
-            interfaz.set_visible(!is_visible);
-            self.show_buy_menu();
-            self.update_information();
-        }
     }
 }
 
 #[godot_api]
 impl Mercado {
     #[func]
-    fn buy_something(&mut self, item : DynGd<RefCounted, dyn IItem>){
+    fn show_market(&mut self){
+        self.show_buy_menu();
+        self.update_information();
+        
+        let mut interfaz = self.base().get_node_as::<CanvasLayer>("MarketUI");
+        
+        interfaz.set_visible(true);
+        
+    }
+    #[func]
+    fn close_market(&mut self){
+        let mut interfaz = self.base().get_node_as::<CanvasLayer>("MarketUI");
+        
+        interfaz.set_visible(false);
+
+        self.player.as_mut().unwrap().bind_mut().set_active(true);
+    }
+    #[func]
+    fn buy_something(&mut self, index : u16){
         let player = self.player.as_mut().expect("Sin jugador");
         let full_inventory = player.bind().is_inventory_full();
+        let item = self.items_a_la_venta.at(index as usize);
         let precio = item.dyn_bind().get_precio();
 
         if !full_inventory && player.bind().get_puntos() >= precio{
@@ -82,11 +110,15 @@ impl Mercado {
         }
     }   
     #[func]
-    fn sell_item(&mut self, item : DynGd<RefCounted, dyn IItem>){
-        let player = self.player.as_mut().expect("Sin jugador");
+    fn sell_item(&mut self, index : u16){
+        let mut player = self.player.as_mut().expect("Sin jugador").bind_mut();
+        let index = index as usize;
+        let (item, _) = player.get_inventory_item(index).unwrap();
         let precio = (item.dyn_bind().get_precio() as f32 * self.factor_de_venta) as u16;
-        player.bind_mut().rest_item_to_inventory(&item);
-        player.bind_mut().sum_points(precio);
+
+        player.rest_item_to_inventory(index, 1);
+        player.sum_points(precio);
+        drop(player);
         self.update_information();
     }
     fn rest_item(&mut self, item : DynGd<RefCounted, dyn IItem>){
@@ -104,14 +136,13 @@ impl Mercado {
         }
     }
     fn update_information(&mut self){
-        self.update_buy_menu();
-        self.update_sell_menu();
-
         let player = self.player.as_ref().expect("Sin jugador");
         let mut points_label = self.base().get_node_as::<Label>("./MarketUI/Points");
         let points = player.bind().get_puntos();
         points_label.set_text(&format!("{points}$"));
-
+        let inventory = player.bind().get_inventory();
+        self.update_sell_menu(inventory);
+        self.update_buy_menu();
     }
 
     fn update_buy_menu(&mut self) {
@@ -122,21 +153,17 @@ impl Mercado {
         }
 
         for (i, item) in self.items_a_la_venta.iter_shared().enumerate(){
-            let grid_slot: Gd<PackedScene> = load("res://Interfaces/Slot.tscn");
-            let new_node = grid_slot.instantiate().unwrap();
-            let mut new_slot = new_node.cast::<GridSlot>();
-            new_slot.bind_mut().from_item_resource(item, self.stock_de_items_a_la_venta.at(i), 1.0);
+            
+            let mut new_slot=GridSlot::from_item_resource(item, self.stock_de_items_a_la_venta.at(i), 1.0, i as u16);
 
             buy_grid_container.add_child(&new_slot);
 
-            new_slot.add_user_signal("selected_item");
             let buy_callable = self.base().callable("buy_something");
-            new_slot.connect("selected_item", &buy_callable);
+            new_slot.connect("item_selected", &buy_callable);
         }
     }
 
-    fn update_sell_menu(&mut self){
-        let player = self.player.as_ref().expect("Sin jugador");
+    fn update_sell_menu(&mut self, inventario : Vec<Option<(DynGd<RefCounted, dyn IItem>, u16)>>){
         let mut sell_grid_container = self.base().get_node_as::<GridContainer>("./MarketUI/SellMenu/MarketUI/GridContainer");
 
         for mut nodo in sell_grid_container.get_children().iter_shared() {
@@ -144,17 +171,13 @@ impl Mercado {
         }
 
         
-
-        for (item, stack) in player.bind().get_inventory(){
-            let grid_slot: Gd<PackedScene> = load("res://Interfaces/Slot.tscn");
-            let new_node = grid_slot.instantiate().unwrap();
-            let mut new_slot = new_node.cast::<GridSlot>();
-            new_slot.bind_mut().from_item_resource(item, stack, self.factor_de_venta);
-            sell_grid_container.add_child(&new_slot);
-
-            new_slot.add_user_signal("selected_item");
-            let sell_callable = self.base().callable("sell_item");
-            new_slot.connect("selected_item", &sell_callable);
+        for (i, inventory_slot) in inventario.iter().enumerate(){
+            if let Some((item, stack)) = inventory_slot {
+                let mut new_slot=GridSlot::from_item_resource(item.clone(), *stack, self.factor_de_venta, i as u16);
+                sell_grid_container.add_child(&new_slot);
+                let sell_callable = self.base().callable("sell_item");
+                new_slot.connect("item_selected", &sell_callable);
+            }   
         }
     }
 
