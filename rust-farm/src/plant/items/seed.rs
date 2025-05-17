@@ -1,4 +1,4 @@
-use godot::{classes::Texture2D, obj::NewGd, prelude::*};
+use godot::{classes::{Texture2D, TileMapLayer}, obj::NewGd, prelude::*};
 
 use crate::{item::item_resource::IItem, plant::{plant_resource::PlantResource, plant_node::Planta}};
 
@@ -22,6 +22,9 @@ pub struct SeedItemResource{
 
 #[godot_dyn]
 pub impl IItem for SeedItemResource {
+    fn pick(&self) -> DynGd<RefCounted, dyn IItem>{
+        self.to_gd().to_variant().to()
+    }
     fn get_name(&self) -> GString {
         self.nombre.clone()
     }
@@ -34,11 +37,26 @@ pub impl IItem for SeedItemResource {
     fn get_max_stack(&self) -> u16 {
         self.max_stack
     }
-    fn interact(&self, mut world : Gd<Node2D>, postion : Vector2) -> bool {
+    fn interact(&mut self, mut world : Gd<Node2D>, position : Vector2, objeto : Option<Gd<Node2D>>) -> bool {
+        if objeto.is_some(){
+            return false;
+        }
+
+        let tiles = world.get_node_as::<TileMapLayer>("Suelo");
+        let tile_position = tiles.local_to_map(position);
+        let tile_data = tiles.get_cell_tile_data(tile_position);
+
+        let can_grow : bool = tile_data.unwrap().get_custom_data("plantable").to();
+
+        if !can_grow{
+            godot_print!("No puede plantar aca");
+            return false;
+        }
+
         let recurso_planta : Gd<PlantResource> = load(&self.ruta_de_planta_a_plantar);
 
         let mut new_planta = Planta::from_resource(recurso_planta);
-        new_planta.set_position(postion);
+        new_planta.set_position(position);
         world.add_child(&new_planta);
         true
     }

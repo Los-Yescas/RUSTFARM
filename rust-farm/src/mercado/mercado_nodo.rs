@@ -94,7 +94,7 @@ impl Mercado {
     fn buy_something(&mut self, index : u16){
         let player = self.player.as_mut().expect("Sin jugador");
         let full_inventory = player.bind().is_inventory_full();
-        let item = self.items_a_la_venta.at(index as usize);
+        let item = self.items_a_la_venta.at(index as usize).dyn_bind().pick();
         let precio = item.dyn_bind().get_precio();
 
         if !full_inventory && player.bind().get_puntos() >= precio{
@@ -123,7 +123,7 @@ impl Mercado {
     }
     fn rest_item(&mut self, item : DynGd<RefCounted, dyn IItem>){
         let item_index = self.items_a_la_venta
-            .iter_shared().position(|el| el == item)
+            .iter_shared().position(|el| el.dyn_bind().get_name() == item.dyn_bind().get_name())
             .expect("Item clickeado sin existir");
         let mut stock = self.stock_de_items_a_la_venta.at(item_index);
         stock -= 1;

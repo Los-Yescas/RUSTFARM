@@ -98,7 +98,8 @@ impl Player {
             if let Ok(mut pickable) = variant.try_to::<DynGd<Node2D, dyn IWorldPickable>>(){
                 let mut pickable = pickable.dyn_bind_mut();
                 if let Some(item) = pickable.pick(){
-                    match self.add_item_to_inventory(item) {
+                    let item = item.dyn_bind().pick();
+                    match self.add_item_to_inventory(&item) {
                         Err(error) => godot_print!("{error}"),
                         Ok(_exito) => {
                             self.base_mut().emit_signal("inventory_updated", &[]);
@@ -263,16 +264,12 @@ impl Player {
 
         if let  Some(tupla_inventario) = &mut self.inventory[self.item_actual]{
             let  (item, _) = tupla_inventario;
-            
+   
+            let consume = item.dyn_bind_mut().interact(world, position, item_in_front);
 
-            if item_in_front == None{
-                
-                let consume = item.dyn_bind().interact(world, position);
-
-                if consume {
-                    self.rest_item_to_inventory(self.item_actual, 1);
-                    self.base_mut().emit_signal("inventory_updated", &[]);
-                }
+            if consume {
+                self.rest_item_to_inventory(self.item_actual, 1);
+                self.base_mut().emit_signal("inventory_updated", &[]);
             }
         }
     }

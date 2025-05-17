@@ -32,8 +32,8 @@ position = Vector2(50, 50)
 zoom = Vector2(0.5, 0.5)
 
 [node name="Mercado" type="Mercado" parent="."]
-items_a_la_venta_rutas = Array[String](["res://Plantas/Items Semillas/plant1.tres", "res://Plantas/Items Semillas/plant2.tres", "res://Plantas/Items Semillas/planta_fea_semilla.tres"])
-stock_de_items_a_la_venta = Array[int]([15, 20, 30])
+items_a_la_venta_rutas = Array[String](["res://Plantas/Items Semillas/plant1.tres", "res://Plantas/Items Semillas/plant2.tres", "res://Plantas/Items Semillas/planta_fea_semilla.tres", "res://Herramientas/Items/Pasto.tres", "res://Herramientas/Items/Abono.tres", "res://Herramientas/Items/Cristp.tres", "res://Herramientas/Items/Hacha.tres"])
+stock_de_items_a_la_venta = Array[int]([15, 20, 30, 10, 100, 100, 100])
 factor_de_venta = 0.8
 position = Vector2(-656, 383)
 
@@ -280,7 +280,7 @@ text = "00$ Ganancia"
 label_settings = ExtResource("4_q6r6c")
 
 [node name="ItemNode" parent="." instance=ExtResource("3_epypp")]
-item_path = "res://Plantas/Items Frutas/plant1.tres"
+item_path = "res://Herramientas/Items/Pasto.tres"
 position = Vector2(-400, 89)
 
 [node name="SeedProcessor" type="SeedProcessor" parent="."]

@@ -10,6 +10,7 @@ pub mod item;
 pub mod mercado;
 pub mod level_manager;
 pub mod seed_processor;
+pub mod herramientas;
 
 pub mod world_interactables;
 
