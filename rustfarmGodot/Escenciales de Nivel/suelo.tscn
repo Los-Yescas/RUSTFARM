@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bo1uh32fu45ju"]
+
+[ext_resource type="TileSet" uid="uid://cj433lp8bu8mi" path="res://TilesConfiguration.tres" id="1_a2a0n"]
+
+[node name="Suelo" type="TileMapLayer"]
+z_index = -10
+tile_set = ExtResource("1_a2a0n")

@@ -54,3 +54,5 @@ offset_right = 834.0
 offset_bottom = -18.0
 grow_vertical = 0
 columns = 10
+
+[node name="Camera2D" type="Camera2D" parent="."]
