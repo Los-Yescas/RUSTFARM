@@ -1,0 +1,54 @@
+[gd_resource type="PlantResource" load_steps=8 format=3 uid="uid://b781t0kaog4f1"]
+
+[ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_c26ta"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ny8kw"]
+atlas = ExtResource("1_c26ta")
+region = Rect2(0, 540, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hoskt"]
+atlas = ExtResource("1_c26ta")
+region = Rect2(180, 540, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cpyvj"]
+atlas = ExtResource("1_c26ta")
+region = Rect2(360, 540, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m1e36"]
+atlas = ExtResource("1_c26ta")
+region = Rect2(540, 540, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s0dqr"]
+atlas = ExtResource("1_c26ta")
+region = Rect2(720, 540, 180, 360)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_he4i4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ny8kw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hoskt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cpyvj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m1e36")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s0dqr")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[resource]
+nombre = "Maiz"
+crecimiento_minimo = 100
+crecimiento_maximo = 101
+puntos_para_crecer = 500
+sprite = SubResource("SpriteFrames_he4i4")
+plant_fruit_data_path = "res://Plantas/Items Frutas/Maiz.tres"

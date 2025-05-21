@@ -1,0 +1,60 @@
+[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://co8o6sa3p2ldc"]
+
+[ext_resource type="Texture2D" uid="uid://bwq8k36lks844" path="res://TileMaps/Graphics/suelo_tierra.png" id="1_gww07"]
+[ext_resource type="Texture2D" uid="uid://dmfj76juvpu1" path="res://TileMaps/Graphics/suelo_cemento.png" id="2_t54v2"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gww07"]
+resource_name = "Tierra"
+texture = ExtResource("1_gww07")
+separation = Vector2i(10, 8)
+texture_region_size = Vector2i(180, 180)
+0:0/0 = 0
+0:0/0/custom_data_0 = true
+0:1/0 = 0
+0:1/0/custom_data_0 = true
+0:2/0 = 0
+0:2/0/custom_data_0 = true
+1:0/0 = 0
+1:0/0/custom_data_0 = true
+1:1/0 = 0
+1:1/0/custom_data_0 = true
+1:2/0 = 0
+1:2/0/custom_data_0 = true
+2:0/0 = 0
+2:0/0/custom_data_0 = true
+2:1/0 = 0
+2:1/0/custom_data_0 = true
+2:2/0 = 0
+2:2/0/custom_data_0 = true
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5yg3b"]
+resource_name = "Cemento"
+texture = ExtResource("2_t54v2")
+margins = Vector2i(8, 0)
+separation = Vector2i(184, 197)
+texture_region_size = Vector2i(180, 180)
+0:0/0 = 0
+0:0/0/custom_data_0 = true
+1:0/0 = 0
+1:0/0/custom_data_0 = true
+2:0/0 = 0
+2:0/0/custom_data_0 = true
+0:1/0 = 0
+0:1/0/custom_data_0 = true
+1:1/0 = 0
+1:1/0/custom_data_0 = true
+2:1/0 = 0
+2:1/0/custom_data_0 = true
+0:2/0 = 0
+0:2/0/custom_data_0 = true
+1:2/0 = 0
+1:2/0/custom_data_0 = true
+2:2/0 = 0
+2:2/0/custom_data_0 = true
+
+[resource]
+tile_size = Vector2i(180, 180)
+custom_data_layer_0/name = "walkable"
+custom_data_layer_0/type = 1
+sources/0 = SubResource("TileSetAtlasSource_gww07")
+sources/2 = SubResource("TileSetAtlasSource_5yg3b")

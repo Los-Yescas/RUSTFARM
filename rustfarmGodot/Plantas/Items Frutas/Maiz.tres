@@ -1,0 +1,14 @@
+[gd_resource type="FruitItemResource" load_steps=3 format=3 uid="uid://c6ufoio160wap"]
+
+[ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_ir34w"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uy1ii"]
+atlas = ExtResource("1_ir34w")
+region = Rect2(180, 909, 180, 180)
+
+[resource]
+nombre = "Maiz"
+descripcion = "Un Maiz bien rico"
+max_stack = 10
+textura = SubResource("AtlasTexture_uy1ii")
+precio = 50

@@ -1,0 +1,15 @@
+[gd_resource type="SeedItemResource" load_steps=3 format=3 uid="uid://ckdgq0tjgds1k"]
+
+[ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_hknw8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3yyym"]
+atlas = ExtResource("1_hknw8")
+region = Rect2(0, 1989, 180, 180)
+
+[resource]
+nombre = "Semilla Mango "
+descripcion = "Toot"
+max_stack = 20
+ruta_de_planta_a_plantar = "res://Plantas/Plantas/Mango.tres"
+textura = SubResource("AtlasTexture_3yyym")
+precio = 20

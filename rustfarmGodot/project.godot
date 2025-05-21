@@ -16,7 +16,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GlobalTimeSystem="*res://Plantas/TimeSystem.tscn"
+GlobalTimeSystem="*res://TimeSystem.tscn"
 
 [input]
 

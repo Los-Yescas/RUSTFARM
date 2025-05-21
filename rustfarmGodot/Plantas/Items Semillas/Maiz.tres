@@ -1,0 +1,15 @@
+[gd_resource type="SeedItemResource" load_steps=3 format=3 uid="uid://djwxsulpa5csf"]
+
+[ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_o33s7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kquua"]
+atlas = ExtResource("1_o33s7")
+region = Rect2(0, 909, 180, 180)
+
+[resource]
+nombre = "Maiz"
+descripcion = "Semilla de Maiz"
+max_stack = 50
+ruta_de_planta_a_plantar = "res://Plantas/Plantas/Maiz.tres"
+textura = SubResource("AtlasTexture_kquua")
+precio = 5
