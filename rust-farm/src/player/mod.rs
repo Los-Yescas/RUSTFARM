@@ -6,6 +6,7 @@ use godot::obj::WithBaseField;
 use godot::prelude::*;
 use godot::classes::Node2D;
 use godot::classes::INode2D;
+use player_interface::PlayerInterface;
 
 use crate::item::item_node::Item;
 use crate::item::item_resource::IItem;
@@ -52,6 +53,7 @@ impl INode2D for Player {
 
     fn ready(&mut self,) {
         self.inventory = vec![None; self.inventario_maximo as usize];
+        self.base().get_node_as::<PlayerInterface>("PlayerInterface").bind_mut().update_inventory(self.inventario_maximo, self.item_actual, &self.inventory);
     }
     fn physics_process(&mut self, delta: f64) {
         if !self.active{
@@ -96,7 +98,6 @@ impl Player {
     }
     pub fn select_item(&mut self, index : usize){
         self.item_actual = (index as u16 % self.inventario_maximo) as usize;
-        self.base_mut().emit_signal("inventory_updated", &[]);
     }
     fn pick_item(&mut self){
         if let Some(object) = self.check_for_item() {
@@ -108,7 +109,7 @@ impl Player {
                     match self.add_item_to_inventory(&item) {
                         Err(error) => godot_print!("{error}"),
                         Ok(_exito) => {
-                            self.base_mut().emit_signal("inventory_updated", &[]);
+                            self.base().get_node_as::<PlayerInterface>("PlayerInterface").bind_mut().update_inventory(self.inventario_maximo, self.item_actual, &self.inventory);
                             pickable.has_been_picked()
                         }
                     }
@@ -200,12 +201,12 @@ impl Player {
 
         if let Some(index) = indexes.get(0) {
             self.add_one_item_to_slot(*index);
-            self.base_mut().emit_signal("inventory_updated", &[]);
+            self.base().get_node_as::<PlayerInterface>("PlayerInterface").bind_mut().update_inventory(self.inventario_maximo, self.item_actual, &self.inventory);
             return Ok("Item añadido".into());
         }else {
             if let Some(empty_slot_index) = self.empty_slot_index() {
                 self.inventory[empty_slot_index] = Some((item, 1));
-                self.base_mut().emit_signal("inventory_updated", &[]);
+                self.base().get_node_as::<PlayerInterface>("PlayerInterface").bind_mut().update_inventory(self.inventario_maximo, self.item_actual, &self.inventory);
                 return Ok("Item añadido".into());
             }
         }
@@ -232,7 +233,7 @@ impl Player {
         self.inventory.iter().position(|slot| *slot==None)
     }
     fn add_one_item_to_slot(&mut self, index : usize){
-        self.base_mut().emit_signal("inventory_updated", &[]);
+        self.base().get_node_as::<PlayerInterface>("PlayerInterface").bind_mut().update_inventory(self.inventario_maximo, self.item_actual, &self.inventory);
         self.inventory[index].as_mut().unwrap().1 += 1;
     }
     pub fn rest_item_to_inventory(&mut self, index : usize, number : u16) {
@@ -245,7 +246,7 @@ impl Player {
             if slot.1 <= 0 {
                 self.inventory[index] = None;
             }
-            self.base_mut().emit_signal("inventory_updated", &[]);
+            self.base().get_node_as::<PlayerInterface>("PlayerInterface").bind_mut().update_inventory(self.inventario_maximo, self.item_actual, &self.inventory);
         }else{
             godot_error!("Tratando de restar a un slot vacio");
         }
@@ -275,7 +276,7 @@ impl Player {
 
             if consume {
                 self.rest_item_to_inventory(self.item_actual, 1);
-                self.base_mut().emit_signal("inventory_updated", &[]);
+                self.base().get_node_as::<PlayerInterface>("PlayerInterface").bind_mut().update_inventory(self.inventario_maximo, self.item_actual, &self.inventory);
             }
         }
     }
