@@ -67,6 +67,7 @@ impl IItem for Herramienta {
         match self.efecto {
             Efecto::AumentarFertilidad => {
                 if modificable {
+
                     if atlas_cords.x >=1 && atlas_cords.x <= 2 {
                         let _ = tiles.set_cell_ex(tile_position)
                         .atlas_coords(Vector2i { x: atlas_cords.x + 1, y: atlas_cords.y })

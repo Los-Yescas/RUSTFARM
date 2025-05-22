@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwq8k36lks844"
-path="res://.godot/imported/suelo_tierra.png-b236d0c77cde27bd0d0fa6e04b22dd18.ctex"
+uid="uid://bnx5ueonc0mqg"
+path="res://.godot/imported/TierraPocaFertil.png-92be53386d61a430af443ea39fb53906.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://TileMaps/Graphics/suelo_tierra.png"
-dest_files=["res://.godot/imported/suelo_tierra.png-b236d0c77cde27bd0d0fa6e04b22dd18.ctex"]
+source_file="res://Graphics/TileSets/Atlas/TierraPocaFertil.png"
+dest_files=["res://.godot/imported/TierraPocaFertil.png-92be53386d61a430af443ea39fb53906.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dmfj76juvpu1"
-path="res://.godot/imported/suelo_cemento.png-70ef18e07cf31916369249a73acce241.ctex"
+uid="uid://c25crahbd06u0"
+path="res://.godot/imported/TierraMuerta.png-1bc7c1a3104d68e30f1ca48480cd609f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://TileMaps/Graphics/suelo_cemento.png"
-dest_files=["res://.godot/imported/suelo_cemento.png-70ef18e07cf31916369249a73acce241.ctex"]
+source_file="res://Graphics/TileSets/Atlas/TierraMuerta.png"
+dest_files=["res://.godot/imported/TierraMuerta.png-1bc7c1a3104d68e30f1ca48480cd609f.ctex"]
 
 [params]
 
