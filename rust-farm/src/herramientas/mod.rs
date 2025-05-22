@@ -57,64 +57,47 @@ impl IItem for Herramienta {
     fn interact(&mut self, world : Gd<Node2D>, position : Vector2, _objeto : Option<Gd<Node2D>>) -> bool {
         let mut tiles = world.get_node_as::<TileMapLayer>("Suelo");
         let tile_position = tiles.local_to_map(position);
-        let atlas_cords = tiles.get_cell_atlas_coords(tile_position);
         let tile_data = tiles.get_cell_tile_data(tile_position).unwrap();
+        let tile_terrain = tile_data.get_terrain();
 
-        let modificable : bool = tile_data.get_custom_data("modificable").to();
-
-
-        let mut used : bool = false;
+        let mut _used : bool = false;
         match self.efecto {
             Efecto::AumentarFertilidad => {
-                if modificable {
-
-                    if atlas_cords.x >=1 && atlas_cords.x <= 2 {
-                        let _ = tiles.set_cell_ex(tile_position)
-                        .atlas_coords(Vector2i { x: atlas_cords.x + 1, y: atlas_cords.y })
-                        .source_id(1)
-                        .done();
-                        used = true;
-                    }
-                }else{
-                    used = false
+                if tile_terrain==2 || tile_terrain==3 {
+                    let _ = tiles.set_cells_terrain_connect(&array![tile_position], 0, tile_terrain-1);
+                    _used = true;
+                }
+                else{
+                    _used = false;
                 }
             },
             Efecto::ConstruirPuente =>{
-                if atlas_cords.x == 6 {
-                    let _ = tiles.set_cell_ex(tile_position)
-                        .atlas_coords(Vector2i { x: 8, y: atlas_cords.y })
-                        .source_id(1)
-                        .done();
-                    used = true;
+                if tile_terrain==5{
+                    let _ = tiles.set_cells_terrain_connect(&array![tile_position], 0, 6);
+                    _used = true;
                 }else{
-                    used = false
+                    _used = false;
                 }
             },
             Efecto::QuitarPasto=>{
-                if atlas_cords.x == 0 {
-                    let _ = tiles.set_cell_ex(tile_position)
-                        .atlas_coords(Vector2i { x: atlas_cords.x + 1, y: atlas_cords.y })
-                        .source_id(1)
-                        .done();
-                    used = true;
+                if tile_terrain == 4{
+                    let _ = tiles.set_cells_terrain_connect(&array![tile_position], 0, 3);
+                    _used = true;
                 }else {
-                    used = false
+                    _used = false;
                 }
             },
-            Efecto::RecogerFruto=>{godot_print!("Probablemente no se implemente"); used =false},
+            Efecto::RecogerFruto=>{godot_print!("Probablemente no se implemente"); _used =false},
             Efecto::RevivirTierra=>{
-                if atlas_cords.x == 4 {
-                    let _ = tiles.set_cell_ex(tile_position)
-                        .atlas_coords(Vector2i { x: 1, y: atlas_cords.y })
-                        .source_id(1)
-                        .done();
-                    used = true;
+                if tile_terrain == 0 {
+                    let _ = tiles.set_cells_terrain_connect(&array![tile_position], 0, 3);
+                    _used = true;
                 }else {
-                    used = false
+                    _used = false;
                 }
             }
         };
-        if used {
+        if _used {
             self.usos -= 1;
         }
         self.usos <= 0

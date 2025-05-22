@@ -10,6 +10,6 @@ region = Rect2(0, 9, 180, 180)
 nombre = "QuitaPasto"
 descripcion = "asdasd"
 max_stack = 1
-precio = 500
+precio = 50
 textura = SubResource("AtlasTexture_jaxkf")
 usos = 5

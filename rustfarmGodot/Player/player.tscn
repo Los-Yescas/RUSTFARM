@@ -56,3 +56,4 @@ grow_vertical = 0
 columns = 10
 
 [node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.6, 0.6)
