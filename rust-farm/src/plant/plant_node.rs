@@ -67,7 +67,7 @@ impl Planta {
         drop(plant_data);
 
         if self.grow_points >= punt_pa_cre {
-            let mut planta_sprite = self.base_mut().get_node_as::<AnimatedSprite2D>("./Sprite");
+            let mut planta_sprite = self.base_mut().get_node_as::<AnimatedSprite2D>("./AnimatedSprite2D");
             self.fase_actual = match self.fase_actual {
                 FasesPlantas::Bebe => {
                     planta_sprite.set_frame(1);

@@ -1,4 +1,4 @@
-[gd_resource type="FruitItemResource" load_steps=3 format=3 uid="uid://clq2pdxniyidg"]
+[gd_resource type="FruitItemResource" load_steps=3 format=3 uid="uid://dypp05k4wbk72"]
 
 [ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_bvros"]
 
@@ -12,3 +12,5 @@ descripcion = "Semillas de Mani"
 max_stack = 64
 textura = SubResource("AtlasTexture_6eufw")
 precio = 100
+ruta_de_semilla_a_dar = "res://Plantas/Items Semillas/ManiSemilla.tres"
+semillas_a_dar = 3

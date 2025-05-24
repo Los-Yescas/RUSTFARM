@@ -1,10 +1,6 @@
-[gd_resource type="Herramienta" load_steps=3 format=3 uid="uid://wjstpamlbwm2"]
+[gd_resource type="Herramienta" load_steps=2 format=3 uid="uid://wjstpamlbwm2"]
 
-[ext_resource type="Texture2D" uid="uid://ds7f2r0u4es8v" path="res://Herramientas/Graficas/HerramientasPlaceHolder.png" id="1_qgdtl"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jaxkf"]
-atlas = ExtResource("1_qgdtl")
-region = Rect2(360, 9, 180, 180)
+[ext_resource type="Texture2D" uid="uid://bbphkeu6p6obw" path="res://Herramientas/Graficas/ReviveTierra.png" id="1_qgdtl"]
 
 [resource]
 efecto = "RevivirTierra"
@@ -12,5 +8,5 @@ nombre = "cRISTO"
 descripcion = "asdasd"
 max_stack = 1
 precio = 100
-textura = SubResource("AtlasTexture_jaxkf")
+textura = ExtResource("1_qgdtl")
 usos = 5

@@ -1,4 +1,4 @@
-[gd_resource type="FruitItemResource" load_steps=3 format=3 uid="uid://dn50pbx4uy4xg"]
+[gd_resource type="FruitItemResource" load_steps=3 format=3 uid="uid://colgsseuydl8q"]
 
 [ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_dgxkd"]
 
@@ -12,3 +12,5 @@ descripcion = "MANGO"
 max_stack = 20
 textura = SubResource("AtlasTexture_wwx30")
 precio = 75
+ruta_de_semilla_a_dar = "res://Plantas/Items Semillas/Mango.tres"
+semillas_a_dar = 6

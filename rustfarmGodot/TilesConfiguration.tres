@@ -1,12 +1,15 @@
-[gd_resource type="TileSet" load_steps=15 format=3 uid="uid://cj433lp8bu8mi"]
+[gd_resource type="TileSet" load_steps=23 format=3 uid="uid://cj433lp8bu8mi"]
 
 [ext_resource type="Texture2D" uid="uid://d3pk27ox2kp4k" path="res://Graphics/TileSets/Atlas/Pasto.png" id="1_2kmf3"]
 [ext_resource type="Texture2D" uid="uid://c25crahbd06u0" path="res://Graphics/TileSets/Atlas/TierraMuerta.png" id="1_7qmbp"]
+[ext_resource type="Shader" uid="uid://dnuwesgfonhsx" path="res://Agua.gdshader" id="2_3yrqo"]
 [ext_resource type="Texture2D" uid="uid://b15dim3bvdw2w" path="res://Graphics/TileSets/Agua.png" id="2_dprxw"]
 [ext_resource type="Texture2D" uid="uid://dkmb2jig1offp" path="res://Graphics/TileSets/Atlas/TierraMuyFertil.png" id="2_tspv2"]
 [ext_resource type="Texture2D" uid="uid://b4nnxdejrprxi" path="res://Graphics/TileSets/Atlas/TierraNormal.png" id="3_hsa38"]
 [ext_resource type="Texture2D" uid="uid://bnx5ueonc0mqg" path="res://Graphics/TileSets/Atlas/TierraPocaFertil.png" id="4_2kmf3"]
 [ext_resource type="Texture2D" uid="uid://bkck7iuyv2s6m" path="res://Graphics/TileSets/Puente.png" id="7_hybyr"]
+[ext_resource type="Texture2D" uid="uid://c1xq6n4fcy6w1" path="res://Graphics/TileSets/Muro.png" id="8_hybyr"]
+[ext_resource type="Texture2D" uid="uid://c3guf28siqwc7" path="res://Graphics/TileSets/Camino.png" id="9_3yrqo"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dpws3"]
 texture = ExtResource("1_2kmf3")
@@ -84,10 +87,34 @@ texture_region_size = Vector2i(180, 180)
 0:4/0/custom_data_1 = true
 0:4/0/custom_data_2 = 0.25
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3yrqo"]
+frequency = 0.015
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_aax2q"]
+noise = SubResource("FastNoiseLite_3yrqo")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aax2q"]
+shader = ExtResource("2_3yrqo")
+shader_parameter/waterNoise = SubResource("NoiseTexture2D_aax2q")
+shader_parameter/waterColor = Color(0.117, 0.27, 0.58, 1)
+shader_parameter/colorCorection = 0.35
+shader_parameter/distortionForce = 0.01
+shader_parameter/WDBrightness = 1.5
+shader_parameter/WDFreq = 0.6
+shader_parameter/WDSize = 0.9
+shader_parameter/WDSpeed = 4.0
+shader_parameter/tiling = Vector2(1, 1)
+shader_parameter/offSetSpeed = Vector2(0.1, 0.1)
+shader_parameter/backGroundDirX = 0.01
+shader_parameter/backGroundDirY = 0.01
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_85l2q"]
 texture = ExtResource("2_dprxw")
 texture_region_size = Vector2i(180, 180)
 0:0/0 = 0
+0:0/0/modulate = Color(0.686928, 0.362802, 0.866653, 1)
+0:0/0/material = SubResource("ShaderMaterial_aax2q")
 0:0/0/terrain_set = 0
 0:0/0/terrain = 5
 0:0/0/terrains_peering_bit/bottom_right_corner = 5
@@ -393,6 +420,70 @@ texture_region_size = Vector2i(180, 180)
 0:0/0/terrains_peering_bit/top_right_corner = 6
 0:0/0/custom_data_0 = true
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nfg63"]
+texture = ExtResource("8_hybyr")
+texture_region_size = Vector2i(180, 180)
+0:0/0 = 0
+0:0/0/terrain_set = 1
+0:0/0/terrain = 0
+0:0/0/terrains_peering_bit/bottom_side = 0
+0:0/0/terrains_peering_bit/top_side = 0
+1:0/0 = 0
+1:0/0/terrain_set = 1
+1:0/0/terrain = 0
+1:0/0/terrains_peering_bit/right_side = 0
+1:0/0/terrains_peering_bit/left_side = 0
+2:0/next_alternative_id = 2
+2:0/0 = 0
+2:0/0/terrain_set = 1
+2:0/0/terrain = 0
+2:0/0/terrains_peering_bit/left_side = 0
+2:0/1 = 1
+2:0/1/flip_h = true
+2:0/1/terrain_set = 1
+2:0/1/terrain = 0
+2:0/1/terrains_peering_bit/right_side = 0
+0:1/next_alternative_id = 2
+0:1/0 = 0
+0:1/0/terrain_set = 1
+0:1/0/terrain = 0
+0:1/0/terrains_peering_bit/top_side = 0
+0:1/1 = 1
+0:1/1/flip_v = true
+0:1/1/terrain_set = 1
+0:1/1/terrain = 0
+0:1/1/terrains_peering_bit/bottom_side = 0
+1:1/0 = 0
+1:1/0/terrain_set = 1
+1:1/0/terrain = 0
+1:1/0/terrains_peering_bit/right_side = 0
+1:1/0/terrains_peering_bit/bottom_side = 0
+1:1/0/terrains_peering_bit/left_side = 0
+1:1/0/terrains_peering_bit/top_side = 0
+2:1/0 = 0
+2:1/0/terrain_set = 1
+2:1/0/terrain = 0
+2:1/0/terrains_peering_bit/right_side = 0
+2:1/0/terrains_peering_bit/bottom_right_corner = 0
+2:1/0/terrains_peering_bit/bottom_side = 0
+2:1/0/terrains_peering_bit/bottom_left_corner = 0
+2:1/0/terrains_peering_bit/left_side = 0
+2:1/0/terrains_peering_bit/top_left_corner = 0
+2:1/0/terrains_peering_bit/top_side = 0
+2:1/0/terrains_peering_bit/top_right_corner = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u0ltk"]
+texture = ExtResource("9_3yrqo")
+texture_region_size = Vector2i(180, 180)
+0:0/0 = 0
+0:0/0/terrain_set = 0
+0:0/0/terrain = 7
+0:0/0/terrains_peering_bit/bottom_right_corner = 7
+0:0/0/terrains_peering_bit/bottom_left_corner = 7
+0:0/0/terrains_peering_bit/top_left_corner = 7
+0:0/0/terrains_peering_bit/top_right_corner = 7
+0:0/0/custom_data_0 = true
+
 [resource]
 tile_size = Vector2i(180, 180)
 terrain_set_0/mode = 1
@@ -410,6 +501,11 @@ terrain_set_0/terrain_5/name = "Agua"
 terrain_set_0/terrain_5/color = Color(0.25, 0.5, 0.3125, 1)
 terrain_set_0/terrain_6/name = "Puente"
 terrain_set_0/terrain_6/color = Color(0.25, 0.5, 0.40625, 1)
+terrain_set_0/terrain_7/name = "Camino"
+terrain_set_0/terrain_7/color = Color(0.714331, 0, 0.279715, 1)
+terrain_set_1/mode = 0
+terrain_set_1/terrain_0/name = "Muro"
+terrain_set_1/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
 custom_data_layer_0/name = "walkable"
 custom_data_layer_0/type = 1
 custom_data_layer_1/name = "plantable"
@@ -423,3 +519,5 @@ sources/5 = SubResource("TileSetAtlasSource_aax2q")
 sources/0 = SubResource("TileSetAtlasSource_dpws3")
 sources/1 = SubResource("TileSetAtlasSource_85l2q")
 sources/6 = SubResource("TileSetAtlasSource_f2k6b")
+sources/7 = SubResource("TileSetAtlasSource_nfg63")
+sources/8 = SubResource("TileSetAtlasSource_u0ltk")

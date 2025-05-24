@@ -1,4 +1,4 @@
-[gd_resource type="FruitItemResource" load_steps=3 format=3 uid="uid://bb3ickqpmra2e"]
+[gd_resource type="FruitItemResource" load_steps=3 format=3 uid="uid://dba7ykqm0oyir"]
 
 [ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_uuwht"]
 
@@ -12,3 +12,5 @@ descripcion = "Fruta"
 max_stack = 30
 textura = SubResource("AtlasTexture_qcntk")
 precio = 50
+ruta_de_semilla_a_dar = "res://Plantas/Items Semillas/Achachairu.tres"
+semillas_a_dar = 3

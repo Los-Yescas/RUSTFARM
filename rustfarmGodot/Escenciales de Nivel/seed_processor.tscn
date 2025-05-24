@@ -1,16 +1,15 @@
 [gd_scene load_steps=5 format=3 uid="uid://dm5x1xmjvnx73"]
 
-[ext_resource type="Texture2D" uid="uid://bcsxkl2gux4j1" path="res://Graphics/Mercado/MercadoPlaceHolder.png" id="1_fjyuc"]
+[ext_resource type="Texture2D" uid="uid://dsoc07nnxsc5k" path="res://Graphics/FruitProcessor/Fruit.png" id="1_fjyuc"]
 [ext_resource type="LabelSettings" uid="uid://bipgdaqgmg3om" path="res://Interfaces/Fonts/Titulos.tres" id="2_apehl"]
 [ext_resource type="PackedScene" uid="uid://dfwyaaxd4q3cm" path="res://Interfaces/ItemGrid.tscn" id="3_u7b7m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rj586"]
-size = Vector2(180, 180)
+size = Vector2(360, 540)
 
 [node name="SeedProcessor" type="SeedProcessor"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0.45521, 0.207673, 0, 1)
 texture = ExtResource("1_fjyuc")
 
 [node name="Area2D" type="Area2D" parent="."]

@@ -79,8 +79,10 @@ impl Player {
 
         if event.is_action_pressed("inventory+"){
             self.select_item(self.item_actual + 1);
+            self.base().get_node_as::<PlayerInterface>("PlayerInterface").bind_mut().update_inventory(self.inventario_maximo, self.item_actual, &self.inventory);
         }else if event.is_action_pressed("inventory-") {
             self.select_item((self.item_actual + self.inventario_maximo as usize) - 1);
+            self.base().get_node_as::<PlayerInterface>("PlayerInterface").bind_mut().update_inventory(self.inventario_maximo, self.item_actual, &self.inventory);
         }else if event.is_action_pressed("inventory"){
             godot_print!("{:#?}", self.inventory);
         }else if event.is_action_pressed("pick"){
