@@ -1,0 +1,111 @@
+[gd_scene load_steps=5 format=3 uid="uid://dmx7wv1u1f2cc"]
+
+[ext_resource type="LabelSettings" uid="uid://bipgdaqgmg3om" path="res://Interfaces/Fonts/Titulos.tres" id="1_ushtf"]
+[ext_resource type="PackedScene" uid="uid://dfwyaaxd4q3cm" path="res://Interfaces/ItemGrid.tscn" id="2_lxjpe"]
+[ext_resource type="Texture2D" uid="uid://df1yunk72l5mg" path="res://Graphics/Mercado/Market.png" id="3_ushtf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d21ai"]
+size = Vector2(540, 540)
+
+[node name="Mercado" type="Mercado"]
+
+[node name="MarketUI" type="CanvasLayer" parent="."]
+layer = 2
+visible = false
+
+[node name="BuyMenu" type="ColorRect" parent="MarketUI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+color = Color(0.783402, 0.7329, 0.352305, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Title" type="Label" parent="MarketUI/BuyMenu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -112.5
+offset_top = 50.0
+offset_right = 112.5
+offset_bottom = 105.0
+grow_horizontal = 2
+text = "MARKET"
+label_settings = ExtResource("1_ushtf")
+horizontal_alignment = 1
+
+[node name="MarketUI" parent="MarketUI/BuyMenu" instance=ExtResource("2_lxjpe")]
+layout_mode = 0
+
+[node name="SellMenu" type="ColorRect" parent="MarketUI"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.628468, 0.931527, 0.271393, 1)
+
+[node name="Title" type="Label" parent="MarketUI/SellMenu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -112.5
+offset_top = 50.0
+offset_right = 112.5
+offset_bottom = 105.0
+grow_horizontal = 2
+text = "SELLING"
+label_settings = ExtResource("1_ushtf")
+horizontal_alignment = 1
+
+[node name="MarketUI" parent="MarketUI/SellMenu" instance=ExtResource("2_lxjpe")]
+
+[node name="Points" type="Label" parent="MarketUI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -92.0
+offset_top = 30.0
+offset_right = -13.0
+offset_bottom = 85.0
+grow_horizontal = 0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "00 $"
+label_settings = ExtResource("1_ushtf")
+
+[node name="Buy" type="Button" parent="MarketUI"]
+offset_left = 20.0
+offset_top = 10.0
+offset_right = 60.0
+offset_bottom = 41.0
+theme_override_font_sizes/font_size = 40
+text = "BUY"
+
+[node name="Sell" type="Button" parent="MarketUI"]
+offset_left = 20.0
+offset_top = 85.0
+offset_right = 116.0
+offset_bottom = 148.0
+theme_override_font_sizes/font_size = 40
+text = "SELL"
+
+[node name="Close" type="Button" parent="MarketUI"]
+offset_left = 138.0
+offset_top = 18.0
+offset_right = 196.0
+offset_bottom = 49.0
+text = "CLOSE"
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("3_ushtf")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_d21ai")

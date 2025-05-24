@@ -1,0 +1,15 @@
+[gd_resource type="SeedItemResource" load_steps=3 format=3 uid="uid://d20ctuq3e84dj"]
+
+[ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_rtv6v"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rl3e8"]
+atlas = ExtResource("1_rtv6v")
+region = Rect2(0, 2529, 180, 180)
+
+[resource]
+nombre = "Uva"
+descripcion = "Semilla de la Uva"
+max_stack = 20
+ruta_de_planta_a_plantar = "res://Plantas/Plantas/Uva.tres"
+textura = SubResource("AtlasTexture_rl3e8")
+precio = 40

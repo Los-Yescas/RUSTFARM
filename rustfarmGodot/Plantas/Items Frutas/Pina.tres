@@ -1,0 +1,16 @@
+[gd_resource type="FruitItemResource" load_steps=3 format=3 uid="uid://2co8f4jq0y4y"]
+
+[ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_j24s3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qbfrm"]
+atlas = ExtResource("1_j24s3")
+region = Rect2(180, 1449, 180, 180)
+
+[resource]
+nombre = "Piña"
+descripcion = "JAJAJAJ"
+max_stack = 10
+textura = SubResource("AtlasTexture_qbfrm")
+precio = 50
+ruta_de_semilla_a_dar = "res://Plantas/Items Semillas/Pina.tres"
+semillas_a_dar = 3

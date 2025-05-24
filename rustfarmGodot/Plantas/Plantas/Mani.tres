@@ -1,0 +1,50 @@
+[gd_resource type="PlantResource" load_steps=7 format=3 uid="uid://613x7kxdh27i"]
+
+[ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_00qbn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8x2xu"]
+atlas = ExtResource("1_00qbn")
+region = Rect2(0, 12, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vd7r5"]
+atlas = ExtResource("1_00qbn")
+region = Rect2(180, 12, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_64c8r"]
+atlas = ExtResource("1_00qbn")
+region = Rect2(360, 12, 180, 360)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pk6q2"]
+atlas = ExtResource("1_00qbn")
+region = Rect2(540, 12, 180, 360)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xqal6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8x2xu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vd7r5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_64c8r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_64c8r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pk6q2")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[resource]
+nombre = "Mani"
+crecimiento_minimo = 10
+crecimiento_maximo = 30
+puntos_para_crecer = 200
+sprite = SubResource("SpriteFrames_xqal6")
+plant_fruit_data_path = "res://Plantas/Items Frutas/Mani.tres"

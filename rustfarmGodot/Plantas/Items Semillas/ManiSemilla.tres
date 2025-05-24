@@ -1,0 +1,15 @@
+[gd_resource type="SeedItemResource" load_steps=3 format=3 uid="uid://cw62e2e8hramh"]
+
+[ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_qkfcw"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ek8ap"]
+atlas = ExtResource("1_qkfcw")
+region = Rect2(180, 369, 180, 180)
+
+[resource]
+nombre = "Mani"
+descripcion = "Es un mani, que esperabas"
+max_stack = 64
+ruta_de_planta_a_plantar = "res://Plantas/Plantas/Mani.tres"
+textura = SubResource("AtlasTexture_ek8ap")
+precio = 50

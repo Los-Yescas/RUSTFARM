@@ -1,0 +1,16 @@
+[gd_resource type="FruitItemResource" load_steps=3 format=3 uid="uid://dec0qxxmdxuip"]
+
+[ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_bxrui"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nyn38"]
+atlas = ExtResource("1_bxrui")
+region = Rect2(180, 2529, 180, 180)
+
+[resource]
+nombre = "Uva"
+descripcion = "pojkopjkasd"
+max_stack = 20
+textura = SubResource("AtlasTexture_nyn38")
+precio = 150
+ruta_de_semilla_a_dar = "res://Plantas/Items Semillas/Uva.tres"
+semillas_a_dar = 3
