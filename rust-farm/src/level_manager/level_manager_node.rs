@@ -1,4 +1,4 @@
-use godot::{classes::{Button, CanvasLayer, Label, RandomNumberGenerator, Timer}, prelude::*};
+use godot::{classes::{Button, CanvasLayer, InputEvent, Label, RandomNumberGenerator, Timer}, prelude::*};
 
 use crate::{item::item_resource::IItem, player::Player};
 
@@ -88,12 +88,25 @@ impl INode2D for LevelManager {
 
         let mut button = self.base().get_node_as::<Button>("WinScreen/NextLevel");
         button.connect("pressed", &self.base().callable("finish_level"));
+
+
+        let mut main_menu_button = self.base().get_node_as::<Button>("WinScreen/MainMenu");
+        let mut restart_button = self.base().get_node_as::<Button>("WinScreen/Restart");
+
+        main_menu_button.connect("pressed", &self.base().callable("return_to_main_menu"));
+        restart_button.connect("pressed", &self.base().callable("restart_level"));
     }
 
     fn process(&mut self, delta : f64){
         self.update_time_interface();
 
         self.update_time_of_orders(delta);
+    }
+
+    fn input(&mut self, event: Gd<InputEvent >,) {
+        if event.is_action_pressed("exit"){
+            self.show_end_screen();
+        }
     }
 }
 
@@ -195,5 +208,14 @@ pub impl LevelManager {
             self.remove_order(index);
             self.update_time_interface();
         }
+    }
+
+    #[func]
+    fn return_to_main_menu(&mut self){
+        self.base().get_tree().unwrap().change_scene_to_file("res://MenuPrincipal.tscn");
+    }
+    #[func]
+    fn restart_level(&mut self){
+        self.base().get_tree().unwrap().reload_current_scene();
     }
 }
