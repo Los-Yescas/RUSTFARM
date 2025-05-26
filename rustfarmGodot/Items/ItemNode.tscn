@@ -11,3 +11,5 @@ size = Vector2(180, 180)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_0skj2")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

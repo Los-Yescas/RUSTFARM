@@ -81,8 +81,12 @@ impl Planta {
                     planta_sprite.set_frame(3);
                     FasesPlantas::Juventud
                 },
-                _ => {
+                FasesPlantas::Juventud => {
                     planta_sprite.set_frame(4);
+                    self.base().get_node_as::<AudioStreamPlayer>("Growing").play();
+                    FasesPlantas::Madura
+                },
+                FasesPlantas::Madura => {
                     FasesPlantas::Madura
                 }
             };

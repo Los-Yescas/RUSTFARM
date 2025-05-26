@@ -1,6 +1,7 @@
-[gd_resource type="Herramienta" load_steps=2 format=3 uid="uid://cw0nfw00pgq34"]
+[gd_resource type="Herramienta" load_steps=3 format=3 uid="uid://cw0nfw00pgq34"]
 
 [ext_resource type="Texture2D" uid="uid://bf7d4bq30mclt" path="res://Herramientas/Graficas/ConstruccionDePuentes.png" id="1_m60uj"]
+[ext_resource type="AudioStream" uid="uid://dvdoxmxhyddx1" path="res://Sounds/Sound/items/build.wav" id="1_o2eqw"]
 
 [resource]
 efecto = "ConstruirPuente"
@@ -10,3 +11,4 @@ max_stack = 1
 precio = 100
 textura = ExtResource("1_m60uj")
 usos = 5
+sonido = ExtResource("1_o2eqw")

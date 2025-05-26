@@ -1,4 +1,4 @@
-use godot::{classes::{Texture2D, TileMapLayer}, obj::NewGd, prelude::*};
+use godot::{classes::{AudioStream, Texture2D, TileMapLayer}, obj::NewGd, prelude::*};
 
 use crate::{item::item_resource::IItem, plant::{plant_resource::PlantResource, plant_node::Planta}};
 
@@ -37,9 +37,9 @@ pub impl IItem for SeedItemResource {
     fn get_max_stack(&self) -> u16 {
         self.max_stack
     }
-    fn interact(&mut self, mut world : Gd<Node2D>, position : Vector2, objeto : Option<Gd<Node2D>>) -> bool {
+    fn interact(&mut self, mut world : Gd<Node2D>, position : Vector2, objeto : Option<Gd<Node2D>>) -> Result<bool, GString> {
         if objeto.is_some(){
-            return false;
+            return Err("Algo en frente".into());
         }
 
         let tiles = world.get_node_as::<TileMapLayer>("Suelo");
@@ -50,7 +50,7 @@ pub impl IItem for SeedItemResource {
 
         if !can_grow{
             godot_print!("No puede plantar aca");
-            return false;
+            return Err("No puede plantar aca".into());
         }
 
         let recurso_planta : Gd<PlantResource> = load(&self.ruta_de_planta_a_plantar);
@@ -58,10 +58,14 @@ pub impl IItem for SeedItemResource {
         let mut new_planta = Planta::from_resource(recurso_planta);
         new_planta.set_position(position);
         world.add_child(&new_planta);
-        true
+        Ok(true)
     }
 
     fn get_precio(&self) -> u16 {
         self.precio
     }
+
+    fn get_interact_sound(&self) -> Option<Gd<AudioStream>> {
+        Some(load::<AudioStream>("res://Sounds/Sound/items/plant.mp3"))
+    } 
 }

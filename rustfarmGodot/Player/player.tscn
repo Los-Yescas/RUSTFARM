@@ -1,6 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://cge4d3lb6qkdk"]
+[gd_scene load_steps=10 format=3 uid="uid://cge4d3lb6qkdk"]
 
 [ext_resource type="Texture2D" uid="uid://cxocldvx27mwi" path="res://icon.svg" id="1_l8h54"]
+[ext_resource type="AudioStream" uid="uid://datmq3vbccvuf" path="res://Sounds/Sound/Player/caminata.wav" id="2_4ntmi"]
+[ext_resource type="AudioStream" uid="uid://dtiu3jvss2yu5" path="res://Sounds/Sound/Player/PickSomething.wav" id="3_btcbx"]
+[ext_resource type="AudioStream" uid="uid://dnpwvdcp6f0e0" path="res://Sounds/Sound/Player/Select.wav" id="4_gwnis"]
+[ext_resource type="AudioStream" uid="uid://cvcltqqrrj73c" path="res://Sounds/Sound/Player/orden.wav" id="5_k53q1"]
+[ext_resource type="AudioStream" uid="uid://bejdohu30qxie" path="res://Sounds/Sound/Player/drop.mp3" id="6_fhl08"]
+[ext_resource type="AudioStream" uid="uid://b3rpupn7gvf1a" path="res://Sounds/Sound/Wrong.wav" id="7_vtle1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_epypp"]
 size = Vector2(170, 170)
@@ -57,3 +63,26 @@ columns = 10
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.6, 0.6)
+
+[node name="WalkSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_4ntmi")
+
+[node name="PickSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_btcbx")
+
+[node name="InteractSound" type="AudioStreamPlayer" parent="."]
+volume_db = -10.0
+
+[node name="SelectSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_gwnis")
+volume_db = -10.0
+
+[node name="OrderSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_k53q1")
+
+[node name="DropSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_fhl08")
+volume_db = -25.0
+
+[node name="WrongSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_vtle1")

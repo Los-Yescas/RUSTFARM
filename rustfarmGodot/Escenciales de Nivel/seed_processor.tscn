@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dm5x1xmjvnx73"]
+[gd_scene load_steps=6 format=3 uid="uid://dm5x1xmjvnx73"]
 
 [ext_resource type="Texture2D" uid="uid://dsoc07nnxsc5k" path="res://Graphics/FruitProcessor/Fruit.png" id="1_fjyuc"]
 [ext_resource type="LabelSettings" uid="uid://bipgdaqgmg3om" path="res://Interfaces/Fonts/Titulos.tres" id="2_apehl"]
 [ext_resource type="PackedScene" uid="uid://dfwyaaxd4q3cm" path="res://Interfaces/ItemGrid.tscn" id="3_u7b7m"]
+[ext_resource type="AudioStream" uid="uid://crsfx88i2mrgw" path="res://Sounds/Sound/FruitProcessor/Fruit.wav" id="4_apehl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rj586"]
 size = Vector2(360, 540)
@@ -34,12 +35,12 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -20.0
-offset_top = 20.0
-offset_right = 20.0
-offset_bottom = 43.0
+offset_left = -146.5
+offset_top = 85.0
+offset_right = 146.5
+offset_bottom = 140.0
 grow_horizontal = 2
-text = "Seed Processor"
+text = "Procesador de Frutas"
 label_settings = ExtResource("2_apehl")
 
 [node name="ItemGrid" parent="UI/Background" instance=ExtResource("3_u7b7m")]
@@ -49,4 +50,7 @@ offset_left = 22.0
 offset_top = 23.0
 offset_right = 80.0
 offset_bottom = 54.0
-text = "CLOSE"
+text = "Cerrar"
+
+[node name="FruitSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_apehl")

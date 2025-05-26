@@ -104,6 +104,7 @@ impl Mercado {
                     player.bind_mut().rest_points(precio);
                     self.rest_item(item);
                     self.update_information();
+                    self.base().get_node_as::<AudioStreamPlayer>("BuySellSound").play();
                 },
                 Err(message) => godot_print!("{message}")
             }
@@ -119,6 +120,7 @@ impl Mercado {
         player.rest_item_to_inventory(index, 1);
         player.sum_points(precio);
         drop(player);
+        self.base().get_node_as::<AudioStreamPlayer>("BuySellSound").play();
         self.update_information();
     }
     fn rest_item(&mut self, item : DynGd<RefCounted, dyn IItem>){

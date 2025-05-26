@@ -1,0 +1,14 @@
+[gd_resource type="Herramienta" load_steps=3 format=3 uid="uid://wjstpamlbwm2"]
+
+[ext_resource type="AudioStream" uid="uid://b0ia4b4l416cf" path="res://Sounds/Sound/items/reviving.wav" id="1_hosn3"]
+[ext_resource type="Texture2D" uid="uid://bbphkeu6p6obw" path="res://Herramientas/Graficas/ReviveTierra.png" id="1_yj6rd"]
+
+[resource]
+efecto = "RevivirTierra"
+nombre = "cRISTO"
+descripcion = "asdasd"
+max_stack = 1
+precio = 100
+textura = ExtResource("1_yj6rd")
+usos = 5
+sonido = ExtResource("1_hosn3")

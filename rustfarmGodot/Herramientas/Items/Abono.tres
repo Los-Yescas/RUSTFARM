@@ -1,6 +1,7 @@
-[gd_resource type="Herramienta" load_steps=2 format=3 uid="uid://de8g8wvv8sryr"]
+[gd_resource type="Herramienta" load_steps=3 format=3 uid="uid://de8g8wvv8sryr"]
 
 [ext_resource type="Texture2D" uid="uid://bb2mgvryht1it" path="res://Herramientas/Graficas/Abono.png" id="1_ntlk2"]
+[ext_resource type="AudioStream" uid="uid://cq6o6uq6fedlp" path="res://Sounds/Sound/items/abono.wav" id="1_yxaj0"]
 
 [resource]
 efecto = "AumentarFertilidad"
@@ -10,3 +11,4 @@ max_stack = 1
 precio = 250
 textura = ExtResource("1_ntlk2")
 usos = 5
+sonido = ExtResource("1_yxaj0")
