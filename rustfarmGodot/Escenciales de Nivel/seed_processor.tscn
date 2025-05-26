@@ -11,6 +11,7 @@ size = Vector2(360, 540)
 [node name="SeedProcessor" type="SeedProcessor"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 2
 texture = ExtResource("1_fjyuc")
 
 [node name="Area2D" type="Area2D" parent="."]

@@ -1,4 +1,4 @@
-use godot::{classes::{Button, CanvasLayer, ColorRect, GridContainer, Label}, prelude::*};
+use godot::{classes::{Button, CanvasItem, CanvasLayer, GridContainer, Label}, prelude::*};
 
 use crate::{interfaces::utils::slot_grid::GridSlot, item::item_resource::IItem, player::Player, world_interactables::IWorldInteractable};
 
@@ -185,16 +185,16 @@ impl Mercado {
 
     #[func]
     fn show_buy_menu(&mut self){
-        let mut buy_menu = self.base().get_node_as::<ColorRect>("./MarketUI/BuyMenu");
-        let mut sell_menu = self.base().get_node_as::<ColorRect>("./MarketUI/SellMenu");
+        let mut buy_menu = self.base().get_node_as::<CanvasItem>("./MarketUI/BuyMenu");
+        let mut sell_menu = self.base().get_node_as::<CanvasItem>("./MarketUI/SellMenu");
         buy_menu.set_visible(true);
         sell_menu.set_visible(false);
     }
 
     #[func]
     fn show_sell_menu(&mut self){
-        let mut buy_menu = self.base().get_node_as::<ColorRect>("./MarketUI/BuyMenu");
-        let mut sell_menu = self.base().get_node_as::<ColorRect>("./MarketUI/SellMenu");
+        let mut buy_menu = self.base().get_node_as::<CanvasItem>("./MarketUI/BuyMenu");
+        let mut sell_menu = self.base().get_node_as::<CanvasItem>("./MarketUI/SellMenu");
         buy_menu.set_visible(false);
         sell_menu.set_visible(true);
     }

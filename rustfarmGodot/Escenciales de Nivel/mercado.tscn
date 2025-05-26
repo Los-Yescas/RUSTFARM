@@ -1,5 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://dmx7wv1u1f2cc"]
+[gd_scene load_steps=7 format=3 uid="uid://dmx7wv1u1f2cc"]
 
+[ext_resource type="Texture2D" uid="uid://dr2q1ayg5j6x4" path="res://Graphics/Mercado/mercado-fondo.png" id="1_qeadi"]
 [ext_resource type="LabelSettings" uid="uid://bipgdaqgmg3om" path="res://Interfaces/Fonts/Titulos.tres" id="1_ushtf"]
 [ext_resource type="PackedScene" uid="uid://dfwyaaxd4q3cm" path="res://Interfaces/ItemGrid.tscn" id="2_lxjpe"]
 [ext_resource type="Texture2D" uid="uid://df1yunk72l5mg" path="res://Graphics/Mercado/Market.png" id="3_ushtf"]
@@ -14,15 +15,16 @@ size = Vector2(540, 540)
 layer = 2
 visible = false
 
-[node name="BuyMenu" type="ColorRect" parent="MarketUI"]
+[node name="BuyMenu" type="TextureRect" parent="MarketUI"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 0
-color = Color(0.783402, 0.7329, 0.352305, 1)
-metadata/_edit_use_anchors_ = true
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("1_qeadi")
+expand_mode = 2
 
 [node name="Title" type="Label" parent="MarketUI/BuyMenu"]
 layout_mode = 1
@@ -41,14 +43,16 @@ horizontal_alignment = 1
 [node name="MarketUI" parent="MarketUI/BuyMenu" instance=ExtResource("2_lxjpe")]
 layout_mode = 0
 
-[node name="SellMenu" type="ColorRect" parent="MarketUI"]
+[node name="SellMenu" type="TextureRect" parent="MarketUI"]
 visible = false
+modulate = Color(0.418064, 0.532649, 0.31064, 1)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.628468, 0.931527, 0.271393, 1)
+texture = ExtResource("1_qeadi")
+expand_mode = 2
 
 [node name="Title" type="Label" parent="MarketUI/SellMenu"]
 layout_mode = 1
@@ -104,6 +108,7 @@ offset_bottom = 49.0
 text = "CERRAR"
 
 [node name="Sprite" type="Sprite2D" parent="."]
+z_index = 2
 texture = ExtResource("3_ushtf")
 
 [node name="Area2D" type="Area2D" parent="."]
