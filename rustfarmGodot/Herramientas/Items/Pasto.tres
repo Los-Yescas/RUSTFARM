@@ -1,6 +1,7 @@
-[gd_resource type="Herramienta" load_steps=2 format=3 uid="uid://eefpxy6btuyj"]
+[gd_resource type="Herramienta" load_steps=3 format=3 uid="uid://eefpxy6btuyj"]
 
 [ext_resource type="Texture2D" uid="uid://cdm236j2bt4o1" path="res://Herramientas/Graficas/Hoz.png" id="1_1eg0t"]
+[ext_resource type="AudioStream" uid="uid://s3lhl2ylo6rb" path="res://Sounds/Sound/items/takeGrass.mp3" id="1_jaxkf"]
 
 [resource]
 nombre = "QuitaPasto"
@@ -9,3 +10,4 @@ max_stack = 1
 precio = 50
 textura = ExtResource("1_1eg0t")
 usos = 5
+sonido = ExtResource("1_jaxkf")

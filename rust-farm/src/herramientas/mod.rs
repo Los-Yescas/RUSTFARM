@@ -1,4 +1,4 @@
-use godot::{classes::{Texture2D, TileMapLayer}, prelude::*};
+use godot::{classes::{AudioStream, Texture2D, TileMapLayer}, prelude::*};
 
 use crate::item::item_resource::IItem;
 
@@ -31,7 +31,9 @@ struct Herramienta{
     #[export]
     textura : Option<Gd<Texture2D>>,
     #[export]
-    usos : u16
+    usos : u16,
+    #[export]
+    sonido : Option<Gd<AudioStream>>
 }
 
 #[godot_dyn]
@@ -54,7 +56,7 @@ impl IItem for Herramienta {
     fn get_sprite(&self) -> Gd<Texture2D> {
         self.textura.clone().unwrap_or(Texture2D::new_gd())
     }
-    fn interact(&mut self, world : Gd<Node2D>, position : Vector2, _objeto : Option<Gd<Node2D>>) -> bool {
+    fn interact(&mut self, world : Gd<Node2D>, position : Vector2, _objeto : Option<Gd<Node2D>>) -> Result<bool, GString> {
         let mut tiles = world.get_node_as::<TileMapLayer>("Suelo");
         let tile_position = tiles.local_to_map(position);
         let tile_data = tiles.get_cell_tile_data(tile_position).unwrap();
@@ -99,7 +101,13 @@ impl IItem for Herramienta {
         };
         if _used {
             self.usos -= 1;
+        }else {
+            return Err("No fue usada".into());
         }
-        self.usos <= 0
+        Ok(self.usos <= 0)
     }
+
+    fn get_interact_sound(&self) -> Option<Gd<AudioStream>> {
+        self.sonido.clone()
+    } 
 }

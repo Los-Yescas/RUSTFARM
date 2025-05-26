@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dm5x1xmjvnx73"]
+[gd_scene load_steps=6 format=3 uid="uid://dm5x1xmjvnx73"]
 
 [ext_resource type="Texture2D" uid="uid://dsoc07nnxsc5k" path="res://Graphics/FruitProcessor/Fruit.png" id="1_fjyuc"]
 [ext_resource type="LabelSettings" uid="uid://bipgdaqgmg3om" path="res://Interfaces/Fonts/Titulos.tres" id="2_apehl"]
 [ext_resource type="PackedScene" uid="uid://dfwyaaxd4q3cm" path="res://Interfaces/ItemGrid.tscn" id="3_u7b7m"]
+[ext_resource type="AudioStream" uid="uid://crsfx88i2mrgw" path="res://Sounds/Sound/FruitProcessor/Fruit.wav" id="4_apehl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rj586"]
 size = Vector2(360, 540)
@@ -50,3 +51,6 @@ offset_top = 23.0
 offset_right = 80.0
 offset_bottom = 54.0
 text = "Cerrar"
+
+[node name="FruitSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_apehl")

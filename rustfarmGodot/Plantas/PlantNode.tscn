@@ -1,4 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://4gyqdc8m3pyi"]
+[gd_scene load_steps=3 format=3 uid="uid://4gyqdc8m3pyi"]
+
+[ext_resource type="AudioStream" uid="uid://bci5h6mkxa6s0" path="res://Sounds/Sound/plantGrowing.wav" id="1_v25qa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ic0ij"]
 size = Vector2(180, 180)
@@ -12,3 +14,7 @@ position = Vector2(0, -90)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_ic0ij")
+
+[node name="Growing" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_v25qa")
+volume_db = 5.0

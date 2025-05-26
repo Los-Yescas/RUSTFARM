@@ -100,6 +100,7 @@ impl Player {
     }
     pub fn select_item(&mut self, index : usize){
         self.item_actual = (index as u16 % self.inventario_maximo) as usize;
+        self.base().get_node_as::<AudioStreamPlayer>("SelectSound").play();
     }
     fn pick_item(&mut self){
         if let Some(object) = self.check_for_item() {
@@ -112,12 +113,14 @@ impl Player {
                         Err(error) => godot_print!("{error}"),
                         Ok(_exito) => {
                             self.base().get_node_as::<PlayerInterface>("PlayerInterface").bind_mut().update_inventory(self.inventario_maximo, self.item_actual, &self.inventory);
+                            self.base().get_node_as::<AudioStreamPlayer>("PickSound").play();
                             pickable.has_been_picked()
                         }
                     }
                 }
             } else if let Ok(mut interactable) = variant.try_to::<DynGd<Node2D, dyn IWorldInteractable>>(){
                 interactable.dyn_bind_mut().show_menu(self.inventory.clone(), self.puntos);
+                self.active = false;
             }
         }
     }
@@ -173,6 +176,7 @@ impl Player {
         if walkable {
             self.is_moving = true;
             self.target_position = map.map_to_local(target_tile);
+            self.base().get_node_as::<AudioStreamPlayer>("WalkSound").play();
         }
     }
     #[func]
@@ -271,15 +275,28 @@ impl Player {
         let world = self.base().get_parent().unwrap().cast();
         let position = self.base().get_node_as::<Marker2D>("./InteractZone/SpawnerPos").get_global_position();
 
+        let mut sound_player = self.base().get_node_as::<AudioStreamPlayer>("InteractSound");
         if let  Some(tupla_inventario) = &mut self.inventory[self.item_actual]{
             let  (item, _) = tupla_inventario;
+            let mut item = item.clone();
    
-            let consume = item.dyn_bind_mut().interact(world, position, item_in_front);
-
+            let sound = item.dyn_bind().get_interact_sound();
+            let mut consume = false;
+            match item.dyn_bind_mut().interact(world, position, item_in_front){
+                Err(message) => godot_print!("{message}"),
+                Ok(consumed) =>{
+                    if let Some(sound) = sound{
+                        sound_player.set_stream(&sound);
+                        sound_player.play();
+                    }
+                    consume = consumed;
+                }
+            }
             if consume {
                 self.rest_item_to_inventory(self.item_actual, 1);
                 self.base().get_node_as::<PlayerInterface>("PlayerInterface").bind_mut().update_inventory(self.inventario_maximo, self.item_actual, &self.inventory);
             }
+
         }
     }
 
@@ -340,8 +357,10 @@ impl Player {
                 self.rest_item_to_inventory(index, *using);
             }
             self.orders_made += 1;
+            self.base().get_node_as::<AudioStreamPlayer>("OrderSound").play();
             return true;
         }
+        self.base().get_node_as::<AudioStreamPlayer>("WrongSound").play();
         false
     }
 
@@ -355,6 +374,7 @@ impl Player {
                 self.rest_item_to_inventory(self.item_actual, 1);
 
 
+                self.base().get_node_as::<AudioStreamPlayer>("DropSound").play();
                 nivel.add_child(&nodo_item);
             }
         }

@@ -64,6 +64,8 @@ impl SeedProcessor {
 
     #[func]
     fn produce_seeds(&mut self, index : u16){
+        let mut sound = self.base().get_node_as::<AudioStreamPlayer>("FruitSound");
+
         let player = self.player.as_mut().expect("Sin jugador");
         let full_inventory = player.bind().is_inventory_full();
         let item = player.bind().get_inventory_item(index as usize).unwrap().0.clone();
@@ -79,13 +81,16 @@ impl SeedProcessor {
 
         let mut player = player.bind_mut();
         player.rest_item_to_inventory(index as usize, 1);
+        
         for _i in 0..num_a_dar{
             match player.add_item_to_inventory(&semilla){
                 Err(mess) => {
                     godot_print!("{mess}");
                     break;
                 },
-                Ok(_) => ()
+                Ok(_) => {
+                    sound.play();
+                }
             }
         }
         drop(player);
