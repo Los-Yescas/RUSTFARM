@@ -1,4 +1,4 @@
-use godot::{classes::{Button, CanvasLayer, InputEvent, Label, RandomNumberGenerator, Timer}, prelude::*};
+use godot::{classes::{AudioStream, Button, CanvasLayer, InputEvent, Label, RandomNumberGenerator, Timer}, prelude::*};
 
 use crate::{item::item_resource::IItem, player::Player};
 
@@ -55,7 +55,9 @@ pub struct LevelManager{
     #[export]
     tiempo_minimo_de_orden : u16,
     #[export]
-    tiempo_maximo_de_orden : u16
+    tiempo_maximo_de_orden : u16,
+    #[export]
+    musica : Option<Gd<AudioStream>>
 }
 
 #[godot_api]
@@ -95,6 +97,10 @@ impl INode2D for LevelManager {
 
         main_menu_button.connect("pressed", &self.base().callable("return_to_main_menu"));
         restart_button.connect("pressed", &self.base().callable("restart_level"));
+
+        let mut audio_player = self.base().get_node_as::<AudioStreamPlayer>("Music");
+        audio_player.set_stream(self.musica.as_ref().expect("Sin musica"));
+        audio_player.play();
     }
 
     fn process(&mut self, delta : f64){

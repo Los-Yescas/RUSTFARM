@@ -71,6 +71,7 @@ stream = ExtResource("2_4ntmi")
 stream = ExtResource("3_btcbx")
 
 [node name="InteractSound" type="AudioStreamPlayer" parent="."]
+volume_db = -10.0
 
 [node name="SelectSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_gwnis")

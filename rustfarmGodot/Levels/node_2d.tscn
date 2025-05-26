@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=4 uid="uid://cs863yaqiboou"]
+[gd_scene load_steps=8 format=4 uid="uid://cs863yaqiboou"]
 
 [ext_resource type="PackedScene" uid="uid://bo1uh32fu45ju" path="res://Escenciales de Nivel/suelo.tscn" id="1_ko66c"]
 [ext_resource type="PackedScene" uid="uid://cge4d3lb6qkdk" path="res://Player/player.tscn" id="2_fdy5w"]
 [ext_resource type="PackedScene" uid="uid://daclrt2qn3so0" path="res://Items/ItemNode.tscn" id="3_tdxe6"]
 [ext_resource type="PackedScene" uid="uid://cwf87fllufe7p" path="res://Escenciales de Nivel/level_manager.tscn" id="4_fdy5w"]
+[ext_resource type="AudioStream" uid="uid://dlmrvc6t4yfqg" path="res://Sounds/Sound/music/BrowserHistory.wav" id="5_fdy5w"]
 [ext_resource type="PackedScene" uid="uid://dmx7wv1u1f2cc" path="res://Escenciales de Nivel/mercado.tscn" id="5_tdxe6"]
 [ext_resource type="PackedScene" uid="uid://dm5x1xmjvnx73" path="res://Escenciales de Nivel/seed_processor.tscn" id="6_hesg5"]
 
@@ -36,6 +37,7 @@ puntos_min_por_orden = 100
 puntos_max_por_orden = 350
 tiempo_minimo_de_orden = 40
 tiempo_maximo_de_orden = 80
+musica = ExtResource("5_fdy5w")
 
 [node name="Mercado" parent="." instance=ExtResource("5_tdxe6")]
 items_a_la_venta_rutas = Array[String](["res://Herramientas/Items/Abono.tres", "res://Herramientas/Items/ReviveTierra.tres", "res://Herramientas/Items/Hacha.tres", "res://Herramientas/Items/Pasto.tres", "res://Plantas/Items Semillas/ManiSemilla.tres", "res://Plantas/Items Semillas/Pina.tres", "res://Plantas/Items Semillas/Uva.tres", "res://Plantas/Items Semillas/Achachairu.tres"])
