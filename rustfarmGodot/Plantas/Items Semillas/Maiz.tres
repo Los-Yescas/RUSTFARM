@@ -12,4 +12,4 @@ descripcion = "Semilla de Maiz"
 max_stack = 50
 ruta_de_planta_a_plantar = "res://Plantas/Plantas/Maiz.tres"
 textura = SubResource("AtlasTexture_kquua")
-precio = 5
+precio = 25

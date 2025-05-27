@@ -8,9 +8,9 @@ region = Rect2(0, 369, 180, 180)
 
 [resource]
 nombre = "Mani"
-descripcion = "Semillas de Mani"
-max_stack = 64
+descripcion = "Mani, muchas personas son alergicas. Pura semilla baby."
+max_stack = 30
 textura = SubResource("AtlasTexture_6eufw")
 precio = 100
 ruta_de_semilla_a_dar = "res://Plantas/Items Semillas/ManiSemilla.tres"
-semillas_a_dar = 3
+semillas_a_dar = 5

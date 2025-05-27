@@ -8,9 +8,9 @@ region = Rect2(180, 909, 180, 180)
 
 [resource]
 nombre = "Maiz"
-descripcion = "Un Maiz bien rico"
+descripcion = "Un Maiz bien rico, saca muchas semillas de aca"
 max_stack = 10
 textura = SubResource("AtlasTexture_uy1ii")
-precio = 50
+precio = 125
 ruta_de_semilla_a_dar = "res://Plantas/Items Semillas/Maiz.tres"
-semillas_a_dar = 3
+semillas_a_dar = 5

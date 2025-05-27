@@ -1,7 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bii3iogidvtnn"]
+[gd_scene load_steps=6 format=3 uid="uid://bii3iogidvtnn"]
+
+[ext_resource type="FontFile" uid="uid://h61p5vowduxd" path="res://Stardew_Valley.ttf" id="1_padxy"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_dv67t"]
-font_size = 15
+font = ExtResource("1_padxy")
+font_size = 20
 font_color = Color(0.287295, 0.287295, 0.287295, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dv67t"]
@@ -11,7 +14,7 @@ bg_color = Color(0.18, 0.18, 0.18, 0.682353)
 
 [sub_resource type="LabelSettings" id="LabelSettings_22gf3"]
 line_spacing = 0.0
-font_size = 12
+font = ExtResource("1_padxy")
 font_color = Color(0.0745098, 0.0745098, 0.0745098, 0.784314)
 
 [node name="SimpleSlot" type="SimpleGridSlot"]

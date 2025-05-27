@@ -8,8 +8,8 @@ region = Rect2(0, 1449, 180, 180)
 
 [resource]
 nombre = "Semilla de Piña"
-descripcion = "MIAU"
+descripcion = "Mhmm, definitivamente Acida"
 max_stack = 10
 ruta_de_planta_a_plantar = "res://Plantas/Plantas/Pina.tres"
 textura = SubResource("AtlasTexture_k3t4h")
-precio = 10
+precio = 15

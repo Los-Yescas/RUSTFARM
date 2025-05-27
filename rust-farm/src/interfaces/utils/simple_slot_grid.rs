@@ -1,6 +1,6 @@
 use godot::{classes::{Button, CanvasItem, ColorRect, Control, IControl, Label, TextureRect}, prelude::*};
 
-use crate::item::item_resource::IItem;
+use crate::{item::item_resource::IItem, plant::items::fruit::FruitItemResource};
 
 #[derive(GodotClass)]
 #[class(init, base=Control)]
@@ -40,8 +40,14 @@ impl IControl for SimpleGridSlot {
 
         let details_panel = self.base().get_node_as::<ColorRect>("DetailsPanel");
         let mut name = details_panel.get_node_as::<Label>("Name"); 
+        let item_name = item.dyn_bind().get_name();
+        let mut text = item_name;
+        if let Ok(fruta) = item.clone().try_cast::<FruitItemResource>(){
+            let seeds_to_give = fruta.bind().get_semillas_a_dar();
+            text = format!("{text} da {seeds_to_give} semillas").into();
+        }
 
-        name.set_text(&item.dyn_bind().get_name());
+        name.set_text(&text);
     }
 }
 

@@ -1,4 +1,4 @@
-[gd_resource type="PlantResource" load_steps=8 format=3 uid="uid://bcgc3uf5vktvp"]
+[gd_resource type="PlantResource" load_steps=8 format=3 uid="uid://c2bet7tfs2ktp"]
 
 [ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_c0x25"]
 
@@ -49,6 +49,6 @@ animations = [{
 nombre = "Piña"
 crecimiento_minimo = 10
 crecimiento_maximo = 20
-puntos_para_crecer = 80
+puntos_para_crecer = 150
 sprite = SubResource("SpriteFrames_g6oue")
 plant_fruit_data_path = "res://Plantas/Items Frutas/Pina.tres"

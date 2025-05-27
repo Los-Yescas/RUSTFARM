@@ -1,4 +1,4 @@
-[gd_resource type="PlantResource" load_steps=7 format=3 uid="uid://bd61sj8rmmoxu"]
+[gd_resource type="PlantResource" load_steps=7 format=3 uid="uid://blpvv815gwrf5"]
 
 [ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_5f1i7"]
 
@@ -42,7 +42,7 @@ animations = [{
 }]
 
 [resource]
-nombre = "Achachairu"
+nombre = "Tomatitos"
 crecimiento_minimo = 20
 crecimiento_maximo = 30
 puntos_para_crecer = 250

@@ -1,4 +1,4 @@
-[gd_resource type="PlantResource" load_steps=8 format=3 uid="uid://b781t0kaog4f1"]
+[gd_resource type="PlantResource" load_steps=8 format=3 uid="uid://dfm23yx4ktdra"]
 
 [ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_c26ta"]
 
@@ -47,8 +47,8 @@ animations = [{
 
 [resource]
 nombre = "Maiz"
-crecimiento_minimo = 100
-crecimiento_maximo = 101
-puntos_para_crecer = 500
+crecimiento_minimo = 25
+crecimiento_maximo = 75
+puntos_para_crecer = 400
 sprite = SubResource("SpriteFrames_he4i4")
 plant_fruit_data_path = "res://Plantas/Items Frutas/Maiz.tres"

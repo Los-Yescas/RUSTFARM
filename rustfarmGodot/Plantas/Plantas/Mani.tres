@@ -1,4 +1,4 @@
-[gd_resource type="PlantResource" load_steps=7 format=3 uid="uid://613x7kxdh27i"]
+[gd_resource type="PlantResource" load_steps=7 format=3 uid="uid://brbfvf3b17ser"]
 
 [ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_00qbn"]
 
@@ -45,6 +45,6 @@ animations = [{
 nombre = "Mani"
 crecimiento_minimo = 10
 crecimiento_maximo = 30
-puntos_para_crecer = 200
+puntos_para_crecer = 100
 sprite = SubResource("SpriteFrames_xqal6")
 plant_fruit_data_path = "res://Plantas/Items Frutas/Mani.tres"

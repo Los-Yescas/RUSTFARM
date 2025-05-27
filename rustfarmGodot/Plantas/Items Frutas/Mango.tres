@@ -8,9 +8,9 @@ region = Rect2(180, 1989, 180, 180)
 
 [resource]
 nombre = "Mango"
-descripcion = "MANGO"
-max_stack = 20
+descripcion = "Jugoso y delicioso, pero demasiado grande"
+max_stack = 5
 textura = SubResource("AtlasTexture_wwx30")
-precio = 75
+precio = 200
 ruta_de_semilla_a_dar = "res://Plantas/Items Semillas/Mango.tres"
-semillas_a_dar = 6
+semillas_a_dar = 2

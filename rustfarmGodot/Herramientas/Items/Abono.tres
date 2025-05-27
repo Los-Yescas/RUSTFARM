@@ -5,8 +5,8 @@
 
 [resource]
 efecto = "AumentarFertilidad"
-nombre = "Feril"
-descripcion = "asdasd"
+nombre = "Fertilizante"
+descripcion = "Usado para mejorar la fertilidad de una casilla"
 max_stack = 1
 precio = 250
 textura = ExtResource("1_ntlk2")

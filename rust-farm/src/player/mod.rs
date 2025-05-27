@@ -1,3 +1,4 @@
+use godot::classes::AnimatedSprite2D;
 use godot::classes::Area2D;
 use godot::classes::InputEvent;
 use godot::classes::Marker2D;
@@ -114,6 +115,7 @@ impl Player {
                         Ok(_exito) => {
                             self.base().get_node_as::<PlayerInterface>("PlayerInterface").bind_mut().update_inventory(self.inventario_maximo, self.item_actual, &self.inventory);
                             self.base().get_node_as::<AudioStreamPlayer>("PickSound").play();
+                            self.interact_animation();
                             pickable.has_been_picked()
                         }
                     }
@@ -124,23 +126,74 @@ impl Player {
             }
         }
     }
+    fn interact(&mut self){
+
+        let item_in_front = self.check_for_item();
+        let world = self.base().get_parent().unwrap().cast();
+        let position = self.base().get_node_as::<Marker2D>("./InteractZone/SpawnerPos").get_global_position();
+
+        let mut sound_player = self.base().get_node_as::<AudioStreamPlayer>("InteractSound");
+        if let  Some(tupla_inventario) = &mut self.inventory[self.item_actual]{
+            let  (item, _) = tupla_inventario;
+            let mut item = item.clone();
+   
+            let sound = item.dyn_bind().get_interact_sound();
+            let mut consume = false;
+            match item.dyn_bind_mut().interact(world, position, item_in_front){
+                Err(message) => godot_print!("{message}"),
+                Ok(consumed) =>{
+                    if let Some(sound) = sound{
+                        sound_player.set_stream(&sound);
+                        sound_player.play();
+                        self.interact_animation();
+                    }
+                    consume = consumed;
+                }
+            }
+            if consume {
+                self.rest_item_to_inventory(self.item_actual, 1);
+                self.base().get_node_as::<PlayerInterface>("PlayerInterface").bind_mut().update_inventory(self.inventario_maximo, self.item_actual, &self.inventory);
+            }
+
+        }
+    }
+    fn interact_animation(&self){
+        let mut sprite = self.base().get_node_as::<AnimatedSprite2D>("Sprite");
+        let direction = self.direction;
+        if direction == Vector2i::UP{
+            let _ = sprite.play_ex().name("interact_up").done();
+        }else if direction == Vector2i::DOWN{
+            let _ = sprite.play_ex().name("interact_down").done();
+        }else if direction == Vector2i::RIGHT {
+            sprite.set_flip_h(false);
+            let _ = sprite.play_ex().name("interact_side").done();
+        }else if direction == Vector2i::LEFT {
+            sprite.set_flip_h(true);
+            let _ = sprite.play_ex().name("interact_side").done();
+        }
+    }
+
     #[func]
     fn player_movement_input(&mut self){
-        let mut direction = Vector2i::ZERO;
+        let mut direction_input = Vector2i::ZERO;
         let input = Input::singleton();
-        direction.x = input.get_axis("left", "right").round() as i32;
-        direction.y = input.get_axis("up", "down").round() as i32;
+        direction_input.x = input.get_axis("left", "right").round() as i32;
+        direction_input.y = input.get_axis("up", "down").round() as i32;
 
-        if direction == Vector2i::ZERO || self.is_moving || !self.can_move{
+        if !self.is_moving && direction_input == Vector2i::ZERO{ 
+            self.iddle_animation(self.direction);
             return;
         }
-        if direction.x != 0 {
-            direction.y = 0;
+        if direction_input == Vector2i::ZERO || self.is_moving || !self.can_move{
+            return;
         }
-        if direction == self.direction {
-            self.move_to(direction);
+        if direction_input.x != 0 {
+            direction_input.y = 0;
+        }
+        if direction_input == self.direction {
+            self.move_to(direction_input);
         }else{
-            self.face_to(direction);
+            self.face_to(direction_input);
             let mut timer = self.base().get_tree().unwrap().create_timer(0.15).unwrap();
             timer.connect("timeout", &self.base().callable("end_facing"));
         }
@@ -152,6 +205,7 @@ impl Player {
             .get_node_as::<Node2D>("./InteractZone")
             .set_rotation(direction.cast_float().angle());
         self.direction = direction;
+        self.iddle_animation(direction);
     }
     #[func]
     fn end_facing(&mut self){
@@ -178,6 +232,19 @@ impl Player {
             self.target_position = map.map_to_local(target_tile);
             self.base().get_node_as::<AudioStreamPlayer>("WalkSound").play();
         }
+
+        let mut sprite = self.base().get_node_as::<AnimatedSprite2D>("Sprite");
+        if direction == Vector2i::UP{
+            let _ = sprite.play_ex().name("walking_up").done();
+        }else if direction == Vector2i::DOWN{
+            let _ = sprite.play_ex().name("walking_down").done();
+        }else if direction == Vector2i::RIGHT {
+            sprite.set_flip_h(false);
+            let _ = sprite.play_ex().name("walking_side").done();
+        }else if direction == Vector2i::LEFT {
+            sprite.set_flip_h(true);
+            let _ = sprite.play_ex().name("walking_side").done();
+        }
     }
     #[func]
     fn player_moving(&mut self, delta : f64){
@@ -189,6 +256,21 @@ impl Player {
         }
         let new_position = global_position.move_toward(self.target_position, self.speed * delta as f32);
         self.base_mut().set_global_position(new_position);
+    }
+
+    fn iddle_animation(&mut self, direction : Vector2i){
+        let mut sprite = self.base().get_node_as::<AnimatedSprite2D>("Sprite");
+        if direction == Vector2i::UP{
+            let _ = sprite.play_ex().name("iddle_up").done();
+        }else if direction == Vector2i::DOWN{
+            let _ = sprite.play_ex().name("iddle_down").done();
+        }else if direction == Vector2i::RIGHT {
+            sprite.set_flip_h(false);
+            let _ = sprite.play_ex().name("iddle_side").done();
+        }else if direction == Vector2i::LEFT {
+            sprite.set_flip_h(true);
+            let _ = sprite.play_ex().name("iddle_side").done();
+        }
     }
     
     fn check_for_item(&self) -> Option<Gd<Node2D>>{
@@ -267,37 +349,6 @@ impl Player {
     }
     pub fn rest_points(&mut self, points : u16){
         self.puntos -= points;
-    }
-
-    fn interact(&mut self){
-
-        let item_in_front = self.check_for_item();
-        let world = self.base().get_parent().unwrap().cast();
-        let position = self.base().get_node_as::<Marker2D>("./InteractZone/SpawnerPos").get_global_position();
-
-        let mut sound_player = self.base().get_node_as::<AudioStreamPlayer>("InteractSound");
-        if let  Some(tupla_inventario) = &mut self.inventory[self.item_actual]{
-            let  (item, _) = tupla_inventario;
-            let mut item = item.clone();
-   
-            let sound = item.dyn_bind().get_interact_sound();
-            let mut consume = false;
-            match item.dyn_bind_mut().interact(world, position, item_in_front){
-                Err(message) => godot_print!("{message}"),
-                Ok(consumed) =>{
-                    if let Some(sound) = sound{
-                        sound_player.set_stream(&sound);
-                        sound_player.play();
-                    }
-                    consume = consumed;
-                }
-            }
-            if consume {
-                self.rest_item_to_inventory(self.item_actual, 1);
-                self.base().get_node_as::<PlayerInterface>("PlayerInterface").bind_mut().update_inventory(self.inventario_maximo, self.item_actual, &self.inventory);
-            }
-
-        }
     }
 
     pub fn fullfill_order(&mut self, pedido : &Pedido) -> bool{
