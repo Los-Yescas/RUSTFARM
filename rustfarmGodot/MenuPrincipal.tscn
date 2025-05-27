@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://dsk6yuihj6ha5"]
+[gd_scene load_steps=12 format=3 uid="uid://dsk6yuihj6ha5"]
 
 [ext_resource type="LabelSettings" uid="uid://bipgdaqgmg3om" path="res://Interfaces/Fonts/Titulos.tres" id="1_0oe1n"]
 [ext_resource type="PackedScene" uid="uid://cs863yaqiboou" path="res://Levels/node_2d.tscn" id="1_5dpk2"]
+[ext_resource type="PackedScene" uid="uid://c2no1hy1b4oa1" path="res://Levels/tutorial.tscn" id="1_xhhru"]
 [ext_resource type="PackedScene" uid="uid://tatr5vxci5ma" path="res://Levels/OtroNivel.tscn" id="2_pi62y"]
 [ext_resource type="Texture2D" uid="uid://8mg5y88a4nbo" path="res://Graphics/MenuPrincipal/menu.png" id="3_knros"]
 [ext_resource type="FontFile" uid="uid://h61p5vowduxd" path="res://Stardew_Valley.ttf" id="4_348rq"]
@@ -31,7 +32,7 @@ cache/0/40/0/underline_thickness = 0.0
 cache/0/40/0/scale = 1.0
 
 [node name="MenuPrincipal" type="MainMenu"]
-level_list = Array[PackedScene]([ExtResource("1_5dpk2"), ExtResource("2_pi62y")])
+level_list = Array[PackedScene]([ExtResource("1_xhhru"), ExtResource("1_5dpk2"), ExtResource("2_pi62y")])
 
 [node name="MenuPrincipal" type="CanvasLayer" parent="."]
 
