@@ -7,9 +7,9 @@ atlas = ExtResource("1_y1f70")
 region = Rect2(0, 3069, 180, 180)
 
 [resource]
-nombre = "Semilla de Achachairu"
-descripcion = "aujhdfsajhnaq"
+nombre = "Semilla de Tomatito"
+descripcion = "Pequeña Vida en tu mano, de aqui salen tomatitos"
 max_stack = 20
 ruta_de_planta_a_plantar = "res://Plantas/Plantas/Achachairu.tres"
 textura = SubResource("AtlasTexture_fecvh")
-precio = 5
+precio = 30

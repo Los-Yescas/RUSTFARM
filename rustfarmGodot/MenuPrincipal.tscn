@@ -1,11 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://dsk6yuihj6ha5"]
+[gd_scene load_steps=11 format=3 uid="uid://dsk6yuihj6ha5"]
 
 [ext_resource type="LabelSettings" uid="uid://bipgdaqgmg3om" path="res://Interfaces/Fonts/Titulos.tres" id="1_0oe1n"]
 [ext_resource type="PackedScene" uid="uid://cs863yaqiboou" path="res://Levels/node_2d.tscn" id="1_5dpk2"]
 [ext_resource type="PackedScene" uid="uid://tatr5vxci5ma" path="res://Levels/OtroNivel.tscn" id="2_pi62y"]
+[ext_resource type="Texture2D" uid="uid://8mg5y88a4nbo" path="res://Graphics/MenuPrincipal/menu.png" id="3_knros"]
+[ext_resource type="FontFile" uid="uid://h61p5vowduxd" path="res://Stardew_Valley.ttf" id="4_348rq"]
+[ext_resource type="Texture2D" uid="uid://cxocldvx27mwi" path="res://icon.svg" id="4_oh4jq"]
+[ext_resource type="Texture2D" uid="uid://vrtcdgsapcf8" path="res://rust.png" id="5_348rq"]
+[ext_resource type="AudioStream" uid="uid://ifix2656w3el" path="res://Sounds/Sound/music/HeyKids.ogg" id="8_348rq"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_n0due"]
-font_size = 80
+font = ExtResource("4_348rq")
+font_size = 120
 
 [sub_resource type="FontFile" id="FontFile_ba235"]
 cache/0/16/0/ascent = 0.0
@@ -29,13 +35,14 @@ level_list = Array[PackedScene]([ExtResource("1_5dpk2"), ExtResource("2_pi62y")]
 
 [node name="MenuPrincipal" type="CanvasLayer" parent="."]
 
-[node name="Fondo" type="ColorRect" parent="MenuPrincipal"]
+[node name="Fondo" type="TextureRect" parent="MenuPrincipal"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.491996, 0.572669, 0.50831, 1)
+texture = ExtResource("3_knros")
+expand_mode = 2
 
 [node name="Titulo" type="Label" parent="MenuPrincipal/Fondo"]
 layout_mode = 0
@@ -43,7 +50,7 @@ offset_left = 108.0
 offset_top = 77.0
 offset_right = 193.0
 offset_bottom = 100.0
-text = "RUSTFARM"
+text = "Anne's Rusty Farm"
 label_settings = SubResource("LabelSettings_n0due")
 
 [node name="Iniciar" type="Button" parent="MenuPrincipal/Fondo"]
@@ -56,7 +63,6 @@ offset_top = -31.5
 offset_right = 235.0
 offset_bottom = 31.5
 grow_vertical = 2
-theme_override_fonts/font = SubResource("FontFile_ba235")
 theme_override_font_sizes/font_size = 40
 text = "Iniciar"
 
@@ -87,6 +93,38 @@ grow_vertical = 2
 theme_override_fonts/font = SubResource("FontFile_ba235")
 theme_override_font_sizes/font_size = 40
 text = "Salir"
+
+[node name="Godot" type="TextureRect" parent="MenuPrincipal/Fondo"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -163.0
+offset_top = -168.0
+offset_right = -50.0
+offset_bottom = -47.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("4_oh4jq")
+
+[node name="Rust" type="TextureRect" parent="MenuPrincipal/Fondo"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -407.0
+offset_top = -180.0
+offset_right = -205.0
+offset_bottom = -47.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("5_348rq")
+expand_mode = 3
+stretch_mode = 5
 
 [node name="SeleccionDeNivel" type="CanvasLayer" parent="."]
 visible = false
@@ -138,3 +176,7 @@ grow_vertical = 2
 theme_override_constants/h_separation = 15
 theme_override_constants/v_separation = 5
 columns = 10
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_348rq")
+autoplay = true

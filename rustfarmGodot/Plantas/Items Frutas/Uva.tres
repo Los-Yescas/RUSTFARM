@@ -7,10 +7,10 @@ atlas = ExtResource("1_bxrui")
 region = Rect2(180, 2529, 180, 180)
 
 [resource]
-nombre = "Uva"
-descripcion = "pojkopjkasd"
-max_stack = 20
+nombre = "Pasa"
+descripcion = "Si, ahora las pasas crecen, es el espacio baby"
+max_stack = 30
 textura = SubResource("AtlasTexture_nyn38")
-precio = 150
+precio = 100
 ruta_de_semilla_a_dar = "res://Plantas/Items Semillas/Uva.tres"
 semillas_a_dar = 3

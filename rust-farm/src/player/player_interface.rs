@@ -17,7 +17,7 @@ impl ICanvasLayer for PlayerInterface {
     fn process(&mut self, _delta: f64,) {
         let mut etiqueta_puntos = self.base().get_node_as::<Label>("./Puntos");
         let player = self.player.as_ref().expect("Jugador no encontrado").bind();
-        etiqueta_puntos.set_text(&format!("{}", player.get_puntos()));
+        etiqueta_puntos.set_text(&format!("{}$", player.get_puntos()));
     }
 }
 

@@ -4,8 +4,8 @@
 [ext_resource type="AudioStream" uid="uid://s3lhl2ylo6rb" path="res://Sounds/Sound/items/takeGrass.mp3" id="1_jaxkf"]
 
 [resource]
-nombre = "QuitaPasto"
-descripcion = "asdasd"
+nombre = "Hoz"
+descripcion = "Usada para deshacerse de pasto"
 max_stack = 1
 precio = 50
 textura = ExtResource("1_1eg0t")

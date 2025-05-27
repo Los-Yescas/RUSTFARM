@@ -1,4 +1,4 @@
-[gd_resource type="PlantResource" load_steps=7 format=3 uid="uid://x3dx500lbns0"]
+[gd_resource type="PlantResource" load_steps=7 format=3 uid="uid://bkev5lp7pfk1p"]
 
 [ext_resource type="Texture2D" uid="uid://bk3v5heojrf1a" path="res://Plantas/Graficas/Plantas.png" id="1_u6ij2"]
 
@@ -45,6 +45,6 @@ animations = [{
 nombre = "Mango"
 crecimiento_minimo = 15
 crecimiento_maximo = 30
-puntos_para_crecer = 100
+puntos_para_crecer = 150
 sprite = SubResource("SpriteFrames_0ocge")
-plant_fruit_data_path = "res://Plantas/Items Frutas/Pina.tres"
+plant_fruit_data_path = "res://Plantas/Items Frutas/Mango.tres"

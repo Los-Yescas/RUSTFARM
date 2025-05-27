@@ -5,8 +5,8 @@
 
 [resource]
 efecto = "RevivirTierra"
-nombre = "cRISTO"
-descripcion = "asdasd"
+nombre = "Fertilizante de Conchas"
+descripcion = "Cuando la tierra este muerta usa esto para revivirla"
 max_stack = 1
 precio = 100
 textura = ExtResource("1_yj6rd")

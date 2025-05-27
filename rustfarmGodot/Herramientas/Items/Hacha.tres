@@ -5,8 +5,8 @@
 
 [resource]
 efecto = "ConstruirPuente"
-nombre = "pUENTES"
-descripcion = "asdasd"
+nombre = "Herramientas"
+descripcion = "Usadas para construir puentes sobre el agua"
 max_stack = 1
 precio = 100
 textura = ExtResource("1_m60uj")

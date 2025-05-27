@@ -44,7 +44,7 @@ animations = [{
 [resource]
 nombre = "Uva"
 crecimiento_minimo = 1
-crecimiento_maximo = 5
-puntos_para_crecer = 200
+crecimiento_maximo = 30
+puntos_para_crecer = 100
 sprite = SubResource("SpriteFrames_q01fw")
 plant_fruit_data_path = "res://Plantas/Items Frutas/Uva.tres"

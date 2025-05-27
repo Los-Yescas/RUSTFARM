@@ -8,8 +8,8 @@ region = Rect2(0, 2529, 180, 180)
 
 [resource]
 nombre = "Uva"
-descripcion = "Semilla de la Uva"
-max_stack = 20
+descripcion = "De aqui nacen la materia prima de los Chapacos"
+max_stack = 30
 ruta_de_planta_a_plantar = "res://Plantas/Plantas/Uva.tres"
 textura = SubResource("AtlasTexture_rl3e8")
 precio = 40

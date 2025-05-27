@@ -8,9 +8,9 @@ region = Rect2(180, 1449, 180, 180)
 
 [resource]
 nombre = "Piña"
-descripcion = "JAJAJAJ"
+descripcion = "Piña, piñas te voy a dar cuando te vea"
 max_stack = 10
 textura = SubResource("AtlasTexture_qbfrm")
-precio = 50
+precio = 200
 ruta_de_semilla_a_dar = "res://Plantas/Items Semillas/Pina.tres"
 semillas_a_dar = 3

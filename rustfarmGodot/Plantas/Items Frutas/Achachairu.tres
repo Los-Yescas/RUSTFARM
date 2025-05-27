@@ -7,10 +7,10 @@ atlas = ExtResource("1_uuwht")
 region = Rect2(180, 3069, 180, 180)
 
 [resource]
-nombre = "Achachairu"
-descripcion = "Fruta"
-max_stack = 30
+nombre = "Tomatito"
+descripcion = "Pequeño Tomate sacado de la planta de Tomate"
+max_stack = 10
 textura = SubResource("AtlasTexture_qcntk")
-precio = 50
+precio = 150
 ruta_de_semilla_a_dar = "res://Plantas/Items Semillas/Achachairu.tres"
-semillas_a_dar = 3
+semillas_a_dar = 2

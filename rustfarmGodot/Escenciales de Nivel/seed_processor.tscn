@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://dm5x1xmjvnx73"]
+[gd_scene load_steps=7 format=3 uid="uid://dm5x1xmjvnx73"]
 
 [ext_resource type="Texture2D" uid="uid://dsoc07nnxsc5k" path="res://Graphics/FruitProcessor/Fruit.png" id="1_fjyuc"]
 [ext_resource type="LabelSettings" uid="uid://bipgdaqgmg3om" path="res://Interfaces/Fonts/Titulos.tres" id="2_apehl"]
+[ext_resource type="Texture2D" uid="uid://b6b0qhivb8jkg" path="res://Graphics/FruitProcessor/fruit-processor.png" id="2_u7b7m"]
 [ext_resource type="PackedScene" uid="uid://dfwyaaxd4q3cm" path="res://Interfaces/ItemGrid.tscn" id="3_u7b7m"]
 [ext_resource type="AudioStream" uid="uid://crsfx88i2mrgw" path="res://Sounds/Sound/FruitProcessor/Fruit.wav" id="4_apehl"]
 
@@ -11,7 +12,7 @@ size = Vector2(360, 540)
 [node name="SeedProcessor" type="SeedProcessor"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = 2
+z_index = 1
 texture = ExtResource("1_fjyuc")
 
 [node name="Area2D" type="Area2D" parent="."]
@@ -23,13 +24,14 @@ shape = SubResource("RectangleShape2D_rj586")
 layer = 2
 visible = false
 
-[node name="Background" type="ColorRect" parent="UI"]
+[node name="Background" type="TextureRect" parent="UI"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.808402, 0.45123, 0.204688, 1)
+texture = ExtResource("2_u7b7m")
+expand_mode = 2
 
 [node name="Title" type="Label" parent="UI/Background"]
 layout_mode = 1

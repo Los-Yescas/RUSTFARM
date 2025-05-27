@@ -8,8 +8,8 @@ region = Rect2(0, 1989, 180, 180)
 
 [resource]
 nombre = "Semilla Mango "
-descripcion = "Toot"
-max_stack = 20
+descripcion = "Extremadamente Grande"
+max_stack = 10
 ruta_de_planta_a_plantar = "res://Plantas/Plantas/Mango.tres"
 textura = SubResource("AtlasTexture_3yyym")
-precio = 20
+precio = 50

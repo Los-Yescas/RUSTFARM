@@ -1,8 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://cwf87fllufe7p"]
+[gd_scene load_steps=4 format=3 uid="uid://cwf87fllufe7p"]
 
+[ext_resource type="FontFile" uid="uid://h61p5vowduxd" path="res://Stardew_Valley.ttf" id="2_osuwx"]
 [ext_resource type="LabelSettings" uid="uid://bipgdaqgmg3om" path="res://Interfaces/Fonts/Titulos.tres" id="2_xprxl"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_d21ai"]
+font = ExtResource("2_osuwx")
 font_size = 50
 
 [node name="LevelManager" type="LevelManager"]
@@ -91,6 +93,7 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Hora del Siguiente Nivel. Tus estadisticas:"
 label_settings = SubResource("LabelSettings_d21ai")
+horizontal_alignment = 1
 
 [node name="NextLevel" type="Button" parent="WinScreen"]
 anchors_preset = 7
