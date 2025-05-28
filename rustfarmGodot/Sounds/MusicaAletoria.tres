@@ -1,0 +1,11 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=4 format=3 uid="uid://cps2wjye4b0h"]
+
+[ext_resource type="AudioStream" uid="uid://dlmrvc6t4yfqg" path="res://Sounds/Sound/music/BrowserHistory.wav" id="1_1kkou"]
+[ext_resource type="AudioStream" uid="uid://duef8g836w2u2" path="res://Sounds/Sound/music/EternalTemp.ogg" id="2_i828s"]
+[ext_resource type="AudioStream" uid="uid://ifix2656w3el" path="res://Sounds/Sound/music/HeyKids.ogg" id="3_1mwlm"]
+
+[resource]
+streams_count = 3
+stream_0/stream = ExtResource("1_1kkou")
+stream_1/stream = ExtResource("2_i828s")
+stream_2/stream = ExtResource("3_1mwlm")

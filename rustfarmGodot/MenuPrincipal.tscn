@@ -1,14 +1,18 @@
-[gd_scene load_steps=12 format=3 uid="uid://bbgyb6j7d7f7l"]
+[gd_scene load_steps=16 format=3 uid="uid://bbgyb6j7d7f7l"]
 
 [ext_resource type="LabelSettings" uid="uid://bipgdaqgmg3om" path="res://Interfaces/Fonts/Titulos.tres" id="1_0oe1n"]
-[ext_resource type="PackedScene" uid="uid://cs863yaqiboou" path="res://Levels/node_2d.tscn" id="1_5dpk2"]
-[ext_resource type="PackedScene" path="res://Levels/tutorial.tscn" id="1_xhhru"]
-[ext_resource type="PackedScene" uid="uid://tatr5vxci5ma" path="res://Levels/OtroNivel.tscn" id="2_pi62y"]
+[ext_resource type="PackedScene" uid="uid://c2no1hy1b4oa1" path="res://Levels/tutorial.tscn" id="1_xhhru"]
+[ext_resource type="PackedScene" uid="uid://br7cac7ehfke6" path="res://Levels/Nivel1-1.tscn" id="2_it06f"]
 [ext_resource type="Texture2D" uid="uid://8mg5y88a4nbo" path="res://Graphics/MenuPrincipal/menu.png" id="3_knros"]
+[ext_resource type="PackedScene" uid="uid://cqqjnomj18bxg" path="res://Levels/Nivel  Jhanine5.tscn" id="3_vuxh6"]
 [ext_resource type="FontFile" uid="uid://h61p5vowduxd" path="res://Stardew_Valley.ttf" id="4_348rq"]
 [ext_resource type="Texture2D" uid="uid://cxocldvx27mwi" path="res://icon.svg" id="4_oh4jq"]
+[ext_resource type="PackedScene" uid="uid://jm5t1mslsc67" path="res://Levels/Nivel Jean ahajaj.tscn" id="4_psd4y"]
 [ext_resource type="Texture2D" uid="uid://vrtcdgsapcf8" path="res://rust.png" id="5_348rq"]
+[ext_resource type="PackedScene" uid="uid://dru3rhxjxgh3s" path="res://Levels/Nivel Jhanine1.tscn" id="5_b8mma"]
+[ext_resource type="PackedScene" uid="uid://b2i4j8vhkpc0p" path="res://Levels/Nivel Jhanine2.tscn" id="6_e15yw"]
 [ext_resource type="AudioStream" uid="uid://ifix2656w3el" path="res://Sounds/Sound/music/HeyKids.ogg" id="8_348rq"]
+[ext_resource type="PackedScene" uid="uid://p6ounugihpvo" path="res://Levels/Nivel Jhanine4.tscn" id="8_ualj4"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_n0due"]
 font = ExtResource("4_348rq")
@@ -32,7 +36,7 @@ cache/0/40/0/underline_thickness = 0.0
 cache/0/40/0/scale = 1.0
 
 [node name="MenuPrincipal" type="MainMenu"]
-level_list = Array[PackedScene]([ExtResource("1_xhhru"), ExtResource("1_5dpk2"), ExtResource("2_pi62y"), null])
+level_list = Array[PackedScene]([ExtResource("1_xhhru"), ExtResource("2_it06f"), ExtResource("3_vuxh6"), ExtResource("4_psd4y"), ExtResource("5_b8mma"), ExtResource("6_e15yw"), ExtResource("8_ualj4")])
 
 [node name="MenuPrincipal" type="CanvasLayer" parent="."]
 

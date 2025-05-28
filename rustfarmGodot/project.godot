@@ -11,9 +11,10 @@ config_version=5
 [application]
 
 config/name="RUSTFARM"
+config/version="0.0.1"
 run/main_scene="uid://bbgyb6j7d7f7l"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://vrtcdgsapcf8"
 
 [autoload]
 

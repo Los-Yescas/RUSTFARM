@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=4 uid="uid://br7cac7ehfke6"]
+[gd_scene load_steps=9 format=4 uid="uid://br7cac7ehfke6"]
 
 [ext_resource type="PackedScene" uid="uid://bo1uh32fu45ju" path="res://Escenciales de Nivel/suelo.tscn" id="1_7dp0w"]
 [ext_resource type="PackedScene" uid="uid://cwf87fllufe7p" path="res://Escenciales de Nivel/level_manager.tscn" id="2_1c21m"]
+[ext_resource type="PackedScene" uid="uid://cqqjnomj18bxg" path="res://Levels/Nivel  Jhanine5.tscn" id="3_8qscg"]
 [ext_resource type="PackedScene" uid="uid://dmx7wv1u1f2cc" path="res://Escenciales de Nivel/mercado.tscn" id="3_ldv2p"]
 [ext_resource type="PackedScene" uid="uid://dm5x1xmjvnx73" path="res://Escenciales de Nivel/seed_processor.tscn" id="4_8qscg"]
+[ext_resource type="AudioStream" uid="uid://ifix2656w3el" path="res://Sounds/Sound/music/HeyKids.ogg" id="4_oiy0s"]
 [ext_resource type="PackedScene" uid="uid://cge4d3lb6qkdk" path="res://Player/player.tscn" id="5_oiy0s"]
 [ext_resource type="PackedScene" uid="uid://daclrt2qn3so0" path="res://Items/ItemNode.tscn" id="6_1c21m"]
 
@@ -15,11 +17,13 @@ tile_map_data = PackedByteArray("AAA9AEUAAQAAAAAAAAA9AEQAAQAAAAAAAAA9AEMAAQAAAAA
 [node name="LevelManager" parent="." instance=ExtResource("2_1c21m")]
 items_a_pedir = Array[String](["res://Plantas/Items Frutas/Maiz.tres"])
 maximo_a_pedir = 5
+next_level = ExtResource("3_8qscg")
 tiempo_de_nivel = 300
 puntos_min_por_orden = 100
 puntos_max_por_orden = 200
 tiempo_minimo_de_orden = 30
 tiempo_maximo_de_orden = 45
+musica = ExtResource("4_oiy0s")
 position = Vector2(143, 8.99998)
 
 [node name="Mercado" parent="." instance=ExtResource("3_ldv2p")]

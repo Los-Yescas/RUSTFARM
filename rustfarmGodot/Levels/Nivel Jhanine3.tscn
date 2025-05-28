@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=4 uid="uid://dfdvf78n1eofm"]
+[gd_scene load_steps=6 format=4 uid="uid://chhqhrm3vgoc"]
 
 [ext_resource type="PackedScene" uid="uid://bo1uh32fu45ju" path="res://Escenciales de Nivel/suelo.tscn" id="1_pwc2f"]
 [ext_resource type="PackedScene" uid="uid://cwf87fllufe7p" path="res://Escenciales de Nivel/level_manager.tscn" id="2_lcftp"]

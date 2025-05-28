@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=4 uid="uid://jm5t1mslsc67"]
+[gd_scene load_steps=9 format=4 uid="uid://jm5t1mslsc67"]
 
 [ext_resource type="PackedScene" uid="uid://cwf87fllufe7p" path="res://Escenciales de Nivel/level_manager.tscn" id="1_ep4fa"]
 [ext_resource type="PackedScene" uid="uid://dmx7wv1u1f2cc" path="res://Escenciales de Nivel/mercado.tscn" id="2_03gsw"]
+[ext_resource type="AudioStream" uid="uid://cps2wjye4b0h" path="res://Sounds/MusicaAletoria.tres" id="2_pt4e7"]
+[ext_resource type="PackedScene" uid="uid://dru3rhxjxgh3s" path="res://Levels/Nivel Jhanine1.tscn" id="2_ujv7d"]
 [ext_resource type="PackedScene" uid="uid://dm5x1xmjvnx73" path="res://Escenciales de Nivel/seed_processor.tscn" id="3_pt4e7"]
 [ext_resource type="PackedScene" uid="uid://bo1uh32fu45ju" path="res://Escenciales de Nivel/suelo.tscn" id="4_ujv7d"]
 [ext_resource type="PackedScene" uid="uid://cge4d3lb6qkdk" path="res://Player/player.tscn" id="5_oows4"]
@@ -10,16 +12,18 @@
 [node name="Nivel Jean ahajaj xd" type="Node2D"]
 
 [node name="LevelManager" parent="." instance=ExtResource("1_ep4fa")]
+items_a_pedir = Array[String](["res://Plantas/Items Frutas/Pina.tres", "res://Plantas/Items Frutas/Mango.tres", "res://Plantas/Items Frutas/Maiz.tres"])
 pedidos_maximos_actuales = 4
 tiempo_minimo_entre_nuevas_ordenes = 12.0
 tiempo_maximo_entre_nuevas_ordenes = 16.0
 maximo_a_pedir = 4
+next_level = ExtResource("2_ujv7d")
 tiempo_de_nivel = 210
 puntos_min_por_orden = 150
 puntos_max_por_orden = 250
 tiempo_minimo_de_orden = 45
 tiempo_maximo_de_orden = 60
-position = Vector2(-278, 83)
+musica = ExtResource("2_pt4e7")
 
 [node name="Mercado" parent="." instance=ExtResource("2_03gsw")]
 items_a_la_venta_rutas = Array[String](["res://Herramientas/Items/Hacha.tres", "res://Herramientas/Items/Abono.tres", "res://Herramientas/Items/ReviveTierra.tres", "res://Plantas/Items Semillas/Pina.tres", "res://Plantas/Items Semillas/Mango.tres", "res://Plantas/Items Semillas/Maiz.tres"])
