@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bo1uh32fu45ju" path="res://Escenciales de Nivel/suelo.tscn" id="1_gdvy0"]
 [ext_resource type="PackedScene" uid="uid://cwf87fllufe7p" path="res://Escenciales de Nivel/level_manager.tscn" id="2_hga2d"]
 [ext_resource type="AudioStream" uid="uid://duef8g836w2u2" path="res://Sounds/Sound/music/EternalTemp.ogg" id="3_j0mkc"]
-[ext_resource type="PackedScene" path="res://Levels/Nivel1-1.tscn" id="3_lojvt"]
+[ext_resource type="PackedScene" uid="uid://br7cac7ehfke6" path="res://Levels/Nivel1-1.tscn" id="3_lojvt"]
 [ext_resource type="PackedScene" uid="uid://dmx7wv1u1f2cc" path="res://Escenciales de Nivel/mercado.tscn" id="3_mscth"]
 [ext_resource type="PackedScene" uid="uid://dm5x1xmjvnx73" path="res://Escenciales de Nivel/seed_processor.tscn" id="4_e312d"]
 [ext_resource type="PackedScene" uid="uid://cge4d3lb6qkdk" path="res://Player/player.tscn" id="5_hga2d"]
