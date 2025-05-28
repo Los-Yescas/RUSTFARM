@@ -32,7 +32,7 @@ cache/0/40/0/underline_thickness = 0.0
 cache/0/40/0/scale = 1.0
 
 [node name="MenuPrincipal" type="MainMenu"]
-level_list = Array[PackedScene]([ExtResource("1_xhhru"), ExtResource("1_5dpk2"), ExtResource("2_pi62y")])
+level_list = Array[PackedScene]([ExtResource("1_xhhru"), ExtResource("1_5dpk2"), ExtResource("2_pi62y"), null])
 
 [node name="MenuPrincipal" type="CanvasLayer" parent="."]
 
