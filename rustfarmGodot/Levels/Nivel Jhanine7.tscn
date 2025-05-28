@@ -1,0 +1,16 @@
+[gd_scene load_steps=5 format=3 uid="uid://b1erb5likys54"]
+
+[ext_resource type="PackedScene" uid="uid://bo1uh32fu45ju" path="res://Escenciales de Nivel/suelo.tscn" id="1_nmlvc"]
+[ext_resource type="PackedScene" uid="uid://cwf87fllufe7p" path="res://Escenciales de Nivel/level_manager.tscn" id="2_87q2a"]
+[ext_resource type="PackedScene" uid="uid://dmx7wv1u1f2cc" path="res://Escenciales de Nivel/mercado.tscn" id="3_xjcwb"]
+[ext_resource type="PackedScene" uid="uid://dm5x1xmjvnx73" path="res://Escenciales de Nivel/seed_processor.tscn" id="4_veej8"]
+
+[node name="NivelJhanine7" type="Node2D"]
+
+[node name="Suelo" parent="." instance=ExtResource("1_nmlvc")]
+
+[node name="LevelManager" parent="." instance=ExtResource("2_87q2a")]
+
+[node name="Mercado" parent="." instance=ExtResource("3_xjcwb")]
+
+[node name="SeedProcessor" parent="." instance=ExtResource("4_veej8")]
