@@ -67,13 +67,7 @@ impl SeedProcessor {
         let mut sound = self.base().get_node_as::<AudioStreamPlayer>("FruitSound");
 
         let player = self.player.as_mut().expect("Sin jugador");
-        let full_inventory = player.bind().is_inventory_full();
         let item = player.bind().get_inventory_item(index as usize).unwrap().0.clone();
-
-        if full_inventory{
-            godot_print!("Inventario lleno");
-            return;
-        }
 
         let fruta = item.into_gd().cast::<FruitItemResource>();
         let num_a_dar = fruta.bind().get_semillas_a_dar();
